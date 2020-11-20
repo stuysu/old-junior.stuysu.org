@@ -1,5 +1,0 @@
-function getLinks() {
-    return [
-        { }
-    ];
-}
