@@ -45,7 +45,7 @@ app.use(links);
 app.use(createError);
 app.use(finalizeError);
 
-const port = 3001;
+const port = Number(process.env.PORT) || 3001;
 app.listen(port, () => {
     console.log(`Listening on ${port}!`);
 })
