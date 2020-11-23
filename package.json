@@ -4,6 +4,7 @@
   "description": "backend api for sophomore caucus website",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "nodemon index.js"
   },
   "repository": {
