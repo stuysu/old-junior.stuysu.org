@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Links</title>
+</head>
+<body>
+
+    <div class="content">
+    </div>
+
+    <script src="linkManager.js"></script> 
+    <script>
+
+        const cl = document.getElementsByClassName("content")[0];
+
+        // returns array
+        function getLinks() {
+            return fetch('http://localhost:3001/links')
+                .then(response => response.json());
+        }
+
+        function addElement(element) {
+            let dv = document.createElement('div');
+            let dvC = document.createElement('div');
+            let dvA = document.createElement('a');
+            dvA.href = element.url;
+            dvA.setAttribute("target","_blank");
+            dvA.appendChild(document.createTextNode(element.alias));
+
+            dvC.appendChild(dvA);
+            dv.appendChild(dvC);
+            cl.appendChild(dv);
+
+            console.log(element);
+        }
+
+        getLinks().then(data => {
+            if (data != undefined)
+                data.forEach(addElement);
+        });
+
+    </script>
+    
+</body>
+</html>
