@@ -15,19 +15,26 @@ const corsOptions = {
 };
 const cors = require('cors')(corsOptions);
 
-
+// Should be the last middleware before the error handler for a 404
 function createError(req, res, next) {
     next({
         status: 404,
-        error: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`
+        body: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`
     });
 }
 
+// Error handling routine (send json response for our application)
 function finalizeError(err, req, res, next) {
-    res.status(err.status || 500).json({
-        success: false,
-        error: err.error || 'Server error'
-    })
+    console.log(err);
+    // DO NOT SET A VARIABLE TO .error IT WILL GET OVERRIDDEN
+    err.error = true;
+    res.status(err.status || 500).json( 
+        err || 
+        {
+            error: true, 
+            message: 'Server error'
+        }
+    );
 }
 
 // ROUTES
@@ -41,6 +48,7 @@ app.use(cors);
 app.use(parser);
 
 app.use(links);
+// app.use('/', links);
 
 app.use(createError);
 app.use(finalizeError);
