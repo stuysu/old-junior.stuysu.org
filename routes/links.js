@@ -2,24 +2,23 @@ const express = require('express');
 const router = express.Router();
 
 const { sequelize } = require('./../models');
-// typdef
 const Link = sequelize.models.Link;
 
 // Make this a global function
-// i think creating an error object is the best way to get express
-// to handle error because it'll bring it to the error handler
-// only throw errors in your routes
 function CreateError(__code, __error) {
-    let tmp = new Error(__error);
-    tmp.status = __code;
-    tmp.statusCode = __code;
+    // let tmp = new Error(__error);
+    let tmp = {
+        status : Number(__code),
+        error: __error || true // error should be a truthy value
+    };
     return tmp;
 }
 
 // Temporarily use this for post requests (which shouldn't return anything)
 // Make this a global function
+// have this function return nothing in production so POST, PUT, DELETE dont return anything
 function localSuccess(__message) {
-    return {message: __message };
+    return { message: __message };
 }
 
 function getLinkById(id) {
@@ -72,22 +71,22 @@ function getIntOr(n, other) {
 
 router.get(
     '/links', 
-    (req, res) => {
+    (req, res, next) => {
         if (req.query.id) {
 
             let n = getIntOr(req.query.id, req.query.id);
             getLinkById(n).then(back => {
                 res.status(200).json(back);
             }).catch(err => {
-                throw CreateError(400, err);
-            })
+                next(CreateError(400, err));
+            });
             
         } else {
 
             getLinks().then(linkList => {
                 res.status(200).json(linkList);
             }).catch(err => {
-                throw CreateError(400, err);
+                next(CreateError(400, err));
             });
 
         }
@@ -96,11 +95,11 @@ router.get(
 
 router.post(
     '/links',
-    (req, res) => {
+    (req, res, next) => {
 
         if (req.body.alias === undefined || req.body.url   === undefined) {
 
-            throw CreateError(400, 'Excpected alias and url, only one or neither found');
+            next(CreateError(400, 'Excpected alias and url, only one or neither found'));
 
         } else {
 
@@ -115,7 +114,7 @@ router.post(
                 
             }).catch(err => {
                 
-                throw CreateError(err);
+                next(CreateError(400, err));
 
             });
         }
@@ -124,11 +123,11 @@ router.post(
 
 router.put(
     '/links/', 
-    (req, res) => {
+    (req, res, next) => {
         
         if (req.body.id === undefined) {
 
-            throw CreateError('Need a link id to process request');
+            next(CreateError(400, 'Need a link id to process request'));
         
         } else {
         
@@ -142,23 +141,25 @@ router.put(
                 
                 // this is not technically necessary
                 if (!hasAlias && !hasUrl) {
-                    throw CreateError(400, "Provide one or both between alias and url");
+                    next(CreateError(400, "Provide one or both between alias and url"));
                 }
 
-                const url = link.url;
-                const alias = link.alias;
+                const _url = link.url;
+                const _alias = link.alias;
 
-                console.log(url);
-                console.log(alias);
+                let updateTo = {
+                    url: req.body.url || _url,
+                    alias: req.body.alias || _alias
+                };
 
                 Link.update(updateTo, opts).then(() => {
-                    res.status(200).json(localSuccess(`Updated ${alias} to ${updateTo.alias} and ${url} to ${updateTo.url} in link with id ${n}`));
+                    res.status(200).json(localSuccess(`Updated '${_alias}' to '${updateTo.alias}' and '${_url}' to '${updateTo.url}' in link with id ${n}`));
                 }).catch(err => {
-                    throw CreateError(400, err);
+                    next(CreateError(400, err));
                 });
 
             }).catch(err => {
-                throw CreateError(400, err);
+                next(CreateError(400, err));
             });
 
         }
@@ -168,7 +169,7 @@ router.put(
 
 router.delete(
     '/links/:id',
-    (req, res) => {
+    (req, res, next) => {
 
         let n = getIntOr(req.params.id, req.params.id);
         Link.destroy({
@@ -176,10 +177,13 @@ router.delete(
                 id: n
             }
         }).then(wasDeleted => {
-            let message = wasDeleted ? `Deleted link with id ${n}` : `Could not find link with id ${n}`;
-            res.status(200).json(localSuccess(message));
+            if (wasDeleted) {
+                res.status(200).json(localSuccess(`Deleted link with id ${n}`));
+            } else {
+                next(CreateError(404, `Could not find link with id ${n}`));
+            }
         }).catch(err => {
-            throw CreateError(400, err);
+            next(CreateError(400, err));
         });
 
     }
