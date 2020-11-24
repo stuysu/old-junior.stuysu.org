@@ -1,3 +1,6 @@
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
+    require('dotenv').config();
+
 const express = require("express");
 const app = express();
 
@@ -26,8 +29,7 @@ function createError(req, res, next) {
 // Error handling routine (send json response for our application)
 function finalizeError(err, req, res, next) {
     console.log(err);
-    // DO NOT SET A VARIABLE TO .error IT WILL GET OVERRIDDEN
-    err.error = true;
+    err.error = err.error || true;
     res.status(err.status || 500).json( 
         err || 
         {
