@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Links</title>
+    <title>Sophomore Caucus Social Links</title>
 </head>
 <body>
 
     <div class="content">
     </div>
 
-    <script src="linkManager.js"></script> 
     <script>
 
         const cl = document.getElementsByClassName("content")[0];
 
         // returns array
         function getLinks() {
-            return fetch('http://localhost:3001/links')
+            return fetch('http://sophomore-caucus.herokuapp.com/links')
                 .then(response => response.json());
         }
 

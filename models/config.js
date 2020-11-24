@@ -5,7 +5,7 @@ const SQLITE_URL = `sqlite::${SQLITE_PATH}`;
 const SEQUELIZE_URL = 
     process.env.NODE_ENV === 'development' ?
     SQLITE_URL :
-    process.env.DATABASE_URL;
+    process.env.DATABASE_URL || SQLITE_URL;
 
 module.exports = {
     development: {
