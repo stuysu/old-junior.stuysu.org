@@ -39,6 +39,21 @@ function finalizeError(err, req, res, next) {
     );
 }
 
+// DATABASE
+
+function setup(db) {
+    return new Promise((resolve, reject) => {
+        db.sync().then(() => {
+            resolve();
+        }).catch(err => {
+            reject(err);
+        });
+    })
+
+}
+
+const { sequelize } = require('./models');
+
 // ROUTES
 
 const links = require('./routes/links.js');
@@ -56,7 +71,10 @@ app.use(createError);
 app.use(finalizeError);
 
 const port = Number(process.env.PORT) || 3001;
-app.listen(port, () => {
-    console.log(`Listening on ${port}!`);
-})
-
+setup(sequelize).then(() => {
+    app.listen(port, () => {
+        console.log(`Started application on port ${port}`);
+    });
+}).catch(err => {
+    console.log(`Did not start due to database error: ${err}`);
+});
