@@ -4,15 +4,8 @@ const router = express.Router();
 const { sequelize } = require('./../models');
 const Link = sequelize.models.Link;
 
-// Make this a global function
-function CreateError(__code, __error) {
-    // let tmp = new Error(__error);
-    let tmp = {
-        status : Number(__code),
-        error: __error || true // error should be a truthy value
-    };
-    return tmp;
-}
+const { CreateError } = require('./utils');
+
 
 // Temporarily use this for post requests (which shouldn't return anything)
 // Make this a global function
@@ -21,19 +14,12 @@ function localSuccess(__message) {
     return { message: __message };
 }
 
+// returns { id, url, alias, createdAt, updatedAt } or null
 function getLinkById(id) {
     return new Promise((resolve, reject) => {
         Link.findByPk(id).then(linkById => {
             
-            if (linkById === null) {
-                reject(`Could not find a link by id ${id}`);
-            }
-
-            resolve({
-                id: linkById.dataValues.id,
-                alias: linkById.dataValues.alias,
-                url: linkById.dataValues.url
-            });
+            resolve(linkById);
 
         }).catch(err => {
             reject(err);
@@ -41,6 +27,7 @@ function getLinkById(id) {
     });
 }
 
+// returns [{ id, url, alias, createdAt, updatedAt }...] or []
 function getLinks() {
     return new Promise((resolve, reject) => {
         Link.findAll().then(allLinks => {
@@ -48,11 +35,7 @@ function getLinks() {
             let tmp = [];
 
             allLinks.forEach(oneLink => {
-                tmp.push({
-                    id: oneLink.id,
-                    alias: oneLink.alias,
-                    url: oneLink.url
-                });
+                tmp.push(oneLink);
             });
 
             resolve(tmp);
@@ -76,7 +59,7 @@ router.get(
 
             let n = getIntOr(req.query.id, req.query.id);
             getLinkById(n).then(back => {
-                res.status(200).json(back);
+                res.status(200).json(back ? back : {});
             }).catch(err => {
                 next(CreateError(400, err));
             });
@@ -98,26 +81,26 @@ router.post(
     (req, res, next) => {
 
         if (req.body.alias === undefined || req.body.url   === undefined) {
-
             next(CreateError(400, 'Excpected alias and url, only one or neither found'));
+        } 
 
-        } else {
-
-            Link.create({
-                alias: req.body.alias,
-                url: req.body.url
-            }).then(() => {
-                
-                res.status(200).json(localSuccess(
-                    `Created new link with alias '${req.body.alias}' and url ${req.body.url}`
-                ));
-                
-            }).catch(err => {
-                
-                next(CreateError(400, err));
-
+        Link.create({
+            alias: req.body.alias,
+            url: req.body.url
+        }).then(() => {
+            
+            res.status(200).json({
+                created: true,
+                url: req.body.url,
+                alias: req.body.alias
             });
-        }
+            
+        }).catch(err => {
+            
+            next(CreateError(400, err));
+
+        });
+
     }
 );
 
@@ -129,40 +112,48 @@ router.put(
 
             next(CreateError(400, 'Need a link id to process request'));
         
-        } else {
+        }
         
-            let n = getIntOr(req.body.id, req.body.id);
-            let opts = { where: { id: n }};
+        let n = getIntOr(req.body.id, req.body.id);
+        let opts = { where: { id: n } };
 
-            getLinkById(n).then(link => {
+        getLinkById(n).then(link => {
 
+            let result = {
+                found: link !== null,
+            };
+
+            if (result.found) {
                 const hasAlias = req.body.alias !== undefined;
                 const hasUrl = req.body.url !== undefined;
-                
-                // this is not technically necessary
-                if (!hasAlias && !hasUrl) {
-                    next(CreateError(400, "Provide one or both between alias and url"));
-                }
 
-                const _url = link.url;
-                const _alias = link.alias;
-
-                let updateTo = {
-                    url: req.body.url || _url,
-                    alias: req.body.alias || _alias
+                result.old = {
+                    url: hasUrl ? link.url : undefined,
+                    alias: hasAlias ? link.alias : undefined
                 };
 
-                Link.update(updateTo, opts).then(() => {
-                    res.status(200).json(localSuccess(`Updated '${_alias}' to '${updateTo.alias}' and '${_url}' to '${updateTo.url}' in link with id ${n}`));
+                result.url = req.body.url;
+                result.updatedUrl = hasUrl ? (result.url !== link.url) : undefined;
+
+                result.alias = req.body.alias;
+                result.updatedAlias = hasAlias ? (result.alias !== link.alias) : undefined;
+
+                Link.update({
+                    url: req.body.url || result.old.url,
+                    alias: req.body.alias || result.old.alias
+                }, opts).then(() => {
+                    res.status(200).json(result);
                 }).catch(err => {
                     next(CreateError(400, err));
                 });
 
-            }).catch(err => {
-                next(CreateError(400, err));
-            });
+            } else {
+                res.status(200).json(result);
+            }
 
-        }
+        }).catch(err => {
+            next(CreateError(400, err));
+        });
 
     }
 );
@@ -177,11 +168,10 @@ router.delete(
                 id: n
             }
         }).then(wasDeleted => {
-            if (wasDeleted) {
-                res.status(200).json(localSuccess(`Deleted link with id ${n}`));
-            } else {
-                next(CreateError(404, `Could not find link with id ${n}`));
-            }
+            res.status(200).json({
+                deleted: wasDeleted==1?true:false,
+                id: n
+            });
         }).catch(err => {
             next(CreateError(400, err));
         });
