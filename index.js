@@ -48,8 +48,7 @@ function setup(db) {
         }).catch(err => {
             reject(err);
         });
-    })
-
+    });
 }
 
 const { sequelize } = require('./models');
@@ -57,6 +56,7 @@ const { sequelize } = require('./models');
 // ROUTES
 
 const links = require('./routes/links.js');
+const admin = require('./routes/admin.js');
 
 /////////
 
@@ -66,6 +66,7 @@ app.use(parser);
 
 app.use(links);
 // app.use('/', links);
+app.use(admin);
 
 app.use(createError);
 app.use(finalizeError);
