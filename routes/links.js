@@ -4,7 +4,7 @@ const router = express.Router();
 const { sequelize } = require('./../models');
 const Link = sequelize.models.Link;
 
-const { CreateError } = require('./utils');
+const { CreateError, getLinks } = require('./utils');
 
 
 // Temporarily use this for post requests (which shouldn't return anything)
@@ -27,25 +27,6 @@ function getLinkById(id) {
     });
 }
 
-// returns [{ id, url, alias, createdAt, updatedAt }...] or []
-function getLinks() {
-    return new Promise((resolve, reject) => {
-        Link.findAll().then(allLinks => {
-
-            let tmp = [];
-
-            allLinks.forEach(oneLink => {
-                tmp.push(oneLink);
-            });
-
-            resolve(tmp);
-
-        }).catch(err => {
-            reject(err);
-        });
-
-    });
-}
 
 function getIntOr(n, other) {
     let parsed = parseInt(n);

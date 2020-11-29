@@ -1,5 +1,5 @@
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
-    require('dotenv').config();
+require('dotenv').config();
+const path = require('path'); 
 
 const express = require("express");
 const app = express();
@@ -18,8 +18,10 @@ const corsOptions = {
 };
 const cors = require('cors')(corsOptions);
 
+const staticServe = express.static(path.join(__dirname, 'public')); 
+
 // Should be the last middleware before the error handler for a 404
-function createError(req, res, next) {
+function error404(req, res, next) {
     next({
         status: 404,
         body: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`
@@ -27,9 +29,11 @@ function createError(req, res, next) {
 }
 
 // Error handling routine (send json response for our application)
-function finalizeError(err, req, res, next) {
+function errorHandler(err, req, res, next) {
     console.log(err);
-    err.error = err.error || true;
+
+    if (err)
+        err.error = err.error || true;
     res.status(err.status || 500).json( 
         err || 
         {
@@ -42,13 +46,7 @@ function finalizeError(err, req, res, next) {
 // DATABASE
 
 function setup(db) {
-    return new Promise((resolve, reject) => {
-        db.sync().then(() => {
-            resolve();
-        }).catch(err => {
-            reject(err);
-        });
-    });
+    return db.sync();
 }
 
 const { sequelize } = require('./models');
@@ -58,18 +56,23 @@ const { sequelize } = require('./models');
 const links = require('./routes/links.js');
 const admin = require('./routes/admin.js');
 
+// VIEW ENGINE
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 /////////
 
+app.use(staticServe);
 app.use(logger);
 app.use(cors);
 app.use(parser);
 
 app.use(links);
-// app.use('/', links);
 app.use(admin);
 
-app.use(createError);
-app.use(finalizeError);
+app.use(error404);
+app.use(errorHandler);
 
 const port = Number(process.env.PORT) || 3001;
 setup(sequelize).then(() => {

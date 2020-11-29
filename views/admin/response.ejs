@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Preview</th>
+            <th scope="col">Alias</th>
+            <th scope="col">Url</th>
+            <th scope="col">Confirm</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <% for (let link of links) { %>
+            <tr> 
+                <th scope="col"><a id="<%=link.id%>-link" href="<%= link.url %>" target="_blank"><%= link.alias %></a></th>
+                <td><input type="text" id="<%=link.id%>-alias" value="<%= link.alias %>" oninput="updatePreview('<%= link.id %>')" /></td>
+                <td><input type="text" id="<%=link.id%>-url" value="<%= link.url %>" oninput="updatePreview('<%= link.id %>')" /></td> 
+                <td id="<%=link.id%>-update"><button onclick="updateLink('<%= link.id %>')">Update</button></td> 
+            </tr>
+        <% } %>
+
+    </tbody>
+</table>
