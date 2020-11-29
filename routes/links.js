@@ -4,29 +4,7 @@ const router = express.Router();
 const { sequelize } = require('./../models');
 const Link = sequelize.models.Link;
 
-const { CreateError, getLinks } = require('./utils');
-
-
-// Temporarily use this for post requests (which shouldn't return anything)
-// Make this a global function
-// have this function return nothing in production so POST, PUT, DELETE dont return anything
-function localSuccess(__message) {
-    return { message: __message };
-}
-
-// returns { id, url, alias, createdAt, updatedAt } or null
-function getLinkById(id) {
-    return new Promise((resolve, reject) => {
-        Link.findByPk(id).then(linkById => {
-            
-            resolve(linkById);
-
-        }).catch(err => {
-            reject(err);
-        });
-    });
-}
-
+const { CreateError } = require('./utils');
 
 function getIntOr(n, other) {
     let parsed = parseInt(n);
@@ -35,23 +13,26 @@ function getIntOr(n, other) {
 
 router.get(
     '/links', 
-    (req, res, next) => {
+    async (req, res, next) => {
         if (req.query.id) {
 
             let n = getIntOr(req.query.id, req.query.id);
-            getLinkById(n).then(back => {
-                res.status(200).json(back ? back : {});
-            }).catch(err => {
+            
+            try {
+                let link = await Link.findByPk(n);
+                res.status(200).json(link ? link : {});
+            } catch (err) {
                 next(CreateError(400, err));
-            });
+            }
             
         } else {
 
-            getLinks().then(linkList => {
-                res.status(200).json(linkList);
-            }).catch(err => {
+            try {
+                let links = await Link.findAll();
+                res.status(200).json(links);
+            } catch (err) {
                 next(CreateError(400, err));
-            });
+            }
 
         }
     }
@@ -87,7 +68,7 @@ router.post(
 
 router.put(
     '/links/', 
-    (req, res, next) => {
+    async (req, res, next) => {
         
         if (req.body.id === undefined) {
 
@@ -97,11 +78,11 @@ router.put(
         
         let n = getIntOr(req.body.id, req.body.id);
         let opts = { where: { id: n } };
-
-        getLinkById(n).then(link => {
+        try {
+            let link = await Link.findByPk(n);
 
             let result = {
-                found: link !== null,
+                found: link !== null
             };
 
             if (result.found) {
@@ -131,10 +112,9 @@ router.put(
             } else {
                 res.status(200).json(result);
             }
-
-        }).catch(err => {
+        } catch(err) {
             next(CreateError(400, err));
-        });
+        }
 
     }
 );

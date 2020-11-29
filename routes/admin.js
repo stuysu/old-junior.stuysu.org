@@ -1,6 +1,10 @@
 const express = require('express');
 const route = express.Router();
 
+// Sequlize models
+const { Link } = require('./../models').sequelize.models;
+
+// Google OAuth
 const CLIENT_ID = process.env.CLIENT_ID;
 
 const {OAuth2Client} = require('google-auth-library');
@@ -27,12 +31,6 @@ const verifyToken =  async (id_token) => {
   
 }
 
-const { getLinks } = require('./utils');
-
-// const { sequelize } = require('./../models');
-// get a sequelize model with google email ids
-
-// go to the admin sign in page
 route.get(
     
     '/admin',
@@ -55,6 +53,7 @@ route.post(
     async (req, res, next) => 
     
     {
+
         const id_token = req.body.id_token;
         try {
             console.log('trying to token');
@@ -71,9 +70,16 @@ route.post(
             let validated = false; // sub === '';
 
             if (validated) {
-                let links = await getLinks();
+
+                try {
+
+                    let links = await Link.findAll();
+                    res.render('admin/response', { links : links });
+                    
+                } catch {
+                    res.end('<h3>Error: Could not load data</h3>');
+                }
                 
-                res.render('admin/response', { links : links });
             } else {
                 res.end('<h3>Error: Could not authenticate</h3>');
             }
