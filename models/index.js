@@ -15,6 +15,12 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.url, config);
 }
 
+if (process.platform === "win32") {
+    var split = sequelize.options.storage.match(/(?<driveprefix>[A-Z]:\\):[A-Z]\\(?<filepath>.+)/);
+    sequelize.options.storage = split[1] + split[2];
+    sequelize.connectionManager.config.database = split[1] + split[2];
+}
+
 // must end with .model.js
 function isModel(file) {
     return (file.indexOf('.') !== 0) && 
