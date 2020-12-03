@@ -51,6 +51,13 @@ function setup(db) {
 
 const { sequelize } = require('./models');
 
+// DATABASE
+
+//async function setup(db) {
+//    await sequelize.models.Subs.create({ sub: '116704902793588850858' }); 
+//    return db.sync(); 
+//}
+
 // ROUTES
 
 const links = require('./routes/links.js');

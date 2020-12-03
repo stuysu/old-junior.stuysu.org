@@ -3,6 +3,7 @@ const route = express.Router();
 
 // Sequlize models
 const { Link } = require('./../models').sequelize.models;
+const { Subs } = require('./../models').sequelize.models;
 
 // Google OAuth
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -67,7 +68,9 @@ route.post(
             // find out your email sub and replace it for testing
             
             /// THIS IS WHERE YOU WOULD PULL FROM SEQUELIZE DATABASE FOR SUB VALUES
-            let validated = false; // sub === '';
+
+            let validated = await Subs.findOne({ where: { sub: sub }});
+            validated = validated !== null;
 
             if (validated) {
 
