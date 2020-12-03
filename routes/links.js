@@ -49,12 +49,13 @@ router.post(
         Link.create({
             alias: req.body.alias,
             url: req.body.url
-        }).then(() => {
+        }).then(instance => {
             
             res.status(200).json({
                 created: true,
                 url: req.body.url,
-                alias: req.body.alias
+                alias: req.body.alias,
+                id: instance.id
             });
             
         }).catch(err => {
