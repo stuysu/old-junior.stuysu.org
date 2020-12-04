@@ -5,18 +5,27 @@
             <th scope="col">Alias</th>
             <th scope="col">Url</th>
             <th scope="col">Confirm</th>
+			<th scope="col">Remove</th>
         </tr>
     </thead>
-    <tbody>
-
+    <tbody id='main-links'>
         <% for (let link of links) { %>
-            <tr> 
+            <tr id="<%=link.id%>-thread"> 
                 <th scope="col"><a id="<%=link.id%>-link" href="<%= link.url %>" target="_blank"><%= link.alias %></a></th>
                 <td><input type="text" id="<%=link.id%>-alias" value="<%= link.alias %>" oninput="updatePreview('<%= link.id %>')" /></td>
                 <td><input type="text" id="<%=link.id%>-url" value="<%= link.url %>" oninput="updatePreview('<%= link.id %>')" /></td> 
                 <td id="<%=link.id%>-update"><button onclick="updateLink('<%= link.id %>')">Update</button></td> 
+				<td id="<%=link.id%>-remove"><button onclick="removeLink('<%= link.id %>')">Remove</button></td>
             </tr>
         <% } %>
-
+	</tbody>
+	<tbody>
+		<tr>
+			<th scope="col"><a id="add-link" href="http://example.com" target="_blank">example</a></th>
+            <td><input type="text" id="add-alias" value="example" oninput="updatePreview('add')" /></td>
+            <td><input type="text" id="add-url" value="http://example.com" oninput="updatePreview('add')" /></td> 
+            <td id="add-update"><button onclick="addLink()">Add</button></td> 
+			<td id="add-remove"><button onclick="removeLink('add')">Remove</button></td>
+		</tr>
     </tbody>
 </table>

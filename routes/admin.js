@@ -67,7 +67,7 @@ route.post(
             // find out your email sub and replace it for testing
             
             /// THIS IS WHERE YOU WOULD PULL FROM SEQUELIZE DATABASE FOR SUB VALUES
-            let validated = false; // sub === '';
+            let validated = true; // sub === '';
 
             if (validated) {
 
