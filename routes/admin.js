@@ -63,12 +63,6 @@ route.post(
 
             const { sub } = payload;
 
-            console.log(`${payload.email} has unique token ${sub}`);
-
-            // find out your email sub and replace it for testing
-            
-            /// THIS IS WHERE YOU WOULD PULL FROM SEQUELIZE DATABASE FOR SUB VALUES
-
             let validated = await Subs.findOne({ where: { sub: sub }});
             validated = validated !== null;
 
