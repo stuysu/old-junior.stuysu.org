@@ -140,7 +140,7 @@
 
             const root = document.getElementById("link-root");
 
-            let links = await fetch('http://localhost:3001/links');
+            let links = await fetch('https://sophomore-caucus.herokuapp.com/links');
             links = await links.json();
 
             for (let link of links) {
