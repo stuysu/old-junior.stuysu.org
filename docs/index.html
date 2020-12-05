@@ -3,42 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sophomore Caucus Social Links</title>
-</head>
-<body>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    <div class="content">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #010615;
+        }
+
+        #link-root {
+            font-family: 'Poppins', sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-content: flex-start;
+            min-height: 100vh;
+            flex-wrap: wrap;
+            width: 800px;
+            margin: 0 auto;
+        }
+
+        .box {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            background: #060c21;
+            margin: 5px 0 0;
+            text-decoration: none;
+        }
+
+        .box .glass {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20%;
+            height: 100%;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+            transition: 1.0s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        .box:hover .glass {
+            width: 75%;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .box .content {
+            padding: 5px 20px;
+            color: #fff;
+            transition: 1.0s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        .box .content p {
+            color: gray;
+            font-size: 90%;
+            transition: 1.0s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        .box:hover .content {
+            padding-left: 40px;
+        }
+
+        .box:hover .content p {
+            text-indent: 5px;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            #link-root {
+                align-content: stretch;
+                width: 600px;
+            }
+        }
+
+        #link-root #logo {
+            color: white;
+            font-size: 200%;
+            font-weight: bold;
+            padding: 20px;
+        }
+
+    </style>
+    
+    <title>Sophomore Caucus Social Links</title>
+    
+</head>
+<body onload="load()" >
+
+    <div id="link-root">
+
+        <div id="logo">Sophomore Caucus</div>
+
     </div>
 
     <script>
 
-        const cl = document.getElementsByClassName("content")[0];
+        function addLink(root, link) {
 
-        // returns array
-        function getLinks() {
-            return fetch('http://sophomore-caucus.herokuapp.com/links')
-                .then(response => response.json());
+            let a = document.createElement('a');
+            a.setAttribute('target','_blank');
+            a.href = link.url;
+            a.classList.add('box');
+
+            let glass = document.createElement('div');
+            glass.classList.add('glass');
+
+            let content = document.createElement('div');
+            content.classList.add('content');
+            
+            let title = document.createElement('h2');
+            title.innerHTML = link.alias;
+            
+            let url = document.createElement('p');
+            url.innerHTML = link.url + ' >>>';
+
+            a.appendChild(glass);
+            content.appendChild(title);
+            content.appendChild(url);
+            a.appendChild(content);
+
+            root.appendChild(a);
         }
 
-        function addElement(element) {
-            let dv = document.createElement('div');
-            let dvC = document.createElement('div');
-            let dvA = document.createElement('a');
-            dvA.href = element.url;
-            dvA.setAttribute("target","_blank");
-            dvA.appendChild(document.createTextNode(element.alias));
+        async function load() {
 
-            dvC.appendChild(dvA);
-            dv.appendChild(dvC);
-            cl.appendChild(dv);
+            console.log('he');
 
-            console.log(element);
+            const root = document.getElementById("link-root");
+
+            let links = await fetch('http://localhost:3001/links');
+            links = await links.json();
+
+            for (let link of links) {
+
+                addLink(root, link);
+
+
+            }
+
+            
         }
-
-        getLinks().then(data => {
-            if (data != undefined)
-                data.forEach(addElement);
-        });
 
     </script>
     
