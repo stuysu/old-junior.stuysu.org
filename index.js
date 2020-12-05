@@ -45,11 +45,13 @@ function errorHandler(err, req, res, next) {
 
 // DATABASE
 
+const { sequelize } = require('./models');
+
+// TODO: add function to by default populate the subs model
+
 function setup(db) {
     return db.sync();
 }
-
-const { sequelize } = require('./models');
 
 // ROUTES
 
