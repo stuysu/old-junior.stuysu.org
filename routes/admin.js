@@ -19,8 +19,6 @@ const verifyToken =  async (id_token) => {
     });
     const payload = ticket.getPayload();
 
-    console.log(payload);
-
     if (payload['aud'] === CLIENT_ID && (
         payload['iss'] === 'accounts.google.com' ||
         payload['iss'] === 'https://accounts.google.com'
@@ -57,9 +55,8 @@ route.post(
 
         const id_token = req.body.id_token;
         try {
-            console.log('trying to token');
+
             let payload = await verifyToken(id_token);
-            console.log('verifying token');
 
             const { sub } = payload;
 

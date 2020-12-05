@@ -24,7 +24,7 @@
     <script>
 
         function getResponse(id_token) {
-            const url = "http://sophomore-caucus.herokuapp.com/admin";
+            const url = "https://sophomore-caucus.herokuapp.com/admin";
             const data = {
                 id_token: id_token
             };
@@ -55,7 +55,7 @@
             }).catch(err => {
                 document.getElementsByClassName('g-signin2')[0].style.display = 'none';
                 document.getElementsByClassName('signout')[0].style.display = 'block';
-                document.getElementById("response").innerHTML += '<br>' + error;
+                document.getElementById("response").innerHTML += '<br>' + err;
             });
         }
 

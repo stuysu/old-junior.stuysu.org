@@ -139,10 +139,13 @@ function updatePreview(id) {
 
     preview.innerHTML = alias.value;
     preview.href = url.value;
-
 }
 
-// look away
+/**
+ * +-+-+-+-+-+-+-+-+
+ * ||| LOOK AWAY |||
+ * +-+-+-+-+-+-+-+-+
+ */
 function addLinkToPage(id, alias, url) {
 
     // get table body
@@ -195,7 +198,7 @@ function addLinkToPage(id, alias, url) {
     tdUpdate.id = id + '-remove';
     const tdRemoveButton = document.createElement('button');
     tdRemoveButton.onclick = () => { removeLink(id) };
-    tdRemoveButton.innerHTML = "Remove";
+    tdRemoveButton.innerHTML = "&times;";
     tdRemoveButton.classList.add("btn");
     tdRemoveButton.classList.add("btn-danger");
     tdRemove.appendChild(tdRemoveButton);
