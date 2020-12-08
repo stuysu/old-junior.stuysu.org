@@ -34,6 +34,7 @@ router.get(
                 let query = {};
                 addMatch(query, 'title', req.query.title);
                 addMatch(query, 'author', req.query.author);
+                addMatch(query, 'teacher', req.query.teacher);
                 if (req.query.subject) query.subject = req.query.subject;
 
                 let sheets = await Sheets.findAll({ where: query });
@@ -149,20 +150,23 @@ router.put(
                     url : req.body.url !== undefined ? instance.url : undefined,
                     subject : req.body.subject !== undefined ? instance.subject : undefined,
                     title : req.body.title !== undefined ? instance.title : undefined,
-                    author : req.body.author !== undefined ? instance.author : undefined
-                }
+                    author : req.body.author !== undefined ? instance.author : undefined,
+                    teacher : req.body.teacher !== undefined ? instance.teacher : undefined
+                };
 
                 await Sheets.update({
                     url: req.body.url,
                     author: req.body.author,
                     title: req.body.title,
-                    subject: req.body.subject
+                    subject: req.body.subject,
+                    teacher : req.body.subject
                 }, options);
 
                 result.url = req.body.url;
                 result.subject = req.body.subject;
                 result.title = req.body.title;
                 result.author = req.body.author;
+                result.teacher = req.body.teacher;                
                 
                 res.status(200).json(result);
             

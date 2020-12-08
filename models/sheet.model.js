@@ -31,13 +31,18 @@ module.exports = (sequelize, DataTypes) => {
 
             title : {
                 type : DataTypes.STRING,
-                allowNull: true,
+                allowNull: true
             },
 
             author : {
                 type: DataTypes.STRING,
-                allowNull: true,
+                allowNull: true
             },
+
+            teacher : {
+                type: DataTypes.STRING,
+                allowNull: true
+            },  
 
             subject : {
                 type: DataTypes.INTEGER,
