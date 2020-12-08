@@ -145,70 +145,22 @@ function updatePreview(id) {
  * +-+-+-+-+-+-+-+-+
  * ||| LOOK AWAY |||
  * +-+-+-+-+-+-+-+-+
+ * not anymore it looks more bearable now
  */
 function addLinkToPage(id, alias, url) {
 
     // get table body
     const mainLinks = document.getElementById('main-links');
-
-    // create table row
-    const trow = document.createElement('tr');
-    trow.id = id + '-thread';
-
-    // create table header
-    const th = document.createElement('th');
-    th.scope = 'col';
-    const preview = document.createElement('a');
-    preview.id = id + '-link';
-    preview.href = url;
-    preview.innerHTML = alias;
-    preview.target = "_blank";
-    th.appendChild(preview);
-
-    // create table data
-    const tdAlias = document.createElement('td');
-    const tdAliasInput = document.createElement('input');
-    tdAliasInput.type = 'text';
-    tdAliasInput.id = id + '-alias';
-    tdAliasInput.value = alias;
-    tdAliasInput.classList.add("form-control");
-    tdAliasInput.oninput = () => { updatePreview(id) };
-    tdAlias.appendChild(tdAliasInput);
-
-    const tdUrl = document.createElement('td');
-    const tdUrlInput = document.createElement('input');
-    tdUrlInput.type = 'text';
-    tdUrlInput.id = id + '-url';
-    tdUrlInput.value = url;
-    tdUrlInput.classList.add("form-control");
-    tdUrlInput.oninput = () => { updatePreview(id) };
-    tdUrl.appendChild(tdUrlInput);
-
-    // create update / remove buttons
-    const tdUpdate = document.createElement('td');
-    tdUpdate.id = id + '-update';
-    const tdUpdateButton = document.createElement('button');
-    tdUpdateButton.onclick = () => { updateLink(id) };
-    tdUpdateButton.innerHTML = "Update";
-    tdUpdateButton.classList.add("btn");
-    tdUpdateButton.classList.add("btn-primary");
-    tdUpdate.appendChild(tdUpdateButton);
-
-    const tdRemove = document.createElement('td');
-    tdUpdate.id = id + '-remove';
-    const tdRemoveButton = document.createElement('button');
-    tdRemoveButton.onclick = () => { removeLink(id) };
-    tdRemoveButton.innerHTML = "&times;";
-    tdRemoveButton.classList.add("btn");
-    tdRemoveButton.classList.add("btn-danger");
-    tdRemove.appendChild(tdRemoveButton);
-
-    trow.appendChild(th);
-    trow.appendChild(tdAlias);
-    trow.appendChild(tdUrl);
-    trow.appendChild(tdUpdate);
-    trow.appendChild(tdRemove);
-
-    mainLinks.appendChild(trow);
-
+	var link = {id, alias, url};
+	console.log(link);
+	mainLinks.innerHTML +=
+	eval('`' +
+	('<tr id="<%=link.id%>-thread"> \
+        <th scope="col"><a id="<%=link.id%>-link" href="<%= link.url %>" target="_blank"><%= link.alias %></a></th> \
+        <td><input type="text" class="form-control" id="<%=link.id%>-alias" value="<%= link.alias %>" oninput="updatePreview(\'<%= link.id %>\')" /></td> \
+        <td><input type="text" class="form-control" id="<%=link.id%>-url" value="<%= link.url %>" oninput="updatePreview(\'<%= link.id %>\')" /></td>  \
+        <td id="<%=link.id%>-update"><button class="btn btn-primary" onclick="updateLink(\'<%= link.id %>\')">Update</button></td> \
+		<td id="<%=link.id%>-remove"><button class="btn btn-danger" onclick="removeLink(\'<%= link.id %>\')">&times;</button></td>\
+    </tr>').replaceAll('<%=', '${').replaceAll('%>','}') +
+	'`');
 }
