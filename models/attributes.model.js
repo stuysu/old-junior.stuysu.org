@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     class Attributes extends Model {
 
         static associate(models) {
-            Attributes.belongsTo(models.Sheets);
+            Attributes.belongsTo(models.Sheets, {
+                foreignKey: {
+                    allowNull: false
+                }                
+            });
         }
 
     }

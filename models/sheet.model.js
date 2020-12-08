@@ -2,7 +2,13 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
 
-    class Sheets extends Model {}
+    class Sheets extends Model {
+
+        static associate(models) {
+            Sheets.hasMany(models.Attributes);
+        }
+
+    }
 
     Sheets.init(
         
