@@ -57,6 +57,7 @@ function setup(db) {
 
 const links = require('./routes/links.js');
 const admin = require('./routes/admin.js');
+const sheet = require('./routes/sheet.js');
 
 // VIEW ENGINE
 
@@ -72,6 +73,7 @@ app.use(parser);
 
 app.use(links);
 app.use(admin);
+app.use(sheet);
 
 app.use(error404);
 app.use(errorHandler);
