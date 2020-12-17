@@ -8,6 +8,17 @@ const { CreateError } = require('./utils');
 
 /**
  * GET STUDY SHEETS
+ * 
+ * if id is given, get post by that id
+ * 
+ * if id is not given, look for study sheeet with any of
+ * the following matching:
+ *  - title
+ *  - author
+ *  - teacher
+ *  - subject
+ *  - keyword
+ * 
  */
 router.get(
 
@@ -26,46 +37,47 @@ router.get(
             
             else {
 
-                const addMatch = (query, column, toMatch) => {
-                    if (toMatch)
-                        query[column] = { [Op.like]: `%${toMatch}%` }; 
-                };
+                // create an or query for title, author, teacher, subject
+                let orQuery = [];
 
-                let query = {};
-                addMatch(query, 'title', req.query.title);
-                addMatch(query, 'author', req.query.author);
-                addMatch(query, 'teacher', req.query.teacher);
-                if (req.query.subject) query.subject = req.query.subject;
+                // look away
+                if (req.query.title) orQuery.push({ title: { [Op.like]: `%${req.query.title}%` } });
+                if (req.query.author) orQuery.push({ author: { [Op.like]: `%${req.query.author}%` }});
+                if (req.query.teacher) orQuery.push({ teacher: { [Op.like]: `%${req.query.teacher}` }});
+                if (req.query.subject) orQuery.push({ subject: req.query.subject});
 
-                let sheets = await Sheets.findAll({ where: query });
+                let sheets = await Sheets.findAll({
+                    where: {
+                        [Op.or]: query
+                    }
+                });
 
+                // if a keyword is present, add it to th sheets (avoid duplicates)
                 if (req.query.keyword) {
 
                     let sheetIds = new Set();
-                    sheets.forEach(sheet => {
-                        sheetIds.add(sheet.id); 
-                    });
+                    // go by sheet id's because javascript equality is idk
+                    sheets.forEach(sheet => { sheetIds.add(sheet.id); });
 
-                    const keywordQuery = {};
-                    addMatch(keywordQuery, 'keyword', req.query.keyword);
-
+                    // look up keywords 
                     let associatedSheets = await Attributes.findAll({ 
-                        where: keywordQuery, 
-                        include: Sheets 
+                        where: { 
+                            keyword: { 
+                                [Op.like]: `%${req.query.keyword}%` 
+                            } 
+                        }
                     });
 
-                    let finalSheets = [];
-
+                    // if the sheet hasn't been used yet, add it
                     associatedSheets.forEach(attribute => {
-                        if (sheetIds.has(attribute.Sheet.id))
-                            finalSheets.push(attribute.Sheet);
+                        if (!sheetIds.has(attribute.Sheet.id))
+                            sheets.push(attribute.getSheet());
                     });
 
-                    res.status(200).json(finalSheets);
 
-                } else {
-                    res.status(200).json(sheets);
                 }
+                
+                res.status(200).json(sheets);
 
             }
 
@@ -88,21 +100,15 @@ router.get(
 
     async (req, res, next) => {
 
-        console.log("Fuckfuckfuck???");
-
         try {
             // get by id first
             if (req.query.id) {
-
-                console.log('getting by id');
 
                 let attribute = await Attributes.findOne({ where: { id: req.query.id }});
                 res.status(200).json(attribute ? attribute : {});
 
             } 
             else {
-
-                console.log("getting by idfk");
 
                 let query = {};
                 
@@ -124,6 +130,7 @@ router.get(
 /**
  * UPDATE A SHEET KEYWORD
  */
+// put request for altering a keyword on /sheets/keywords
 
 /**
  * UPDATE A SHEET
@@ -257,5 +264,17 @@ router.post(
     }
     
 );
+
+/**
+ * DELETE A SHEET 
+ * 
+ * TODO: does this delete associated study sheetes?
+ */
+// deleete reqeuest on /sheets/
+ 
+ /**
+  * DELETE A KEYWORD
+  */
+ // delete request on /sheets/keywords
 
 module.exports = router;
