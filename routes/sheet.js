@@ -7,6 +7,25 @@ const { Sheets, Attributes } = require('./../models').sequelize.models;
 const { CreateError } = require('./utils');
 
 /**
+ * CONVERT STUDY SHEET INTEGER INTO TEXT
+ * 
+ * TODO: this can also be replaced by just having strings
+ * for subject in the database. 
+ */
+router.get(
+
+    '/sheets/subjects',
+
+    async (req, res, next) => {
+
+
+        res.status(200).json({ subject: 'math' });
+
+    }
+
+);
+
+/**
  * GET STUDY SHEETS
  * 
  * if id is given, get post by that id
