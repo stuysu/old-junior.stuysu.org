@@ -29,20 +29,6 @@ const verifyToken =  async (id_token) => {
   
 }
 
-route.get(
-    
-    '/admin',
-
-    (req, res, next) => 
-    
-    {
-
-        res.render('admin/', { client_id: CLIENT_ID });
-
-    }
-
-);
-
 // authenticate email
 route.post(
     
