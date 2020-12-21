@@ -97,63 +97,22 @@
     <title>Sophomore Caucus Social Links</title>
 
 </head>
-<body onload="load()" >
+<body>
 
     <div id="link-root">
 
         <div id="logo">Sophomore Caucus</div>
 
+        <% for (let link of links) { %>
+            <a target="_blank" href="<%= link.url %>" class="box">
+                <div class="glass"></div>
+                <div class="content">
+                    <h2><%= link.alias %></h2>
+                    <p><%= link.url %> >>></p>
+                </div>
+            </a>
+        <% } %>
     </div>
-
-    <script>
-
-        function addLink(root, link) {
-
-            let a = document.createElement('a');
-            a.setAttribute('target','_blank');
-            a.href = link.url;
-            a.classList.add('box');
-
-            let glass = document.createElement('div');
-            glass.classList.add('glass');
-
-            let content = document.createElement('div');
-            content.classList.add('content');
-            
-            let title = document.createElement('h2');
-            title.innerHTML = link.alias;
-            
-            let url = document.createElement('p');
-            url.innerHTML = link.url + ' >>>';
-
-            a.appendChild(glass);
-            content.appendChild(title);
-            content.appendChild(url);
-            a.appendChild(content);
-
-            root.appendChild(a);
-        }
-
-        async function load() {
-
-            console.log('he');
-
-            const root = document.getElementById("link-root");
-
-            let links = await fetch('https://sophomore-caucus.herokuapp.com/links');
-            links = await links.json();
-
-            for (let link of links) {
-
-                addLink(root, link);
-
-
-            }
-
-            
-        }
-
-    </script>
     
 </body>
 </html>

@@ -3,8 +3,8 @@ const router = express.Router();
 
 const { Op } = require('sequelize');
 
-const { Sheets, Attributes } = require('./../models').sequelize.models;
-const { CreateError } = require('./utils');
+const { Sheets, Attributes } = require('./../../models').sequelize.models;
+const { CreateError } = require('../utils');
 
 /**
  * GET STUDY SHEETS

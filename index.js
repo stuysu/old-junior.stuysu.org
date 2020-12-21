@@ -13,10 +13,15 @@ const parser = require('express').Router();
 parser.use(express.json());
 parser.use(express.urlencoded({ extended: false }));
 
-const corsOptions = {
+const apiCorsOptions = {
+    origin: '*' // needs to be set accordingly
+};
+const apiCors = require('cors')(apiCorsOptions);
+
+const docsCorsOptions = {
     origin: '*'
 };
-const cors = require('cors')(corsOptions);
+const docsCors = require('cors')(docsCorsOptions);
 
 const staticServe = express.static(path.join(__dirname, 'public')); 
 
@@ -24,7 +29,7 @@ const staticServe = express.static(path.join(__dirname, 'public'));
 function error404(req, res, next) {
     next({
         status: 404,
-        body: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`
+        message: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`
     });
 }
 
@@ -32,15 +37,21 @@ function error404(req, res, next) {
 function errorHandler(err, req, res, next) {
     console.log(err);
 
-    if (err)
-        err.error = err.error || true;
-    res.status(err.status || 500).json( 
-        err || 
-        {
-            error: true, 
-            message: 'Server error'
-        }
-    );
+    const apiError = req.url.startsWith('/api');
+
+    if (apiError) {
+        if (err)
+            err.error = err.error || true;
+        res.status(err.status || 500).json( 
+            err || 
+            {
+                error: true, 
+                message: 'Server error'
+            }
+        );
+    } else {
+        res.status(err.status || 500).render('docs/error',{error: err});
+    }
 }
 
 // DATABASE
@@ -55,9 +66,12 @@ function setup(db) {
 
 // ROUTES
 
-const links = require('./routes/links.js');
-const admin = require('./routes/admin.js');
-const sheet = require('./routes/sheet.js');
+const apiLinks = require('./routes/api/links.js');
+const apiAdmin = require('./routes/api/admin.js');
+const apiSheet = require('./routes/api/sheet.js');
+
+const index = require('./routes/docs/index.js');
+const links = require('./routes/docs/links.js');
 
 // VIEW ENGINE
 
@@ -68,12 +82,14 @@ app.set('view engine', 'ejs');
 
 app.use(staticServe);
 app.use(logger);
-app.use(cors);
 app.use(parser);
 
-app.use(links);
-app.use(admin);
-app.use(sheet);
+app.use('/api', apiCors, apiLinks);
+app.use('/api', apiCors, apiAdmin);
+app.use('/api', apiCors, apiSheet);
+
+app.use('/', docsCors, index);
+app.use('/', docsCors, links);
 
 app.use(error404);
 app.use(errorHandler);

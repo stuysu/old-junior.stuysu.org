@@ -13,7 +13,7 @@ async function removeLink(id) {
     
     thread.remove();
 
-    let response = await fetch('/links/' + id, {
+    let response = await fetch('/api/links/' + id, {
         method: 'DELETE', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -51,7 +51,7 @@ async function removeLink(id) {
 async function updateLink(id) {
 
     const { alias, url } = getInputs(id);
-    let response = await fetch("/links", {
+    let response = await fetch("/api/links", {
         method: "PUT",
         mode: 'cors',
         cache: 'no-cache',
@@ -94,7 +94,7 @@ async function addLink() {
 
     const { preview, alias, url } = getInputs('add');
 
-    let response = await fetch("/links", {
+    let response = await fetch("/api/links", {
         method: "POST",
         mode: 'cors',
         cache: 'no-cache',

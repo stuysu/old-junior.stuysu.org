@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { sequelize } = require('./../models');
+const { sequelize } = require('./../../models');
 const Link = sequelize.models.Link;
 
-const { CreateError } = require('./utils');
+const { CreateError } = require('../utils');
 
 function getIntOr(n, other) {
     let parsed = parseInt(n);
