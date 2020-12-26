@@ -73,6 +73,7 @@ const apiSheet = require('./routes/api/sheet.js');
 const admin = require('./routes/docs/admin.js');
 const index = require('./routes/docs/index.js');
 const links = require('./routes/docs/links.js');
+const guides = require('./routes/docs/guides.js');
 
 // VIEW ENGINE
 
@@ -92,6 +93,7 @@ app.use('/api', apiCors, apiSheet);
 app.use('/', docsCors, index);
 app.use('/', docsCors, admin);
 app.use('/', docsCors, links);
+app.use('/', docsCors, guides);
 
 app.use(error404);
 app.use(errorHandler);

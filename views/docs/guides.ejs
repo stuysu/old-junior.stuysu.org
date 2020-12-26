@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <%- include('./partials/headers'); %>
+
+    <style>
+
+        .search-bar .search-button {
+            text-align: center;
+        }
+
+        .search-bar {
+            margin: 30px 0;
+        }
+
+        .study-guides {
+            /* margin: 30px 0; */
+        }
+
+        .study-guide {
+            /* background-color: d; */
+            overflow: auto;
+            border-top: 5px solid pink;
+            border-bottom: 1px solid pink;
+            border-radius: 6px;
+            padding: 5px 20px;
+            margin: 10px 0; 
+
+            /* background: linear-gradient(90deg, pink, whitesmoke); */
+        }
+
+        .search-bar .search-bar-input input {
+            width: 100%;
+        }
+
+    </style>
+
+    <title>Sophomore Caucus | Home Page</title>
+</head>
+
+<body onload="load()">
+
+    <div class="container">
+        
+        
+        <%- include('./partials/title.ejs'); %>
+
+
+        <div class="search-bar row align-items-center">
+            <div class="search-bar-input col-sm-9">
+                <input type="text" oninput="fillSearches()" class="form-control" id="search-text" placeholder="Search for study guides...">
+            </div>
+            <div class="search-button col-sm-1"><button type="button" onclick="fillSearches()" id="search-button" class="btn btn-primary">Search <!--🔍--></button></div>
+            <div class="search-type col-sm-2">
+                <select class="form-control" id="search-type">
+                    <option value="-1">Any</option>
+                    <option value="0">Subject</option>
+                    <option value="1">Title</option>
+                    <option value="2">Author</option>
+                    <option value="3">Teacher</option>
+                  </select>
+            </div>
+        </div>
+
+        <div class="study-guides row">
+
+        </div>
+
+
+    </div>
+
+    <%- include('./partials/scripts'); %>
+
+    <script>
+
+        const ALL = -1;
+        const SUBJECT = 0;
+        const TITLE = 1;
+        const AUTHOR = 2;
+        const TEACHER = 3;
+        const KEYWORD = 4;
+
+        const QUERY_TYPES = [
+            '&subject=',
+            '&title=',
+            '&author=',
+            '&teacher=',
+            '&keyword='
+        ];
+
+        async function getSheets(keyword, opts=-1) {
+            let url = '/api/sheets?with_keywords=true&render=true';
+            if  (keyword !== undefined) {
+                for (let i = 0; i < QUERY_TYPES.length;++i) {
+                    if (opts == -1 || opts == i) {
+                        url += QUERY_TYPES[i] + keyword;
+                    }
+                }
+            }
+                    
+            let result = await fetch(url);
+            result = await result.text();
+
+            return result;
+        }
+
+        const root = document.getElementsByClassName("study-guides")[0];
+        const searchBar = document.getElementById("search-text");
+        const queryChooser = document.getElementById("search-type");
+
+        function getSearchbarText() {
+            let text = searchBar.value;
+
+            if (text === '')
+                text = undefined;
+
+            return text;
+        }
+
+        function getQueryType() {
+            return Number(queryChooser.value);
+        }
+
+        async function fillSearches() {
+            const text = getSearchbarText();
+            const type = getQueryType();
+            root.innerHTML = await getSheets(text, type);
+        }
+
+        async function load() {
+
+            let sheets = await getSheets();
+            root.innerHTML = sheets; 
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>

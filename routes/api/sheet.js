@@ -34,7 +34,18 @@ router.get(
             if (req.query.id) {
 
                 let sheet = await Sheets.findByPk(req.query.id);
-                res.status(200).json(sheet ? sheet : {});
+                if (req.query.with_keywords === 'true') {
+                    let keywords = await Attributes.findAll({ where: { SheetId: sheet.id }});
+                    // keywords = keywords.map(foo => foo.keyword);
+                    sheet.dataValues.keywords = keywords;
+                    sheet.keywords = keywords;
+                }
+
+                if (req.query.render === 'true') { 
+                    res.render('docs/partials/guide-partial', { guides : [ sheet ] });
+                } else {
+                    res.status(200).json(sheet ? sheet : {});
+                }
 
             }
 
@@ -70,8 +81,6 @@ router.get(
                         include: Sheets
                     });
 
-                    console.log(associatedSheets);
-
                     // if the sheet hasn't been used yet, add it
                     associatedSheets.forEach(attribute => {
                         if (!sheetIds.has(attribute.Sheet.id))
@@ -81,7 +90,23 @@ router.get(
 
                 }
 
-                res.status(200).json(sheets);
+                if (req.query.with_keywords === 'true') {
+            
+                    for (let sheet of sheets) {
+
+                        let keywords = await Attributes.findAll({ where: { SheetId: sheet.id }});
+                        // keywords = keywords.map(foo => foo.keyword);
+                        sheet.dataValues.keywords = keywords;
+                        sheet.keywords = keywords;
+
+                    }
+                }
+
+                if (req.query.render === 'true') { 
+                    res.render('docs/partials/guide-partial', { guides : sheets });
+                } else {
+                    res.status(200).json(sheets);
+                }
 
             }
 
