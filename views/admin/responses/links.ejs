@@ -1,0 +1,35 @@
+<table id="links-table" class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Preview</th>
+            <th scope="col">Alias</th>
+            <th scope="col">Url</th>
+            <th scope="col">Confirm</th>
+			<th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody id='main-links'>
+        <% for (let link of links) { %>
+            <tr id="<%=link.id%>-thread"> 
+
+                <th scope="col"><a id="<%=link.id%>-link" href="<%= link.url %>" target="_blank"><%= link.alias %></a></th>
+                <td><input type="text" class="form-control" id="<%=link.id%>-alias" value="<%= link.alias %>" oninput="updatePreview('<%= link.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=link.id%>-url" value="<%= link.url %>" oninput="updatePreview('<%= link.id %>')" /></td> 
+                <td id="<%=link.id%>-update"><button class="btn btn-primary" onclick="updateLink('<%= link.id %>')">Update</button></td> 
+				<td id="<%=link.id%>-remove"><button class="btn btn-danger" onclick="removeLink('<%= link.id %>')">&times;</button></td>
+            
+            </tr>
+        <% } %>
+	</tbody>
+	<tbody>
+		<tr>
+            
+            <th scope="col"><a id="add-link" href="http://example.com" target="_blank"></a></th>
+            <td><input type="text" class="form-control" id="add-alias" placeholder="New Link Alias" value="" oninput="updatePreview('add')" /></td>
+            <td><input type="text" class="form-control" id="add-url" placeholder="New Link Alias" value="" oninput="updatePreview('add')" /></td> 
+            <td id="add-update"><button class="btn btn-success" onclick="addLink()">Add</button></td> 
+            <td id="add-remove"><span></span></td>
+
+		</tr>
+    </tbody>
+</table>
