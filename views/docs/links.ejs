@@ -37,25 +37,14 @@
             display: flex;
             justify-content: left;
             align-items: center;
-            background: #060c21;
-            margin: 5px 0 0;
+            background: #141852;
+            margin: 10px 0;
             text-decoration: none;
-        }
-
-        .box .glass {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 20%;
-            height: 100%;
-            display: block;
-            background: rgba(255, 255, 255, 0.1);
             transition: 1.0s cubic-bezier(0.075, 0.82, 0.165, 1);
         }
 
-        .box:hover .glass {
-            width: 75%;
-            background: rgba(255, 255, 255, 0.25);
+        .box:hover {
+            background-color: #132568;
         }
 
         .box .content {
@@ -77,38 +66,65 @@
         .box:hover .content p {
             text-indent: 5px;
         }
-        
-        @media only screen and (max-width: 600px) {
-            #link-root {
-                align-content: stretch;
-                width: 600px;
-            }
-        }
 
         #link-root #logo {
             color: white;
             font-size: 200%;
             font-weight: bold;
-            padding: 20px;
+            padding: 20px 0;
+        }
+
+        #link-root #logo img {
+            width: 100vw;
+            border-radius: 100%;
+        }
+        
+        @media only screen and (max-width: 800px) {
+            #link-root {
+                width: 100vw;
+                height: 100vh;
+            }
+
+            .box {
+                width: 95%;
+                margin: 10px 0;
+                background-color: #132568;
+            }
+
+            #link-root #logo {
+                padding: 10px 0;
+            }
+
+            .box {
+                border-radius: 5px;
+                /* border-radius: 100%; */
+            }
+
+            img {
+                width: 100vw;
+            }
+
         }
 
     </style>
     
-    <title>Sophomore Caucus Social Links</title>
+    <title>Sophomore Caucus | Social Links</title>
 
 </head>
 <body>
 
     <div id="link-root">
 
-        <div id="logo">Sophomore Caucus</div>
+        <div id="logo">
+            <!-- <img width="100vw" src="./student_union.png" /> -->
+            Sophomore Caucus
+        </div>
 
         <% for (let link of links) { %>
             <a target="_blank" href="<%= link.url %>" class="box">
-                <div class="glass"></div>
                 <div class="content">
                     <h2><%= link.alias %></h2>
-                    <p><%= link.url %> >>></p>
+                    <p><%= link.url %></p>
                 </div>
             </a>
         <% } %>
