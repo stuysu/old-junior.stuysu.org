@@ -1,5 +1,5 @@
 require('dotenv').config();
-const path = require('path'); 
+const path = require('path');
 
 const express = require("express");
 const app = express();
@@ -69,6 +69,7 @@ function setup(db) {
 const apiLinks = require('./routes/api/links.js');
 const apiAdmin = require('./routes/api/admin.js');
 const apiSheet = require('./routes/api/sheet.js');
+const apiEvents = require('./routes/api/events.js')
 
 const admin = require('./routes/docs/admin.js');
 const index = require('./routes/docs/index.js');
@@ -88,6 +89,7 @@ app.use(parser);
 app.use('/api', apiCors, apiLinks);
 app.use('/api', apiCors, apiAdmin);
 app.use('/api', apiCors, apiSheet);
+app.use('/api', apiCors, apiEvents);
 
 app.use('/', docsCors, index);
 app.use('/', docsCors, admin);

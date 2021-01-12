@@ -80,6 +80,7 @@ router.put(
         let n = getIntOr(req.body.id, req.body.id);
         let opts = { where: { id: n } };
         try {
+            
             let link = await Link.findByPk(n);
 
             let result = {
