@@ -14,8 +14,13 @@ parser.use(express.json());
 parser.use(express.urlencoded({ extended: false }));
 
 const apiCorsOptions = {
-    origin: '*' // needs to be set accordingly
+    // needs to be set accordingly
+    origin:  process.env.API_CORS_ORIGIN ? 
+        process.env.API_CORS_ORIGIN : 
+        '*' 
 };
+
+console.log(apiCorsOptions.origin);
 const apiCors = require('cors')(apiCorsOptions);
 
 const docsCorsOptions = {
@@ -50,7 +55,10 @@ function errorHandler(err, req, res, next) {
             }
         );
     } else {
-        res.status(err.status || 500).render('docs/error',{error: err});
+        res.status(err.status || 500)
+            // .render('docs/error',{error: err})
+            .redirect('/')
+        ;
     }
 }
 

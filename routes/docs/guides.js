@@ -6,16 +6,18 @@ const { Sheets } = require('./../../models');
 
 route.get(
 
-    '/guides',
+    '/study-guides',
 
     async (req, res, next) => {
 
-        res.render(
+        // res.render(
             
-            'docs/guides'
+        //     'docs/guides'
         
-        );        
+        // );        
         
+        res.redirect('/');
+
     }
 )
 

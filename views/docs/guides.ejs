@@ -7,6 +7,13 @@
 
     <style>
 
+        .study-guide-preview {
+            width: 90%;
+            height: 100%;
+        }
+
+        /* .study-guide-title {  } */
+
         .search-bar .search-button {
             text-align: center;
         }
@@ -22,11 +29,14 @@
         .study-guide {
             /* background-color: d; */
             overflow: auto;
-            border-top: 5px solid pink;
-            border-bottom: 1px solid pink;
+            border-top: 5px solid purple;
+            /* border-left: 1px solid purple; */
+            /* border-right: 1px solid purple; */
+            border-bottom: 1px solid purple;
             border-radius: 6px;
             padding: 5px 20px;
-            margin: 10px 0; 
+            margin: 10px 0px; 
+            /* box-sizing: border-box; */
 
             /* background: linear-gradient(90deg, pink, whitesmoke); */
         }
@@ -44,10 +54,6 @@
 
     <div class="container">
         
-        
-        <%- include('./partials/title.ejs'); %>
-
-
         <div class="search-bar row align-items-center">
             <div class="search-bar-input col-sm-9">
                 <input type="text" oninput="fillSearches()" class="form-control" id="search-text" placeholder="Search for study guides...">
@@ -55,50 +61,26 @@
             <div class="search-button col-sm-1"><button type="button" onclick="fillSearches()" id="search-button" class="btn btn-primary">Search <!--🔍--></button></div>
             <div class="search-type col-sm-2">
                 <select class="form-control" id="search-type">
-                    <option value="-1">Any</option>
-                    <option value="0">Subject</option>
-                    <option value="1">Title</option>
-                    <option value="2">Author</option>
-                    <option value="3">Teacher</option>
+                    <option value="&any=">Any</option>
+                    <option value="&subject=">Subject</option>
+                    <option value="&title=">Title</option>
+                    <option value="&author=">Author</option>
+                    <option value="&teacher=">Teacher</option>
                   </select>
             </div>
         </div>
 
-        <div class="study-guides row">
-
-        </div>
-
+        <div class="study-guides row"></div>
 
     </div>
 
-    <%- include('./partials/scripts'); %>
-
     <script>
 
-        const ALL = -1;
-        const SUBJECT = 0;
-        const TITLE = 1;
-        const AUTHOR = 2;
-        const TEACHER = 3;
-        const KEYWORD = 4;
-
-        const QUERY_TYPES = [
-            '&subject=',
-            '&title=',
-            '&author=',
-            '&teacher=',
-            '&keyword='
-        ];
-
-        async function getSheets(keyword, opts=-1) {
+        async function getSheets(keyword, addOn='&any=') {
+            
             let url = '/api/sheets?with_keywords=true&render=true';
-            if  (keyword !== undefined) {
-                for (let i = 0; i < QUERY_TYPES.length;++i) {
-                    if (opts == -1 || opts == i) {
-                        url += QUERY_TYPES[i] + keyword;
-                    }
-                }
-            }
+            if  (keyword !== undefined)
+                url += (addOn + keyword);
                     
             let result = await fetch(url);
             result = await result.text();
@@ -111,34 +93,26 @@
         const queryChooser = document.getElementById("search-type");
 
         function getSearchbarText() {
-            let text = searchBar.value;
-
-            if (text === '')
-                text = undefined;
-
-            return text;
+            return searchBar.value;
         }
 
-        function getQueryType() {
-            return Number(queryChooser.value);
+        function getQuery() {
+            return queryChooser.value;
         }
 
         async function fillSearches() {
-            const text = getSearchbarText();
-            const type = getQueryType();
-            root.innerHTML = await getSheets(text, type);
+            root.innerHTML = await getSheets(
+                getSearchbarText(), 
+                getQuery()
+            );
         }
 
         async function load() {
-
             let sheets = await getSheets();
             root.innerHTML = sheets; 
-
         }
-
 
     </script>
 
 </body>
-
 </html>

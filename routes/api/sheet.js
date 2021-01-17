@@ -8,21 +8,9 @@ const { CreateError } = require('../utils');
 
 /**
  * GET STUDY SHEETS
- * 
- * if id is given, get post by that id
- * 
- * if id is not given, look for study sheeet with any of
- * the following matching:
- *  - title
- *  - author
- *  - teacher
- *  - subject
- *  - keyword
- * 
- * this always enforces an OR rather than an AND query
- * type which seems kind of weird.
- * 
  */
+
+// function kinda messy af
 router.get(
 
     '/sheets',
@@ -30,7 +18,7 @@ router.get(
     async (req, res, next) => {
 
         try {
-            // if id is present, give sheet with that id
+            
             if (req.query.id) {
 
                 let sheet = await Sheets.findByPk(req.query.id);
@@ -49,19 +37,72 @@ router.get(
 
             }
 
-            else {
-
-                // create an or query for title, author, teacher, subject
+            else if (req.query.any) {
                 let orQuery = [];
 
                 // look away
-                if (req.query.title) orQuery.push({ title: { [Op.like]: `%${req.query.title}%` } });
-                if (req.query.author) orQuery.push({ author: { [Op.like]: `%${req.query.author}%` } });
-                if (req.query.teacher) orQuery.push({ teacher: { [Op.like]: `%${req.query.teacher}` } });
-                if (req.query.subject) orQuery.push({ subject:  { [Op.like]: `%${req.query.subject}` }});
+                orQuery.push({ title: { [Op.like]: `%${req.query.any}%` } });
+                orQuery.push({ author: { [Op.like]: `%${req.query.any}%` } });
+                orQuery.push({ teacher: { [Op.like]: `%${req.query.any}%` } });
+                orQuery.push({ subject:  { [Op.like]: `%${req.query.any}%` }});
 
                 let sheets = await Sheets.findAll({
-                    where: (orQuery.length === 0 && !req.query.keyword) ? {} : { [Op.or]: orQuery }
+                    where: { [Op.or]: orQuery }
+                });
+
+                let sheetIds = new Set();
+                // go by sheet id's because javascript equality is idk
+                sheets.forEach(sheet => { sheetIds.add(sheet.id); });
+
+                // look up keywords 
+                let associatedSheets = await Attributes.findAll({
+                    where: {
+                        keyword: {
+                            [Op.like]: `%${req.query.any}%`
+                        }
+                    },
+                    include: Sheets
+                });
+
+                associatedSheets.forEach(attribute => {
+                    if (!sheetIds.has(attribute.Sheet.id))
+                        sheets.push(attribute.Sheet);
+                });
+
+
+
+                if (req.query.with_keywords === 'true') {
+            
+                    for (let sheet of sheets) {
+
+                        let keywords = await Attributes.findAll({ where: { SheetId: sheet.id }});
+                        // keywords = keywords.map(foo => foo.keyword);
+                        sheet.dataValues.keywords = keywords;
+                        sheet.keywords = keywords;
+
+                    }
+                }
+
+                if (req.query.render === 'true') { 
+                    res.render('docs/partials/guide-partial', { guides : sheets });
+                } else {
+                    res.status(200).json(sheets);
+                }
+            }
+            
+            else {
+
+                // build up a where clause based on what was in the get request
+                let where = {};
+                
+                // look away
+                if (req.query.title  ) where['title']   = { [Op.like]: `%${req.query.title}%`  };
+                if (req.query.author ) where["author"]  = { [Op.like]: `%${req.query.author}%` };
+                if (req.query.teacher) where["teacher"] = { [Op.like]: `%${req.query.teacher}%` };
+                if (req.query.subject) where["subject"] = { [Op.like]: `%${req.query.subject}%` };
+
+                let sheets = await Sheets.findAll({
+                    where: where
                 });
 
                 // if a keyword is present, add it to th sheets (avoid duplicates)
@@ -81,12 +122,13 @@ router.get(
                         include: Sheets
                     });
 
-                    // if the sheet hasn't been used yet, add it
-                    associatedSheets.forEach(attribute => {
-                        if (!sheetIds.has(attribute.Sheet.id))
-                            sheets.push(attribute.Sheet);
-                    });
+                    let outSheets = [];
 
+                    // if the sheet is ALSO in the set of keywords, add it
+                    associatedSheets.forEach(attribute => {
+                        if (sheetIds.has(attribute.Sheet.id))
+                            outSheets.push(attribute.Sheet);
+                    });
 
                 }
 
@@ -336,8 +378,6 @@ router.post(
 
 /**
  * DELETE A SHEET 
- * 
- * TODO: does this delete associated study sheetes?
  */
 router.delete(
 

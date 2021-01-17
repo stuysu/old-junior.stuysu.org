@@ -7,7 +7,7 @@ route.get(
 
     async (req, res, next) => {
 
-        res.render('docs/');        
+        res.redirect('/links');        
         
     }
 )
