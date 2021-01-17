@@ -14,7 +14,7 @@ router.get(
 
             
             try {
-                let event = await Events.findByPk();
+                let event = await Events.findByPk(req.query.id);
                 res.status(200).json(event ? event : {});
             } catch (err) {
                 next(CreateError(400, err));
