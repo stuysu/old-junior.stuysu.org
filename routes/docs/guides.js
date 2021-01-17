@@ -2,13 +2,22 @@ const express = require('express');
 const { CreateError } = require('../utils');
 const route = express.Router();
 
+const { Sheets } = require('./../../models');
+
 route.get(
-    '/',
+
+    '/study-guides',
 
     async (req, res, next) => {
 
-        res.redirect('/links');        
+        // res.render(
+            
+        //     'docs/guides'
         
+        // );        
+        
+        res.redirect('/');
+
     }
 )
 

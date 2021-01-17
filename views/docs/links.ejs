@@ -5,129 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #010615;
-        }
-
-        #link-root {
-            font-family: 'Poppins', sans-serif;
-
-            display: flex;
-            justify-content: center;
-            align-content: flex-start;
-            min-height: 100vh;
-            flex-wrap: wrap;
-            width: 800px;
-            margin: 0 auto;
-        }
-
-        .box {
-            position: relative;
-            width: 100%;
-            display: flex;
-            justify-content: left;
-            align-items: center;
-            background: #141852;
-            margin: 10px 0;
-            text-decoration: none;
-            transition: 1.0s cubic-bezier(0.075, 0.82, 0.165, 1);
-        }
-
-        .box:hover {
-            background-color: #132568;
-        }
-
-        .box .content {
-            padding: 5px 20px;
-            color: #fff;
-            transition: 1.0s cubic-bezier(0.075, 0.82, 0.165, 1);
-        }
-
-        .box .content p {
-            color: gray;
-            font-size: 90%;
-            transition: 1.0s cubic-bezier(0.075, 0.82, 0.165, 1);
-        }
-
-        .box:hover .content {
-            padding-left: 40px;
-        }
-
-        .box:hover .content p {
-            text-indent: 5px;
-        }
-
-        #link-root #logo {
-            color: white;
-            font-size: 200%;
-            font-weight: bold;
-            padding: 20px 0;
-        }
-
-        #link-root #logo img {
-            width: 100vw;
-            border-radius: 100%;
-        }
-        
-        @media only screen and (max-width: 800px) {
-            #link-root {
-                width: 100vw;
-                height: 100vh;
-            }
-
-            .box {
-                width: 95%;
-                margin: 10px 0;
-                background-color: #132568;
-            }
-
-            #link-root #logo {
-                padding: 10px 0;
-            }
-
-            .box {
-                border-radius: 5px;
-                /* border-radius: 100%; */
-            }
-
-            img {
-                width: 100vw;
-            }
-
-        }
-
-    </style>
-    
+    <link href="./stylesheets/links.css" rel="stylesheet">
     <title>Sophomore Caucus | Social Links</title>
 
 </head>
 <body>
 
-    <div id="link-root">
+    <div id="root">
 
         <div id="logo">
-            <!-- <img width="100vw" src="./student_union.png" /> -->
-            Sophomore Caucus
+            <a href="/"><img width="150vw" src="./student_union.png" /></a>
+            <br>
+            Sophomore Caucus Links
         </div>
 
         <% for (let link of links) { %>
-            <a target="_blank" href="<%= link.url %>" class="box">
-                <div class="content">
-                    <h2><%= link.alias %></h2>
-                    <p><%= link.url %></p>
-                </div>
+            <a target="_blank" href="<%= link.url %>" class="link">
+                <div><%= link.alias %></div>
             </a>
         <% } %>
+        
     </div>
     
 </body>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <%- include('./partials/headers'); %>
+
+    <style>
+
+        .study-guide-preview {
+            width: 90%;
+            height: 100%;
+        }
+
+        /* .study-guide-title {  } */
+
+        .search-bar .search-button {
+            text-align: center;
+        }
+
+        .search-bar {
+            margin: 30px 0;
+        }
+
+        .study-guides {
+            /* margin: 30px 0; */
+        }
+
+        .study-guide {
+            /* background-color: d; */
+            overflow: auto;
+            border-top: 5px solid purple;
+            /* border-left: 1px solid purple; */
+            /* border-right: 1px solid purple; */
+            border-bottom: 1px solid purple;
+            border-radius: 6px;
+            padding: 5px 20px;
+            margin: 10px 0px; 
+            /* box-sizing: border-box; */
+
+            /* background: linear-gradient(90deg, pink, whitesmoke); */
+        }
+
+        .search-bar .search-bar-input input {
+            width: 100%;
+        }
+
+    </style>
+
+    <title>Sophomore Caucus | Home Page</title>
+</head>
+
+<body onload="load()">
+
+    <div class="container">
+        
+        <div class="search-bar row align-items-center">
+            <div class="search-bar-input col-sm-9">
+                <input type="text" oninput="fillSearches()" class="form-control" id="search-text" placeholder="Search for study guides...">
+            </div>
+            <div class="search-button col-sm-1"><button type="button" onclick="fillSearches()" id="search-button" class="btn btn-primary">Search <!--🔍--></button></div>
+            <div class="search-type col-sm-2">
+                <select class="form-control" id="search-type">
+                    <option value="&any=">Any</option>
+                    <option value="&subject=">Subject</option>
+                    <option value="&title=">Title</option>
+                    <option value="&author=">Author</option>
+                    <option value="&teacher=">Teacher</option>
+                  </select>
+            </div>
+        </div>
+
+        <div class="study-guides row"></div>
+
+    </div>
+
+    <script>
+
+        async function getSheets(keyword, addOn='&any=') {
+            
+            let url = '/api/sheets?with_keywords=true&render=true';
+            if  (keyword !== undefined)
+                url += (addOn + keyword);
+                    
+            let result = await fetch(url);
+            result = await result.text();
+
+            return result;
+        }
+
+        const root = document.getElementsByClassName("study-guides")[0];
+        const searchBar = document.getElementById("search-text");
+        const queryChooser = document.getElementById("search-type");
+
+        function getSearchbarText() {
+            return searchBar.value;
+        }
+
+        function getQuery() {
+            return queryChooser.value;
+        }
+
+        async function fillSearches() {
+            root.innerHTML = await getSheets(
+                getSearchbarText(), 
+                getQuery()
+            );
+        }
+
+        async function load() {
+            let sheets = await getSheets();
+            root.innerHTML = sheets; 
+        }
+
+    </script>
+
+</body>
+</html>
