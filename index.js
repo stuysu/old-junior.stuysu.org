@@ -69,7 +69,7 @@ function setup(db) {
 const apiLinks = require('./routes/api/links.js');
 const apiAdmin = require('./routes/api/admin.js');
 const apiSheet = require('./routes/api/sheet.js');
-const apiEvents = require('./routes/api/events.js')
+const apiEvents = require('./routes/api/events.js');
 
 const admin = require('./routes/docs/admin.js');
 const index = require('./routes/docs/index.js');

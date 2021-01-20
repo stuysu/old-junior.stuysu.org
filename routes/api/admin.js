@@ -2,7 +2,7 @@ const express = require('express');
 const route = express.Router();
 
 // Sequlize models
-const { Link, Subs } = require('../../models');
+const { Link, Subs, Events } = require('../../models');
 
 // Google OAuth
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -53,7 +53,8 @@ route.post(
                 try {
 
                     let links = await Link.findAll();
-                    res.render('admin/response', { links : links });
+                    let events = await Events.findAll();
+                    res.render('admin/response', { links : links , events: events});
                     
                 } catch {
                     res.end('<h3>Error: Could not load data</h3>');
