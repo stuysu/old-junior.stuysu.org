@@ -13,16 +13,16 @@
     </thead>
     <tbody id='main-events'>
         <% for (let event of events) { %>
-            <tr id="<%=event.id%>-thread"> 
+            <tr id="<%=event.id%>-thread-e"> 
 
-                <th scope="col"><a id="<%=event.id%>-event" href="<%= event.url %>" target="_blank"><%= event.title %></a></th>
-                <td><input type="text" class="form-control" id="<%=event.id%>-title" value="<%= event.title %>" oninput="updatePreview('<%= event.id %>')" /></td>
-                <td><input type="text" class="form-control" id="<%=event.id%>-date" value="<%= event.date %>" oninput="updatePreview('<%= event.id %>')" /></td>
-                <td><input type="text" class="form-control" id="<%=event.id%>-description" value="<%= event.descriptio %>" oninput="updatePreview('<%= event.id %>')" /></td>
-                <td><input type="text" class="form-control" id="<%=event.id%>-url" value="<%= event.url %>" oninput="updatePreview('<%= event.id %>')" /></td>
-                <td><input type="text" class="form-control" id="<%=event.id%>-poster" value="<%= event.poster %>" oninput="updatePreview('<%= event.id %>')" /></td>
-                <td id="<%=event.id%>-update"><button class="btn btn-primary" onclick="updateEvent('<%= event.id %>')">Update</button></td> 
-				<td id="<%=event.id%>-remove"><button class="btn btn-danger" onclick="removeEvent('<%= event.id %>')">&times;</button></td>
+                <th scope="col"><a id="<%=event.id%>-link-e" href="<%= event.url %>" target="_blank"><%= event.title %></a></th>
+                <td><input type="text" class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=event.id%>-date-e" value="<%= event.date %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=event.id%>-description-e" value="<%= event.description %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=event.id%>-url-e" value="<%= event.url %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=event.id%>-poster-e" value="<%= event.poster %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td id="<%=event.id%>-update-e"><button class="btn btn-primary" onclick="updateEvent('<%= event.id %>')">Update</button></td> 
+				<td id="<%=event.id%>-remove-e"><button class="btn btn-danger" onclick="removeEvent('<%= event.id %>')">&times;</button></td>
             
             </tr>
         <% } %>
@@ -30,14 +30,14 @@
 	<tbody>
 		<tr>
             
-            <th scope="col"><a id="add-event" href="http://example.com" target="_blank"></a></th>
-            <td><input type="text" class="form-control" id="add-title" placeholder="New Event Title" value="" oninput="updatePreview('add')" /></td>
-            <td><input type="text" class="form-control" id="add-date" placeholder="New Event Date" value="" oninput="updatePreview('add')" /></td>
-            <td><input type="text" class="form-control" id="add-description" placeholder="New Event Description" value="" oninput="updatePreview('add')" /></td>
-            <td><input type="text" class="form-control" id="add-url" placeholder="New Event URL" value="" oninput="updatePreview('add')" /></td>
-            <td><input type="text" class="form-control" id="add-poster" placeholder="New Event Poster" value="" oninput="updatePreview('add')" /></td>
-            <td id="add-update"><button class="btn btn-success" onclick="addEvent()">Add</button></td> 
-            <td id="add-remove"><span></span></td>
+            <th scope="col"><a id="add-link-e" href="http://example.com" target="_blank"></a></th>
+            <td><input type="text" class="form-control" id="add-title-e" placeholder="New Event Title" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="text" class="form-control" id="add-date-e" placeholder="New Event Date" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="text" class="form-control" id="add-description-e" placeholder="New Event Description" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="text" class="form-control" id="add-url-e" placeholder="New Event URL" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="text" class="form-control" id="add-poster-e" placeholder="New Event Poster" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td id="add-update-e"><button class="btn btn-success" onclick="addEvent()">Add</button></td> 
+            <td id="add-remove-e"><span></span></td>
 
 		</tr>
     </tbody>

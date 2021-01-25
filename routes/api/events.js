@@ -5,7 +5,6 @@ const { sequelize } = require('./../../models');
 const Events = sequelize.models.Events;
 
 const { CreateError } = require('../utils');
-const { request } = require('express');
 
 router.get(
     '/events',
@@ -83,6 +82,11 @@ router.put(
             };
 
             if (result.found) {
+                const hasTitle = req.body.title !== undefined;
+                const hasDate = req.body.date !== undefined;
+                const hasDescription = req.body.description !== undefined;
+                const hasUrl = req.body.url !== undefined;
+                const hasPoster = req.body.poster !== undefined;
 
                 const options = { where: { id: req.body.id } };
 
@@ -107,6 +111,12 @@ router.put(
                 result.description = req.body.description;
                 result.url = req.body.url;
                 result.poster = req.body.poster;
+
+                result.updatedTitle = hasTitle ? (result.title !== event.title) : undefined;
+                result.updatedDate = hasDate ? (result.date !== event.date) : undefined;
+                result.updatedDescription = hasDescription ? (result.description !== event.description) : undefined;
+                result.updatedUrl = hasUrl ? (result.url !== event.url) : undefined;
+                result.updatedPoster = hasPoster ? (result.poster !== event.poster) : undefined;
             }
             
             res.status(200).json(result);
