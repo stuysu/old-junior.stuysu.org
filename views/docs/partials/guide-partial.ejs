@@ -1,5 +1,5 @@
 <% for ( let guide of guides ) { %>
-    <div class="study-guide col-sm-12">
+    <div class="study-guide">
         <a class="study-guide-title" href="<%= guide.url %>" target="_blank">
             <% if (guide.title) { %>
                 <%= guide.title %>
@@ -7,7 +7,9 @@
                 <%= guide.url %>
             <% } %>        
         </a>
-        <% if (guide.teacher) { %>
+       
+       
+        <!-- <% if (guide.teacher) { %>
             <div class="study-guide-teacher"><%= guide.teacher %></div>
         <% } %>
         <% if (guide.subject) { %>
@@ -18,6 +20,6 @@
             <% for (let keyword of guide.keywords) { %>
                 <div class="study-guide-keyword"><%= keyword.keyword %></div>   
             <% } %>
-        </div>
+        </div> -->
     </div>
 <% } %>

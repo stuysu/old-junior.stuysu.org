@@ -3,6 +3,7 @@ const { CreateError } = require('../utils');
 const route = express.Router();
 
 route.get(
+    
     '/',
 
     async (req, res, next) => {

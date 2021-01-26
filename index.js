@@ -13,20 +13,21 @@ const parser = require('express').Router();
 parser.use(express.json());
 parser.use(express.urlencoded({ extended: false }));
 
+const cors = require('cors');
+
 const apiCorsOptions = {
-    // needs to be set accordingly
     origin:  process.env.API_CORS_ORIGIN ? 
         process.env.API_CORS_ORIGIN : 
-        '*' 
+        '*',
+    credentials: true
 };
-
-console.log(apiCorsOptions.origin);
-const apiCors = require('cors')(apiCorsOptions);
+const apiCors = cors(apiCorsOptions);
 
 const docsCorsOptions = {
-    origin: '*'
+    origin: '*',
+    credentials: true
 };
-const docsCors = require('cors')(docsCorsOptions);
+const docsCors = cors(docsCorsOptions);
 
 const staticServe = express.static(path.join(__dirname, 'public')); 
 
@@ -65,8 +66,6 @@ function errorHandler(err, req, res, next) {
 // DATABASE
 
 const { sequelize } = require('./models');
-
-// TODO: add function to by default populate the subs model
 
 function setup(db) {
     return db.sync();

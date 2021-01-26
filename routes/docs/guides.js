@@ -10,12 +10,7 @@ route.get(
 
     async (req, res, next) => {
 
-        // res.render(
-            
-        //     'docs/guides'
-        
-        // );        
-        
+        // res.render('docs/guides.ejs');
         res.redirect('/');
 
     }
