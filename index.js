@@ -13,22 +13,6 @@ const parser = require('express').Router();
 parser.use(express.json());
 parser.use(express.urlencoded({ extended: false }));
 
-const cors = require('cors');
-
-const apiCorsOptions = {
-    origin:  process.env.API_CORS_ORIGIN ? 
-        process.env.API_CORS_ORIGIN : 
-        '*',
-    credentials: true
-};
-const apiCors = cors(apiCorsOptions);
-
-const docsCorsOptions = {
-    origin: '*',
-    credentials: true
-};
-const docsCors = cors(docsCorsOptions);
-
 const staticServe = express.static(path.join(__dirname, 'public')); 
 
 // Should be the last middleware before the error handler for a 404
@@ -93,14 +77,20 @@ app.use(staticServe);
 app.use(logger);
 app.use(parser);
 
-app.use('/api', apiCors, apiLinks);
-app.use('/api', apiCors, apiAdmin);
-app.use('/api', apiCors, apiSheet);
+app.use('/api', apiLinks);
+app.use('/api', apiAdmin);
+app.use('/api', apiSheet);
 
-app.use('/', docsCors, index);
-app.use('/', docsCors, admin);
-app.use('/', docsCors, links);
-app.use('/', docsCors, guides);
+app.use('/', index);
+app.use('/', admin);
+app.use('/', links);
+app.use('/', guides);
+
+
+// app.use('/', docsCors, index);
+// app.use('/', docsCors, admin);
+// app.use('/', docsCors, links);
+// app.use('/', docsCors, guides);
 
 app.use(error404);
 app.use(errorHandler);
