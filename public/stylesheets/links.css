@@ -11,28 +11,26 @@
 
     font-size: 125%;
     font-weight: 600;
-    
-    border: 2px solid #5166DA;
+
+    border: 2px solid #5166da;
     border-radius: 32px;
 
     text-align: center;
-    color: #5166DA;
-    
+    color: #5166da;
+
     transition: 0.2s;
 }
 
 .link div:hover {
-    background-color: #5166DA;
+    background-color: #5166da;
     color: white;
 }
 
 @media only screen and (max-width: 800px) {
-
     .link {
         width: 100%;
     }
     .link div {
         width: 90%;
     }
-
 }

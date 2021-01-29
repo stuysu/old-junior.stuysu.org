@@ -2,7 +2,7 @@
 Sheet attributes
 */
 
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 /*
 
@@ -13,36 +13,29 @@ STUDY SHEET IS DELETED
 */
 
 module.exports = (sequelize, DataTypes) => {
-
     class Attributes extends Model {
-
         static associate(models) {
             Attributes.belongsTo(models.Sheets, {
                 foreignKey: {
-                    allowNull: false
-                }                
+                    allowNull: false,
+                },
             });
         }
-
     }
 
     Attributes.init(
-    
         {
-            keyword : {
+            keyword: {
                 type: DataTypes.TEXT,
                 allowNull: false,
-            }
-    
+            },
         },
-    
+
         {
             sequelize,
-            modelName: 'Attributes'
+            modelName: "Attributes",
         }
-    
     );
 
     return Attributes;
-
 };
