@@ -9,12 +9,12 @@ body {
 }
 
 #root {
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
 
     display: flex;
     align-content: flex-start;
-    flex-flow:column nowrap;
-    
+    flex-flow: column nowrap;
+
     min-height: 100vh;
     width: 800px;
     margin: 0 auto;
@@ -22,7 +22,7 @@ body {
 
 #logo img {
     border-radius: 100%;
-    box-shadow: 0px 4px 2px 1px rgba(0, 0, 255, .2);
+    box-shadow: 0px 4px 2px 1px rgba(0, 0, 255, 0.2);
     margin-bottom: 20px;
 }
 
@@ -36,10 +36,8 @@ body {
 }
 
 @media only screen and (max-width: 800px) {
-
     #root {
         width: 100vw;
         height: 100vh;
     }
-
 }

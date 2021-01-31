@@ -1,25 +1,25 @@
-require('dotenv').config();
-const path = require('path'); 
+require("dotenv").config();
+const path = require("path");
 
 const express = require("express");
 const app = express();
 
 // MIDDLEWARE
 
-const morgan = require('morgan');
-const logger = morgan('dev');
+const morgan = require("morgan");
+const logger = morgan("dev");
 
-const parser = require('express').Router();
+const parser = require("express").Router();
 parser.use(express.json());
 parser.use(express.urlencoded({ extended: false }));
 
-const staticServe = express.static(path.join(__dirname, 'public')); 
+const staticServe = express.static(path.join(__dirname, "public"));
 
 // Should be the last middleware before the error handler for a 404
 function error404(req, res, next) {
     next({
         status: 404,
-        message: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`
+        message: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`,
     });
 }
 
@@ -27,29 +27,26 @@ function error404(req, res, next) {
 function errorHandler(err, req, res, next) {
     console.log(err);
 
-    const apiError = req.url.startsWith('/api');
+    const apiError = req.url.startsWith("/api");
 
     if (apiError) {
-        if (err)
-            err.error = err.error || true;
-        res.status(err.status || 500).json( 
-            err || 
-            {
-                error: true, 
-                message: 'Server error'
+        if (err) err.error = err.error || true;
+        res.status(err.status || 500).json(
+            err || {
+                error: true,
+                message: "Server error",
             }
         );
     } else {
         res.status(err.status || 500)
             // .render('docs/error',{error: err})
-            .redirect('/')
-        ;
+            .redirect("/");
     }
 }
 
 // DATABASE
 
-const { sequelize } = require('./models');
+const { sequelize } = require("./models");
 
 function setup(db) {
     return db.sync();
@@ -57,19 +54,19 @@ function setup(db) {
 
 // ROUTES
 
-const apiLinks = require('./routes/api/links.js');
-const apiAdmin = require('./routes/api/admin.js');
-const apiSheet = require('./routes/api/sheet.js');
+const apiLinks = require("./routes/api/links.js");
+const apiAdmin = require("./routes/api/admin.js");
+const apiSheet = require("./routes/api/sheet.js");
 
-const admin = require('./routes/docs/admin.js');
-const index = require('./routes/docs/index.js');
-const links = require('./routes/docs/links.js');
-const guides = require('./routes/docs/guides.js');
+const admin = require("./routes/docs/admin.js");
+const index = require("./routes/docs/index.js");
+const links = require("./routes/docs/links.js");
+const guides = require("./routes/docs/guides.js");
 
 // VIEW ENGINE
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 /////////
 
@@ -77,15 +74,14 @@ app.use(staticServe);
 app.use(logger);
 app.use(parser);
 
-app.use('/api', apiLinks);
-app.use('/api', apiAdmin);
-app.use('/api', apiSheet);
+app.use("/api", apiLinks);
+app.use("/api", apiAdmin);
+app.use("/api", apiSheet);
 
-app.use('/', index);
-app.use('/', admin);
-app.use('/', links);
-app.use('/', guides);
-
+app.use("/", index);
+app.use("/", admin);
+app.use("/", links);
+app.use("/", guides);
 
 // app.use('/', docsCors, index);
 // app.use('/', docsCors, admin);
@@ -96,10 +92,12 @@ app.use(error404);
 app.use(errorHandler);
 
 const port = Number(process.env.PORT) || 3001;
-setup(sequelize).then(() => {
-    app.listen(port, () => {
-        console.log(`Started application on port ${port}`);
+setup(sequelize)
+    .then(() => {
+        app.listen(port, () => {
+            console.log(`Started application on port ${port}`);
+        });
+    })
+    .catch((err) => {
+        console.log(`Did not start due to database error: ${err}`);
     });
-}).catch(err => {
-    console.log(`Did not start due to database error: ${err}`);
-});

@@ -1,23 +1,21 @@
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-
     class Subs extends Model {}
 
     Subs.init(
-        
         {
-            sub : {
+            sub: {
                 type: DataTypes.STRING,
-                primaryKey: true
-            }
+                primaryKey: true,
+            },
         },
 
         {
             sequelize,
-            modelName: 'Subs'
+            modelName: "Subs",
         }
     );
 
-    return Subs
-}
+    return Subs;
+};
