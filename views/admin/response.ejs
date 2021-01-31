@@ -1,2 +1,16 @@
-<!-- include all response types here -->
-<%- include('./responses/links'); %>
+<% var resources = {
+    'Links'        : './responses/links', 
+    'Study Guides' : './responses/guides' 
+} %>
+
+<% for (let name in resources) { %>
+    <button class="btn btn-primary" onclick="updateTabs('<%= name %>')"><%= name %></button> 
+<% } %>
+
+<% for (let name in resources) { %>
+    <div id="controlled-by-<%= name %>" class="controlled off">
+    
+        <%- include(resources[name]); %>
+    
+    </div>
+<% } %>

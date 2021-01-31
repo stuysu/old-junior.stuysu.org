@@ -1,3 +1,17 @@
+// helper
+function isValidHttpUrl(string) {
+    // let url;
+    
+    // try {
+    //   url = new URL(string);
+    // } catch (_) {
+    //   return false;  
+    // }
+  
+    // return url.protocol === "http:" || url.protocol === "https:";
+    return true;
+}
+
 function getInputs(id) {
     return {
         preview: document.getElementById(id + '-link'),
@@ -51,6 +65,12 @@ async function removeLink(id) {
 async function updateLink(id) {
 
     const { alias, url } = getInputs(id);
+
+    if (!isValidHttpUrl(url)) {
+        alertManager.addAlert('Failure', 'url is not valid', 'danger');
+        return;
+    }
+
     let response = await fetch("/api/links", {
         method: "PUT",
         mode: 'cors',
@@ -93,6 +113,12 @@ async function updateLink(id) {
 async function addLink() {
 
     const { preview, alias, url } = getInputs('add');
+
+    if (!isValidHttpUrl(url)) {
+        alertManager.addAlert('Failure', 'url is not valid', 'danger');
+        return;
+    }
+
 
     let response = await fetch("/api/links", {
         method: "POST",

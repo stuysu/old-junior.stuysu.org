@@ -89,7 +89,7 @@ class AlertManager {
 
 }
 
-const alertManager = new AlertManager(7_500 /* value in ms */);
+const alertManager = new AlertManager(1_500 /* value in ms */);
 
 setInterval(
     () => {

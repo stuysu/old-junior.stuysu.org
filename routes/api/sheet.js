@@ -323,7 +323,8 @@ router.post(
             res.status(200).json({
                 created: true,
                 keyword: req.body.keyword,
-                id: req.body.id
+                id: attribute.id,
+                sheetId: req.body.id
             });
 
 
@@ -361,6 +362,7 @@ router.post(
 
             res.status(200).json({
                 created: true,
+                id: instance.id,
                 url: req.body.url,
                 title: req.body.title,
                 author: req.body.author,

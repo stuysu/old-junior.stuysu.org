@@ -13,3 +13,7 @@ html, body {
 #alerts * {
     margin: 0;
 }
+
+.off {
+    display: none;
+}

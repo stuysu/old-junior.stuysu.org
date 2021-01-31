@@ -2,7 +2,7 @@ const express = require('express');
 const route = express.Router();
 
 // Sequlize models
-const { Link, Subs } = require('../../models');
+const { Link, Subs, Sheets, Attributes } = require('../../models');
 
 // Google OAuth
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -29,6 +29,10 @@ const verifyToken =  async (id_token) => {
   
 }
 
+async function getAllSheets() {
+    return await Sheets.findAll();
+}
+
 // authenticate email
 route.post(
     
@@ -52,8 +56,19 @@ route.post(
 
                 try {
 
+                    // Get the study sheets
+                    let sheets = await Sheets.findAll();
+                    for (let sheet of sheets) 
+                        sheet['keywords'] = await Attributes.findAll({ where: { SheetId: sheet.id }});;
+
+                    // Get all the links
                     let links = await Link.findAll();
-                    res.render('admin/response', { links : links });
+
+                    // Render the full admin panel
+                    res.render('admin/response', { 
+                        links : links,
+                        sheets : sheets
+                    });
                     
                 } catch {
                     res.end('<h3>Error: Could not load data</h3>');

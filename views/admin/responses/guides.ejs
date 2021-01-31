@@ -1,0 +1,139 @@
+<div id="study-guides">
+
+    <!-- form to add a study sheet -->
+    <table id="add-study-guide" class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Add a study sheet
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input placeholder="Title..." type="text" class="form-control" id="add-sheet-title" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Url..." type="text" class="form-control" id="add-sheet-url" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Subject..." type="text" class="form-control" id="add-sheet-subject" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Teacher..." type="text" class="form-control" id="add-sheet-teacher" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Author..." type="text" class="form-control" id="add-sheet-author" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="add-sheet-update" class="btn btn-primary" onclick="addSheet()">Add</button>
+                    <span id="add-sheet-remove"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- the rest of the study sheets -->
+    <% for (let sheet of sheets) { %>
+    <table id="<%= sheet.id %>-study-guide" class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Study Sheet
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input placeholder="Title..." type="text" class="form-control" value="<%= sheet.title %>"
+                        id="<%= sheet.id %>-sheet-title" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Url..." type="text" class="form-control" value="<%= sheet.url %>"
+                        id="<%= sheet.id %>-sheet-url" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Subject..." type="text" class="form-control" value="<%= sheet.subject %>"
+                        id="<%= sheet.id %>-sheet-subject" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Teacher..." type="text" class="form-control" value="<%= sheet.teacher %>"
+                        id="<%= sheet.id %>-sheet-teacher" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input placeholder="Author..." type="text" class="form-control" value="<%= sheet.author %>"
+                        id="<%= sheet.id %>-sheet-author" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="<%= sheet.id %>-sheet-update" class="btn btn-primary"
+                        onclick="updateSheet('<%= sheet.id %>')">Update</button>
+                    <button id="<%= sheet.id %>-sheet-remove" class="btn btn-danger"
+                        onclick="removeSheet('<%= sheet.id %>')">Remove</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <th scope="col">Keywords</th>
+                            <th></th>
+                        </thead>
+                        <tbody id="<%= sheet.id %>-sheet-keywords">
+
+                            <tr id="add-keyword">
+
+                                <td>
+                                    <input type="text" id="<%= sheet.id %>-add-keyword-text" placeholder="Keyword..."
+                                        class="form-control" />
+                                </td>
+
+                                <td>
+                                    <button id="<%= sheet.id %>-add-keyword-add" class="btn btn-primary"
+                                        onclick="addKeyword('<%= sheet.id %>')">Add</button>
+                                </td>
+
+                            </tr>
+
+                            <% for (let keyword of sheet.keywords) { %>
+                            <tr id="<%= keyword.id %>-keyword">
+                                <td>
+                                    <span id="<%= keyword.id %>-keyword-text"><%= keyword.keyword %></span>
+                                </td>
+                                <td>
+                                    <button id="<%= keyword.id %>-keyword-remove" class="btn btn-danger"
+                                        onclick="removeKeyword('<%= keyword.id %>')">Remove</button>
+                                </td>
+                            </tr>
+                            <% } %>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <% } %>
+
+</div>
