@@ -49,6 +49,9 @@ function errorHandler(err, req, res, next) {
 const { sequelize } = require("./models");
 
 function setup(db) {
+    if (process.env.DATABASE_LOAD === 'force') {
+        return db.sync({ force: true });    
+    }
     return db.sync();
 }
 
