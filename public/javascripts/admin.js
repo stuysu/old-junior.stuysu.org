@@ -178,7 +178,7 @@ async function updateOrdering() {
     let order = 0;
 
     for (let link of links) {
-        let id = (Number(link.id.charAt(0)));
+        let id = (Number(link.id.split('-')[0]));
     
         let response = await fetch('/api/links/ordering', {
             method: "PUT",
