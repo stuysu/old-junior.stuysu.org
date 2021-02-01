@@ -26,6 +26,7 @@ async function removeLink(id) {
     const { thread } = getInputs(id);
 
     thread.remove();
+    reorderHtml();
 
     let response = await fetch("/api/links/" + id, {
         method: "DELETE",
@@ -172,28 +173,114 @@ function updatePreview(id) {
     preview.href = url.value;
 }
 
-/**
- * +-+-+-+-+-+-+-+-+
- * ||| LOOK AWAY |||
- * +-+-+-+-+-+-+-+-+
- * not anymore it looks more bearable now
- */
+function updateOrdering() {
+    const links = document.querySelectorAll('tr[id$=-thread]');
+    let order = 0;
+
+    for (let link of links) {
+        let id = (Number(link.id.charAt(0)));
+    
+        fetch('/api/links/ordering', {
+            method: "PUT",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify({
+                id: id,
+                order: order,
+            }),
+        });
+
+        order++;
+    }
+
+}
+
+function reorderHtml() {
+    const links = getLinks();
+
+    let o = 0;
+    for (let link of links) {
+        link.setAttribute('data-order', o);
+        ++o;
+    }
+}
+
+function getLinks() {
+    return document.querySelectorAll('tr[id$=-thread]')
+}
+
+// from https://stackoverflow.com/questions/10716986/swap-two-html-elements-and-preserve-event-listeners-on-them
+function swapElements(obj1, obj2) {
+    // create marker element and insert it where obj1 is
+    var temp = document.createElement("div");
+    obj1.parentNode.insertBefore(temp, obj1);
+
+    // move obj1 to right before obj2
+    obj2.parentNode.insertBefore(obj1, obj2);
+
+    // move obj2 to right before where obj1 used to be
+    temp.parentNode.insertBefore(obj2, temp);
+
+    // remove temporary marker node
+    temp.parentNode.removeChild(temp);
+}
+
+
+function moveLink(direction, id) {
+    console.log('trying to move');
+
+    const thread = document.getElementById(`${id}-thread`);
+    const threadOrder = Number(thread.getAttribute('data-order'));
+
+    const links = getLinks();
+    
+    let otherThread = null;
+    
+    let otherOrder = 0;
+    for (let link of links) {
+        if (otherOrder === (direction + threadOrder)) {
+            otherThread = link;
+            break;
+        }        
+        ++otherOrder;    
+    }
+
+    // if (otherThread != null) {
+    //     console.log(`${threadOrder} being swapped with ${otherOrder}`);
+    // } else {
+    //     console.log('not thread found');
+    // }
+
+    if (otherThread != null) {
+        swapElements(thread, otherThread);
+
+        thread.setAttribute('data-order', otherOrder);
+        otherThread.setAttribute('data-order', threadOrder);
+    }
+}
+
 function addLinkToPage(id, alias, url) {
     // get table body
     const mainLinks = document.getElementById("main-links");
     var link = { id, alias, url };
-    console.log(link);
-    mainLinks.innerHTML += eval(
-        "`" +
-            '<tr id="<%=link.id%>-thread"> \
-        <th scope="col"><a id="<%=link.id%>-link" href="<%= link.url %>" target="_blank"><%= link.alias %></a></th> \
-        <td><input type="text" class="form-control" id="<%=link.id%>-alias" value="<%= link.alias %>" oninput="updatePreview(\'<%= link.id %>\')" /></td> \
-        <td><input type="text" class="form-control" id="<%=link.id%>-url" value="<%= link.url %>" oninput="updatePreview(\'<%= link.id %>\')" /></td>  \
-        <td id="<%=link.id%>-update"><button class="btn btn-primary" onclick="updateLink(\'<%= link.id %>\')">Update</button></td> \
-		<td id="<%=link.id%>-remove"><button class="btn btn-danger" onclick="removeLink(\'<%= link.id %>\')">&times;</button></td>\
-    </tr>'
-                .replaceAll("<%=", "${")
-                .replaceAll("%>", "}") +
-            "`"
-    );
+    var order = getLinks().length;
+
+    mainLinks.innerHTML += 
+        `<tr id="${link.id}-thread" data-order="${ order }"> 
+        <th scope="col"><a id="${link.id}-link" href="${ link.url }" target="_blank">${ link.alias }</a></th> 
+        <td><input type="text" class="form-control" id="${link.id}-alias" value="${ link.alias }" oninput="updatePreview(\'${ link.id }\')" /></td> 
+        <td><input type="text" class="form-control" id="${link.id}-url" value="${ link.url }" oninput="updatePreview(\'${ link.id }\')" /></td>  
+        <td id="${link.id}-update"><button class="btn btn-primary" onclick="updateLink(\'${ link.id }\')">Update</button></td> 
+		<td id="${link.id}-remove"><button class="btn btn-danger" onclick="removeLink(\'${ link.id }\')">&times;</button></td>\
+        <td id="${link.id}-reorder">
+            <button class="btn btn-info" onclick="moveLink(-1, '${ link.id }')">&uarr;</button>  
+            <button class="btn btn-warning" onclick="moveLink(+1, '${ link.id }')">&darr;</button> 
+        </td> 
+        </tr>`;
 }

@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 
 // Sequlize models
-const { Link, Subs, Sheets, Attributes } = require('../../models');
+const { Link, Subs, Sheets, Attributes, sequelize } = require('../../models');
 
 // Google OAuth
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -27,10 +27,6 @@ const verifyToken = async (id_token) => {
         throw new Error("Cannot verify audience and/or issuer");
     }
 };
-
-async function getAllSheets() {
-    return await Sheets.findAll();
-}
 
 // authenticate email
 route.post(
@@ -57,7 +53,7 @@ route.post(
                         sheet['keywords'] = await Attributes.findAll({ where: { SheetId: sheet.id }});;
 
                     // Get all the links
-                    let links = await Link.findAll();
+                    let links = await Link.findAll({ order: sequelize.col('ordering') });
 
                     // Render the full admin panel
                     res.render('admin/response', { 

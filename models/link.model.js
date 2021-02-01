@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
 
     Link.init(
         {
-            // this makes me feel safer
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -13,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     min: 0,
                 },
+            },
+
+            ordering: {
+                type: DataTypes.INTEGER
             },
 
             // data necessary for link

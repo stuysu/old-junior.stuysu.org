@@ -11,6 +11,24 @@ function getIntOr(n, other) {
     return parsed.toString() === n ? parsed : other;
 }
 
+router.put("/links/ordering", async (req, res, next) => {
+
+    if (req.body.id === undefined || req.body.order === undefined) {
+        next(CreateError(400, "Expected both an id and an order integer"));
+    }
+
+    await Link.update(
+        // the new ordering value
+        { ordering: req.body.order },
+        
+        // the link to update
+        { where: { id: req.body.id }}
+    );
+
+    res.status(200).json({ id: req.body.id , order: req.body.order });
+
+});
+
 router.get("/links", async (req, res, next) => {
     if (req.query.id) {
         let n = getIntOr(req.query.id, req.query.id);

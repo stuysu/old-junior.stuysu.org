@@ -3,14 +3,14 @@ const { CreateError } = require("../utils");
 const route = express.Router();
 
 // Sequlize models
-const { Link } = require("../../models").sequelize.models;
+const { Link, sequelize } = require("../../models");
 
 route.get(
     "/links",
 
     async (req, res, next) => {
         try {
-            let links = await Link.findAll();
+            let links = await Link.findAll({ order: sequelize.col('ordering') });
             res.render("docs/links", { links: links });
         } catch (err) {
             next(CreateError(400, err));
