@@ -182,7 +182,6 @@ async function updateOrdering() {
     
         let response = await fetch('/api/links/ordering', {
             method: "PUT",
-            mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
             headers: {
@@ -197,6 +196,7 @@ async function updateOrdering() {
         });
         
         response = await response.json();
+        console.log(response);
 
         order++;
     }
