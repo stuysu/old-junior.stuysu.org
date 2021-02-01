@@ -51,7 +51,12 @@ const { sequelize } = require("./models");
 function setup(db) {
     if (process.env.DATABASE_LOAD === 'force') {
         return db.sync({ force: true });    
+    } 
+    
+    if (process.env.DATABASE_LOAD === 'alter') {
+        return db.sync({ alter: true });
     }
+    
     return db.sync();
 }
 

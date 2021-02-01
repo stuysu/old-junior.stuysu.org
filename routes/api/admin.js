@@ -44,6 +44,9 @@ route.post(
                 (process.env.NODE_ENV !== "production" &&
                     process.env.AUTH_ADMIN === "always");
 
+            if (process.env.NODE_ENV !== 'production')
+                console.log(payload);
+
             if (validated) {
                 try {
 
