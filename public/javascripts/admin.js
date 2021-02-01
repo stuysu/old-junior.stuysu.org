@@ -178,8 +178,8 @@ async function updateOrdering() {
     let order = 0;
 
     for (let link of links) {
-        let id = (Number(link.id.split('-')[0]));
-    
+        let id = (Number(link.getAttribute('data-link-id')));
+
         let response = await fetch('/api/links/ordering', {
             method: "PUT",
             cache: "no-cache",
@@ -196,7 +196,6 @@ async function updateOrdering() {
         });
         
         response = await response.json();
-        console.log(response);
 
         order++;
     }
@@ -277,10 +276,9 @@ function addLinkToPage(id, alias, url) {
     var order = getLinks().length;
 
     mainLinks.innerHTML += 
-        `<tr id="${link.id}-thread" data-order="${ order }"> 
-        <th scope="col"><a id="${link.id}-link" href="${ link.url }" target="_blank">${ link.alias }</a></th> 
-        <td><input type="text" class="form-control" id="${link.id}-alias" value="${ link.alias }" oninput="updatePreview(\'${ link.id }\')" /></td> 
-        <td><input type="text" class="form-control" id="${link.id}-url" value="${ link.url }" oninput="updatePreview(\'${ link.id }\')" /></td>  
+        `<tr id="${link.id}-thread" data-link-id="${ link.id }" data-order="${ order }"> 
+        <td><input type="text" class="form-control" id="${link.id}-alias" value="${ link.alias }" /></td> 
+        <td><input type="text" class="form-control" id="${link.id}-url" value="${ link.url }" /></td>  
         <td id="${link.id}-update"><button class="btn btn-primary" onclick="updateLink(\'${ link.id }\')">Update</button></td> 
 		<td id="${link.id}-remove"><button class="btn btn-danger" onclick="removeLink(\'${ link.id }\')">&times;</button></td>\
         <td id="${link.id}-reorder">
