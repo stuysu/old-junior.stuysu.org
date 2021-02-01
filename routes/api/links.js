@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { sequelize } = require("./../../models");
-const Link = sequelize.models.Link;
+const { sequelize, Link } = require("./../../models");
 
 const { CreateError } = require("../utils");
 
@@ -13,19 +12,28 @@ function getIntOr(n, other) {
 
 router.put("/links/ordering", async (req, res, next) => {
 
-    if (req.body.id === undefined || req.body.order === undefined) {
+    if (req.body.id === undefined || req.body.ordering === undefined) {
         next(CreateError(400, "Expected both an id and an order integer"));
     }
+    try {
+        let result = await Link.update(
+            // the new ordering value
+            { ordering: req.body.ordering },
+            
+            // the link to update
+            { where: { id: Number(req.body.id) }}
+        );
 
-    await Link.update(
-        // the new ordering value
-        { ordering: req.body.order },
-        
-        // the link to update
-        { where: { id: req.body.id }}
-    );
+        console.log(result);
 
-    res.status(200).json({ id: req.body.id , order: req.body.order });
+        res.status(200).json({ 
+            id: req.body.id, 
+            ordering: req.body.ordering 
+        });
+    } catch (e) {
+        next(CreateError(400, e));
+    }
+
 
 });
 

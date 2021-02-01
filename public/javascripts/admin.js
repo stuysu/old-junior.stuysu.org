@@ -173,14 +173,14 @@ function updatePreview(id) {
     preview.href = url.value;
 }
 
-function updateOrdering() {
+async function updateOrdering() {
     const links = document.querySelectorAll('tr[id$=-thread]');
     let order = 0;
 
     for (let link of links) {
         let id = (Number(link.id.charAt(0)));
     
-        fetch('/api/links/ordering', {
+        let response = await fetch('/api/links/ordering', {
             method: "PUT",
             mode: "cors",
             cache: "no-cache",
@@ -192,12 +192,16 @@ function updateOrdering() {
             referrerPolicy: "no-referrer",
             body: JSON.stringify({
                 id: id,
-                order: order,
+                ordering: order,
             }),
         });
+        
+        response = await response.json();
 
         order++;
     }
+
+    alertManager.addAlert("Success", "saved the ordering of the links",  "success");
 
 }
 
@@ -233,7 +237,6 @@ function swapElements(obj1, obj2) {
 
 
 function moveLink(direction, id) {
-    console.log('trying to move');
 
     const thread = document.getElementById(`${id}-thread`);
     const threadOrder = Number(thread.getAttribute('data-order'));
@@ -262,6 +265,8 @@ function moveLink(direction, id) {
 
         thread.setAttribute('data-order', otherOrder);
         otherThread.setAttribute('data-order', threadOrder);
+
+        alertManager.addAlert("Swapped", `the #${threadOrder + 1} and #${otherOrder + 1} links`, 'success');
     }
 }
 
