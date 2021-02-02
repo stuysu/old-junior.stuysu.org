@@ -92,10 +92,10 @@ app.use("/api", apiAdmin);
 app.use("/api", apiSheet);
 app.use("/api", apiAnalytics);
 
-app.use("/", analytics, index);
-app.use("/", analytics, admin);
-app.use("/", analytics, links);
-app.use("/", analytics, guides);
+app.use("/", index);
+app.use("/", admin);
+app.use("/", links);
+app.use("/", guides);
 
 app.use(error404);
 app.use(errorHandler);

@@ -1,6 +1,6 @@
 const { Analytics } = require("../models");
 
-const analytics = async (req, res, next) => {
+const analytics = async (req) => {
     const url = req.url;
     
     try {
@@ -21,7 +21,15 @@ const analytics = async (req, res, next) => {
         console.log(`Missed a view in the analytics middleware because of error: ${error}`);
     }
 
-    next();
+};
+
+const analyticsOn = (handler) => {
+    
+    return async (req, res, next) => {
+        analytics(req);
+        handler(req, res, next);
+    };
+
 };
 
 
@@ -34,5 +42,5 @@ module.exports = {
         };
     },
 
-    analytics : analytics
+    analyticsOn : analyticsOn,
 };
