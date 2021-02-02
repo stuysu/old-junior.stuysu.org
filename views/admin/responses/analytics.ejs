@@ -1,0 +1,30 @@
+There might be more routes with analytics tracking on, but if they have not been visited yet, they will not appear. (This may be changed at some point)
+<br>
+<button onclick="updateInfo()">Update</button>
+<div class = "analytics">
+
+    <% for (let route of analytics ) { %>
+        
+        <div 
+            class = "analytic-data"
+            data-url-pk = "<%= route.url %>"
+            id = "<%= route.url %>-analytic-data"
+        >
+            <div class="link"><a href="<%= route.url %>"><%= route.url %></a></div>
+            <div id="<%= route.url %>-num-views"><%= route.views %></div>
+            <div><button onclick="resetViews('<%= route.url %>')">Reset</button></div> 
+            <div>
+                <button id="<%= route.url %>-toggle-button" onclick="toggleTracking('<%= route.url %>')">
+                    <% if ( route.tracking ) { %> 
+                        Stop tracking
+                    <% } else { %>
+                        Start tracking
+                    <% } %>
+                </button> 
+            </div>
+
+        </div>
+
+    <% } %>
+
+</div>

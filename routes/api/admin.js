@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 
 // Sequlize models
-const { Link, Subs, Sheets, Attributes, sequelize } = require('../../models');
+const { Analytics, Link, Subs, Sheets, Attributes, sequelize } = require('../../models');
 
 // Google OAuth
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -58,10 +58,14 @@ route.post(
                     // Get all the links
                     let links = await Link.findAll({ order: sequelize.col('ordering') });
 
+                    // Get the analytics
+                    let analytics = await Analytics.findAll({ order: sequelize.col('views') });
+
                     // Render the full admin panel
                     res.render('admin/response', { 
                         links : links,
-                        sheets : sheets
+                        sheets : sheets,
+                        analytics : analytics
                     });
                     
                 } catch {

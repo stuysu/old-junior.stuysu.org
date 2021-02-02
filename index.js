@@ -44,6 +44,10 @@ function errorHandler(err, req, res, next) {
     }
 }
 
+// Analytics middleware
+
+const { analytics } = require("./routes/utils.js");
+
 // DATABASE
 
 const { sequelize } = require("./models");
@@ -65,6 +69,7 @@ function setup(db) {
 const apiLinks = require("./routes/api/links.js");
 const apiAdmin = require("./routes/api/admin.js");
 const apiSheet = require("./routes/api/sheet.js");
+const apiAnalytics = require("./routes/api/analytics.js");
 
 const admin = require("./routes/docs/admin.js");
 const index = require("./routes/docs/index.js");
@@ -85,16 +90,12 @@ app.use(parser);
 app.use("/api", apiLinks);
 app.use("/api", apiAdmin);
 app.use("/api", apiSheet);
+app.use("/api", apiAnalytics);
 
-app.use("/", index);
-app.use("/", admin);
-app.use("/", links);
-app.use("/", guides);
-
-// app.use('/', docsCors, index);
-// app.use('/', docsCors, admin);
-// app.use('/', docsCors, links);
-// app.use('/', docsCors, guides);
+app.use("/", analytics, index);
+app.use("/", analytics, admin);
+app.use("/", analytics, links);
+app.use("/", analytics, guides);
 
 app.use(error404);
 app.use(errorHandler);
