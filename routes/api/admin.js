@@ -59,7 +59,7 @@ route.post(
                     let links = await Link.findAll({ order: sequelize.col('ordering') });
 
                     // Get the analytics
-                    let analytics = await Analytics.findAll({ order: sequelize.col('views') });
+                    let analytics = await Analytics.findAll({ order: [ ['views', 'DESC'] ] });
 
                     // Render the full admin panel
                     res.render('admin/response', { 
