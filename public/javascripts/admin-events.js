@@ -11,6 +11,18 @@ function getInputsEvent(id) {
     };
 }
 
+function setCalendarTime(id, time) {
+    const { date } = getInputsEvent(id);
+    let tmp = new Date(time).toISOString();
+    tmp = tmp.substring(0, tmp.length - 1);
+
+    date.value = tmp;
+}
+
+function getTimestamp(dateElement) {
+    return new Date(dateElement.value).getTime();
+}
+
 async function removeEvent(id) {
     const { thread } = getInputsEvent(id);
     
@@ -67,7 +79,7 @@ async function updateEvent(id) {
         body: JSON.stringify({
             id: id,
             title: title.value,
-            date: date.value,
+            date: getTimestamp(date),
             description: description.value,
             url: url.value,
             poster: poster.value
@@ -121,7 +133,7 @@ async function addEvent() {
         referrerPolicy: 'no-referrer',
         body: JSON.stringify({
             title: title.value,
-            date: date.value,
+            date: getTimestamp(date),
             description: description.value,
             url: url.value,
             poster: poster.value
@@ -176,7 +188,7 @@ function addEventToPage(id, title, date, description, url, poster) {
 	('<tr id="<%=event.id%>-thread-e"> \
         <th scope="col"><a id="<%=event.id%>-link-e" href="<%= event.url %>" target="_blank"><%= event.title %></a></th> \
         <td><input type="text" class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
-        <td><input type="text" class="form-control" id="<%=event.id%>-date-e" value="<%= event.date %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
+        <td><input type="datetime-local" class="form-control" id="<%=event.id%>-date-e" value="<%= event.date %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
         <td><input type="text" class="form-control" id="<%=event.id%>-description-e" value="<%= event.description %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
         <td><input type="text" class="form-control" id="<%=event.id%>-url-e" value="<%= event.url %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
         <td><input type="text" class="form-control" id="<%=event.id%>-poster-e" value="<%= event.poster %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
