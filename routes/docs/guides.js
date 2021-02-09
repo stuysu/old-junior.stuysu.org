@@ -2,12 +2,15 @@ const express = require("express");
 const { CreateError, analyticsOn } = require("../utils");
 const route = express.Router();
 
+const { Sheets } = require("./../../models");
+
 route.get(
-    "/",
+    "/study-guides",
 
     analyticsOn(
         async (req, res, next) => {
-            res.redirect("/links");
+            // res.render('docs/guides.ejs');
+            res.redirect("/");
         }
     )
 );

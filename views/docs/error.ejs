@@ -1,2 +1,37 @@
-<div id="status"><%= error.status %></div>
-<div id="message"><%= error.message %></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+    <link href="./stylesheets/error.css" rel="stylesheet">
+    <link href="./stylesheets/index.css" rel="stylesheet">
+    <title>Sophomore Caucus | Error !!! </title>
+
+</head>
+<body>
+
+    <div id="root">
+
+        <div id="logo">
+            <a href="/"><img width="150vw" src="./student_union.png" /></a>
+            <br>
+            Not the Sophomore Caucus
+        </div>
+
+
+        <div class="status">There has been an error!</div>
+        <div class="status"><%= error.status %></div>
+        <!-- this might be a security risk but: 
+            <%= error.message %> 
+        -->
+        <br>
+        <a class="status" href="/">try this</a>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+.analytics {
+    display: flex;
+    width: 100vw;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* justify-content: space-evenly; */
+    justify-content: flex-start;
+    /* background-color: blue; */
+}
+
+.analytic-data {
+    width: 150px;
+    height: 150px;
+    margin: 25px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: 0.3s;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.analytic-data .link {
+    font-size: 125%;
+    color: green;
+}
+
+.analytic-data .link a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.analytic-data:hover {
+    transform: scale(1.03);
+    animation-play-state: running;
+}

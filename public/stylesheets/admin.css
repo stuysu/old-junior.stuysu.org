@@ -1,8 +1,11 @@
-html, body {
-    margin:0;
-    padding:0;
+html,
+body {
+    margin: 0;
+    padding: 0;
 }
-* {box-sizing: border-box;}
+* {
+    box-sizing: border-box;
+}
 
 #alerts {
     position: fixed;
@@ -12,4 +15,8 @@ html, body {
 
 #alerts * {
     margin: 0;
+}
+
+.off {
+    display: none;
 }

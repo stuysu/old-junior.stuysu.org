@@ -1,5 +1,4 @@
 class AlertManager {
-
     constructor(clearAfter = 10000) {
         this.root = document.getElementById("alerts");
         this.types = [
@@ -7,18 +6,13 @@ class AlertManager {
             "secondary",
             "success",
             "danger",
-            "warning", 
+            "warning",
             "info",
             "light",
-            "dark"  
+            "dark",
         ];
 
-        this.classes = [
-            "alert",
-            "alert-dismissible",
-            "fade",
-            "show"
-        ];
+        this.classes = ["alert", "alert-dismissible", "fade", "show"];
 
         this.clearAfterMs = clearAfter;
 
@@ -29,31 +23,33 @@ class AlertManager {
         return this.types.indexOf(level) !== -1;
     }
 
-    addAlert(title, message, level='primary') {
+    addAlert(title, message, level = "primary") {
         level = level.toLowerCase();
         level = this.isLevelValid(level) ? level : this.types[0];
 
-        const alert = document.createElement('div');
+        const alert = document.createElement("div");
 
-        alert.classList.add('alert-' + level);        
+        alert.classList.add("alert-" + level);
         for (let bsClass of this.classes) {
             alert.classList.add(bsClass);
         }
 
-        if (title !== "")
-            title += ':';
+        if (title !== "") title += ":";
 
         alert.innerHTML = `<strong>${title}</strong> ${message}`;
 
-        const dismissButton = document.createElement('button');
+        const dismissButton = document.createElement("button");
 
         dismissButton.type = "button";
         dismissButton.classList.add("close");
         dismissButton.setAttribute("data-dismiss", "alert");
         dismissButton.setAttribute("aria-label", "Close");
-        dismissButton.setAttribute("data-created-at", `${new Date().getTime()}`);
+        dismissButton.setAttribute(
+            "data-created-at",
+            `${new Date().getTime()}`
+        );
 
-        const buttonText = document.createElement('span');
+        const buttonText = document.createElement("span");
         buttonText.setAttribute("aria-hidden", "true");
         buttonText.innerHTML = "&times;";
 
@@ -62,7 +58,6 @@ class AlertManager {
         alert.appendChild(dismissButton);
 
         this.root.appendChild(alert);
-
     }
 
     deleteOld() {
@@ -71,13 +66,13 @@ class AlertManager {
         const timeNow = new Date().getTime();
 
         for (let alert of alerts) {
-
-            let createdAt = Number(alert.lastChild.getAttribute("data-created-at"));
+            let createdAt = Number(
+                alert.lastChild.getAttribute("data-created-at")
+            );
 
             if (timeNow - createdAt > this.clearAfterMs) {
                 alert.lastChild.click();
             }
-
         }
     }
 
@@ -86,14 +81,10 @@ class AlertManager {
             this.root.removeChild(this.root.firstChild);
         }
     }
-
 }
 
-const alertManager = new AlertManager(7_500 /* value in ms */);
+const alertManager = new AlertManager(1_500 /* value in ms */);
 
-setInterval(
-    () => {
-        alertManager.deleteOld();
-    },
-    alertManager.refreshRate
-);
+setInterval(() => {
+    alertManager.deleteOld();
+}, alertManager.refreshRate);

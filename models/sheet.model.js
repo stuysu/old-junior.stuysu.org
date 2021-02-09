@@ -1,61 +1,54 @@
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-
     class Sheets extends Model {
-
         static associate(models) {
             Sheets.hasMany(models.Attributes);
         }
-
     }
 
     Sheets.init(
-        
         {
-
-            id : {
+            id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
-                validate: { min: 0 }
+                validate: { min: 0 },
             },
 
-            url : {
+            url: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                validate : {
-                    isUrl: true
-                }
+                validate: {
+                    isUrl: true,
+                },
             },
 
-            title : {
-                type : DataTypes.STRING,
-                allowNull: true
+            title: {
+                type: DataTypes.STRING,
+                allowNull: true,
             },
 
-            author : {
+            author: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: true,
             },
 
-            teacher : {
+            teacher: {
                 type: DataTypes.STRING,
-                allowNull: true
-            },  
+                allowNull: true,
+            },
 
-            subject : {
+            subject: {
                 type: DataTypes.STRING,
-                allowNull: true
-            }
-
+                allowNull: true,
+            },
         },
 
         {
             sequelize,
-            modelName: 'Sheets'
+            modelName: "Sheets",
         }
-    
     );
 
     return Sheets;

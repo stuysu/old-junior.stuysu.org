@@ -1,0 +1,55 @@
+.search-bar {
+    margin: -10px 0 20px 0;
+    /* font-family: 'Lato', sans-serif !important; */
+}
+
+.study-guides {
+    font-family: "Lato", sans-serif;
+
+    padding: 15px 0;
+    width: 95%;
+    margin: 0 auto;
+
+    overflow-wrap: break-word;
+}
+
+.study-guide {
+    border: 2px solid #5166da;
+    border-radius: 32px;
+
+    margin: 10px 0;
+    padding: 20px 15px;
+
+    transition: 0.2s;
+    color: #5166da;
+
+    text-align: center;
+}
+
+.study-guide .study-guide-title {
+    color: #5166da;
+    transition: 0.2s;
+    font-size: 125%;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.study-guide:hover {
+    background-color: #5166da;
+}
+
+.study-guide:hover .study-guide-title {
+    color: white;
+}
+
+@media only screen and (max-width: 767px) {
+    .search-button,
+    .search-button button {
+        width: 100%;
+    }
+
+    .search-type select,
+    .search-bar-input input {
+        text-align: center;
+    }
+}
