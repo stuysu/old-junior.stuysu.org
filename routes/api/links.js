@@ -88,10 +88,11 @@ router.put("/links/", async (req, res, next) => {
     if (req.body.id === undefined) {
         next(CreateError(400, "Need a link id to process request"));
     }
-
+        
     let n = getIntOr(req.body.id, req.body.id);
     let opts = { where: { id: n } };
     try {
+            
         let link = await Link.findByPk(n);
 
         let result = {
@@ -134,6 +135,7 @@ router.put("/links/", async (req, res, next) => {
     } catch (err) {
         next(CreateError(400, err));
     }
+    
 });
 
 router.delete("/links/:id", (req, res, next) => {

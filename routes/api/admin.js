@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 
 // Sequlize models
-const { Analytics, Link, Subs, Sheets, Attributes, sequelize } = require('../../models');
+const { Analytics, Events, Link, Subs, Sheets, Attributes, sequelize } = require('../../models');
 
 // Google OAuth
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -50,6 +50,9 @@ route.post(
             if (validated) {
                 try {
 
+                    // Get the events
+                    let events = await Events.findAll();
+                    
                     // Get the study sheets
                     let sheets = await Sheets.findAll();
                     for (let sheet of sheets) 
@@ -65,7 +68,8 @@ route.post(
                     res.render('admin/response', { 
                         links : links,
                         sheets : sheets,
-                        analytics : analytics
+                        analytics : analytics,
+                        events : events
                     });
                     
                 } catch {

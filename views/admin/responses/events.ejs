@@ -1,0 +1,52 @@
+<table id="events-table" class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Preview</th>
+            <th scope="col">Title</th>
+            <th scope="col">Date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Url</th>
+            <th scope="col">Poster</th>
+            <th scope="col">Confirm</th>
+			<th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody id='main-events'>
+        <% for (let event of events) { %>
+            <tr id="<%=event.id%>-thread-e"> 
+
+                <th scope="col"><a id="<%=event.id%>-link-e" href="<%= event.url %>" target="_blank"><%= event.title %></a></th>
+                <td><input type="text" class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <% 
+                    function getDate(dateFromSql) {
+                        tmp = new Date(dateFromSql);
+                        tmp.setHours(tmp.getHours() - 5);
+                        tmp = tmp.toISOString();
+                        return tmp.substring(0, tmp.length - 1);
+                    }
+                %>
+                <td><input type="datetime-local" class="form-control" id="<%=event.id%>-date-e" value="<%= getDate(event.date) %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=event.id%>-description-e" value="<%= event.description %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=event.id%>-url-e" value="<%= event.url %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td><input type="text" class="form-control" id="<%=event.id%>-poster-e" value="<%= event.poster %>" oninput="updatePreviewEvent('<%= event.id %>')" /></td>
+                <td id="<%=event.id%>-update-e"><button class="btn btn-primary" onclick="updateEvent('<%= event.id %>')">Update</button></td> 
+				<td id="<%=event.id%>-remove-e"><button class="btn btn-danger" onclick="removeEvent('<%= event.id %>')">&times;</button></td>
+            
+            </tr>
+        <% } %>
+	</tbody>
+	<tbody>
+		<tr>
+            
+            <th scope="col"><a id="add-link-e" href="http://example.com" target="_blank"></a></th>
+            <td><input type="text" class="form-control" id="add-title-e" placeholder="New Event Title" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="datetime-local" class="form-control" id="add-date-e" placeholder="New Event Date" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="text" class="form-control" id="add-description-e" placeholder="New Event Description" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="text" class="form-control" id="add-url-e" placeholder="New Event URL" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td><input type="text" class="form-control" id="add-poster-e" placeholder="New Event Poster" value="" oninput="updatePreviewEvent('add')" /></td>
+            <td id="add-update-e"><button class="btn btn-success" onclick="addEvent()">Add</button></td> 
+            <td id="add-remove-e"><span></span></td>
+
+		</tr>
+    </tbody>
+</table>

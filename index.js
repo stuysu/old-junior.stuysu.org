@@ -69,6 +69,7 @@ function setup(db) {
 const apiLinks = require("./routes/api/links.js");
 const apiAdmin = require("./routes/api/admin.js");
 const apiSheet = require("./routes/api/sheet.js");
+const apiEvents = require("./routes/api/events.js");
 const apiAnalytics = require("./routes/api/analytics.js");
 
 const admin = require("./routes/docs/admin.js");
@@ -91,6 +92,7 @@ app.use("/api", apiLinks);
 app.use("/api", apiAdmin);
 app.use("/api", apiSheet);
 app.use("/api", apiAnalytics);
+app.use("/api", apiEvents);
 
 app.use("/", index);
 app.use("/", admin);
