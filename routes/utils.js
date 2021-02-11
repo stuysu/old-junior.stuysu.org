@@ -1,19 +1,18 @@
 const { Analytics } = require("../models");
 
-const analytics = async (req) => {
-    const url = req.url;
-    
+const analytics = async (name) => {
+   
     try {
-        let entry = await Analytics.findByPk(url);
+        let entry = await Analytics.findByPk(name);
 
         if (entry === null) {
-            Analytics.create({ url: url, views: 1, tracking: true});
+            Analytics.create({ url: name, views: 1, tracking: true});
         }
 
         else {
 
             if (entry.tracking)
-                Analytics.increment('views', { where: { url: url }});
+                Analytics.increment('views', { where: { url: name }});
 
         }
 
@@ -23,10 +22,10 @@ const analytics = async (req) => {
 
 };
 
-const analyticsOn = (handler) => {
+const analyticsOn = (name, handler) => {
     
     return async (req, res, next) => {
-        analytics(req);
+        analytics(name);
         handler(req, res, next);
     };
 

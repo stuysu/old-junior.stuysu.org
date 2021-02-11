@@ -9,6 +9,8 @@ route.get(
     "/links",
 
     analyticsOn(
+        "Links Page",
+
         async (req, res, next) => {
 
             try {
@@ -17,6 +19,7 @@ route.get(
             } catch (err) {
                 next(CreateError(400, err));
             }
+
         }
     )
 );

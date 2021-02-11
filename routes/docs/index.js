@@ -6,6 +6,8 @@ route.get(
     "/",
 
     analyticsOn(
+        "Home Page",
+
         async (req, res, next) => {
             res.redirect("/links");
         }
