@@ -8,6 +8,8 @@ route.get(
     "/study-guides",
 
     analyticsOn(
+        "Study Guides",
+
         async (req, res, next) => {
             // res.render('docs/guides.ejs');
             res.redirect("/");

@@ -12,6 +12,8 @@ route.get(
     IS_ADMIN_ROUTE ? `/admin/${ADMIN_ROUTE}` : `/admin`,
 
     analyticsOn(
+        "Admin Homepage",
+
         (req, res, next) => {
             res.render("admin/", { client_id: process.env.CLIENT_ID });
         }
