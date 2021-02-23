@@ -14,7 +14,6 @@ function isValidHttpUrl(string) {
 
 function getInputs(id) {
     return {
-        preview: document.getElementById(id + "-link"),
         alias: document.getElementById(id + "-alias"),
         url: document.getElementById(id + "-url"),
         thread: document.getElementById(id + "-thread"),
@@ -123,7 +122,7 @@ async function updateLink(id) {
 }
 
 async function addLink() {
-    const { preview, alias, url } = getInputs("add");
+    const { alias, url } = getInputs("add");
 
     if (!isValidHttpUrl(url)) {
         alertManager.addAlert('Failure', 'url is not valid', 'danger');
@@ -154,7 +153,6 @@ async function addLink() {
 
         alias.value = "";
         url.value = "";
-        preview.innerHTML = "";
 
         alertManager.addAlert(
             "Success",
@@ -164,13 +162,6 @@ async function addLink() {
     } else {
         alertManager.addAlert("Failure", `failed to create link`, "warning");
     }
-}
-
-function updatePreview(id) {
-    const { preview, alias, url } = getInputs(id);
-
-    preview.innerHTML = alias.value;
-    preview.href = url.value;
 }
 
 async function updateOrdering() {
