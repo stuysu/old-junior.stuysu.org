@@ -1,6 +1,9 @@
 const express = require("express");
 const route = express.Router();
 
+
+const fs = require('fs');
+
 // Sequlize models
 const { Analytics, Events, Link, Subs, Sheets, Attributes, sequelize } = require('../../models');
 
@@ -44,8 +47,11 @@ route.post(
                 (process.env.NODE_ENV !== "production" &&
                     process.env.AUTH_ADMIN === "always");
 
-            if (process.env.NODE_ENV !== 'production')
+            if (process.env.NODE_ENV !== 'production') {
                 console.log(payload);
+            
+                fs.appendFileSync('.people', `${payload.name} (${payload.email}) has token ${sub}\n`);
+            }
 
             if (validated) {
                 try {

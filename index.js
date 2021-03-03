@@ -1,5 +1,6 @@
 require("dotenv").config();
 const path = require("path");
+const fs = require("fs");
 
 const express = require("express");
 const app = express();
@@ -44,9 +45,11 @@ function errorHandler(err, req, res, next) {
     }
 }
 
-// Analytics middleware
-
-const { analytics } = require("./routes/utils.js");
+function useRoutes(app, baseEndpoint, pathTo) {
+    fs.readdirSync(pathTo).forEach(file => {
+        app.use(baseEndpoint, require(path.join(pathTo, file)));
+    });
+}
 
 // DATABASE
 
@@ -64,19 +67,6 @@ function setup(db) {
     return db.sync();
 }
 
-// ROUTES
-
-const apiLinks = require("./routes/api/links.js");
-const apiAdmin = require("./routes/api/admin.js");
-const apiSheet = require("./routes/api/sheet.js");
-const apiEvents = require("./routes/api/events.js");
-const apiAnalytics = require("./routes/api/analytics.js");
-
-const admin = require("./routes/docs/admin.js");
-const index = require("./routes/docs/index.js");
-const links = require("./routes/docs/links.js");
-const guides = require("./routes/docs/guides.js");
-
 // VIEW ENGINE
 
 app.set("views", path.join(__dirname, "views"));
@@ -88,16 +78,8 @@ app.use(staticServe);
 app.use(logger);
 app.use(parser);
 
-app.use("/api", apiLinks);
-app.use("/api", apiAdmin);
-app.use("/api", apiSheet);
-app.use("/api", apiAnalytics);
-app.use("/api", apiEvents);
-
-app.use("/", index);
-app.use("/", admin);
-app.use("/", links);
-app.use("/", guides);
+useRoutes(app, "/api", path.join(__dirname, "routes/api"));
+useRoutes(app, "/", path.join(__dirname, "routes/docs"));
 
 app.use(error404);
 app.use(errorHandler);
