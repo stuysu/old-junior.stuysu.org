@@ -1,0 +1,8 @@
+.centered {
+    width: 50vw;
+    margin: 0 auto;
+    text-align: center;
+}
+.centered div {
+    margin: 15px 0;
+}
