@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             date : {
-                type: DataTypes.DATE
+                type: DataTypes.INTEGER
             },
 
             description : {
@@ -29,17 +29,11 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             url : {
-                type: DataTypes.TEXT,
-                validate : {
-                    isUrl: true
-                }
+                type: DataTypes.TEXT
             },
 
             poster : {
-                type: DataTypes.TEXT,
-                validate : {
-                    isUrl: true
-                }
+                type: DataTypes.TEXT
             }
 
         },
