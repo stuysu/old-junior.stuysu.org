@@ -20,11 +20,6 @@
     <h3>Events:</h3>
 
     <%
-        /*
-        i might as well just do this is in the Node.js code
-        */
-
-
         function offsetDate(date, hours) {
             date.setTime(date.getTime() + (hours*60*60*1000));
         }
@@ -66,23 +61,20 @@
         }
     %>
 
-    <% for (let event of events) { %>
-        <div class="event" id="event-<%= event.id %>">
+    <div class="event" id="event-<%= event.id %>">
 
-            <%
-                let d = new Date(event.date);
-                offsetDate(d, +0);
-            %>
+        <%
+            let d = new Date(event.date);
+            offsetDate(d, +0);
+        %>
 
-            <p><a href="/events/<%= event.title %>"><%= event.title %></a></p>
-            <p><a target="_blank" href="<%= event.url %>">See more here...</a></p>
-            <p><%= getDateLine(d) %> <%= getTimeLine(d) %></p>
-            <p><%= getShortenedDescription(event.description, 25); %></p>
-            <!-- <p class="description" data-raw-text="<%= event.description %>">Loading long description...</p> -->
-            <img height="300px" src="<%= event.poster %>" />
+        <h3><a href="/events/<%= event.title %>"><%= event.title %></a></h3>
+        <p><a target="_blank" href="<%= event.url %>">See more here...</a></p>
+        <p><%= getDateLine(d) %> <%= getTimeLine(d) %></p>
+        <p class="description" data-raw-text="<%= event.description %>">Loading long description...</p>
+        <img height="600px" src="<%= event.poster %>" />
 
-        </div>
-    <% } %>
+    </div>
     
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>

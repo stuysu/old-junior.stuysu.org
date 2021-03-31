@@ -13,7 +13,6 @@ route.get(
         async (req, res, next) => {
             try {
                 let events = await Events.findAll();
-                console.log(events);
 
                 res.render('docs/events.ejs', { events : events });
 
@@ -23,5 +22,26 @@ route.get(
         }
     )
 );
+
+route.get(
+    "/events/:eventTitle",
+
+    analyticsOn(
+        "Events",
+
+        async (req, res, next) => {
+            console.log(`query parameters: ${req.params.eventTitle}`);
+
+            try {
+                let events = await Events.findAll({where: { title: req.params.eventTitle }});
+
+                res.render('docs/one-event.ejs', { event : events[0] });
+
+            } catch (e) {
+                next(CreateError(400, err));
+            }
+        }
+    )
+)
 
 module.exports = route;
