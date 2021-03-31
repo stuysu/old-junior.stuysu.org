@@ -55,6 +55,10 @@
 
             return `${hours}:${minutes} ${ofDay}`;
         }
+
+        function getShortenedDescription(str, length) {
+            return str.substring(0, length) + '...';
+        }
     %>
 
     <% for (let event of events) { %>
@@ -68,7 +72,8 @@
             <p><%= event.title %></p>
             <p><%= getDateLine(d) %></p>
             <p><%= getTimeLine(d) %></p>
-            <p class="description" data-raw-text="<%= event.description %>">Loading...</p>
+            <p><%= getShortenedDescription(event.description, 25); %></p>
+            <p class="description" data-raw-text="<%= event.description %>">Loading long description...</p>
             <p><a target="_blank" href="<%= event.url %>">See more here...</a></p>
             <img height="300px" src="<%= event.poster %>" />
 
@@ -83,6 +88,7 @@
 
             for (let description of descriptions) {
                 description.innerHTML = marked(description.getAttribute('data-raw-text'));
+                description.setAttribute('data-raw-text', '');
             }
         }
 

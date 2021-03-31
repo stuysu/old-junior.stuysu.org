@@ -210,7 +210,8 @@ function addEventToPage(id, title, date, description, url, poster) {
 	var event = {id, title, date, description, url, poster};
     
     let out = `
-    <tr id="${event.id}-thread-e"> 
+<tr id="${event.id}-thread-e"> 
+
     <td>
         <input type="text" placeholder="Title..." class="form-control" id="${event.id}-title-e" value="${ event.title }" oninput="updatePreviewEvent('${ event.id }')" />
         <input type="datetime-local" class="form-control" id="${event.id}-date-e" value="${ event.date }" />
@@ -222,15 +223,15 @@ function addEventToPage(id, title, date, description, url, poster) {
     </td>
 
     <td>
-        <textarea type="text" class="form-control" id="${event.id}-description-e"">${ event.description }
-        </textarea>
+        <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="${event.id}-description-e"">${event.description}</textarea>
     </td>
 
     <td>
         <button class="btn btn-primary" onclick="updateEvent('${ event.id }')">Update</button>
         <button class="btn btn-danger" onclick="removeEvent('${ event.id }')">&times;</button>
     </td>
-    </tr>
+
+</tr>
     `;
 
     console.log(out);
