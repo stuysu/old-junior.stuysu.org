@@ -18,10 +18,12 @@ module.exports = (sequelize, DataTypes) => {
 
             title : {
                 type: DataTypes.TEXT,
+                allowNull: false
             },
 
             date : {
-                type: DataTypes.INTEGER
+                type: DataTypes.INTEGER,
+                allowNull: false
             },
 
             description : {

@@ -19,7 +19,7 @@ function validateLink(link) {
     // return (removeSpaces(link) === '') ? null : link;
 
     let cleaned = removeSpaces(link);
-    let output = (cleaned === '') ? null : link;
+    let output = (cleaned === '') ? undefined : link;
 
     console.log(output);
     return output;
@@ -51,7 +51,7 @@ function getDate(dateFromSql) {
 function getBody(id, title, dateElement, description, url, poster) {
     return JSON.stringify({
         id: id,
-        title: title,
+        title: validateLink(title),
         date: getTimestamp(dateElement),
         description: description,
         url: validateLink(url),
