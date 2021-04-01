@@ -25,7 +25,6 @@ async function removeLink(id) {
     const { thread } = getInputs(id);
 
     thread.remove();
-    reorderHtml();
 
     let response = await fetch("/api/links/" + id, {
         method: "DELETE",
@@ -193,16 +192,6 @@ async function updateOrdering() {
 
     alertManager.addAlert("Success", "saved the ordering of the links",  "success");
 
-}
-
-function reorderHtml() {
-    const links = getLinks();
-
-    let o = 0;
-    for (let link of links) {
-        link.setAttribute('data-order', o);
-        ++o;
-    }
 }
 
 function getLinks() {
