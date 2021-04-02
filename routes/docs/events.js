@@ -14,7 +14,8 @@ route.get(
             try {
                 let events = await Events.findAll();
 
-                res.render('docs/events.ejs', { events : events });
+                // res.render('docs/events.ejs', { events : events });
+                res.redirect("/");
 
             } catch (e) {
                 next(CreateError(400, err));
@@ -23,6 +24,7 @@ route.get(
     )
 );
 
+/*
 route.get(
     "/events/:eventTitle",
 
@@ -43,5 +45,7 @@ route.get(
         }
     )
 )
+
+*/
 
 module.exports = route;
