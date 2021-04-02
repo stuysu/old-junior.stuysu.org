@@ -80,7 +80,7 @@ router.get(
                 }
 
                 if (req.query.render === "true") {
-                    res.render("docs/partials/guide-partial", {
+                    res.render("docs-old/partials/guide-partial", {
                         guides: sheets,
                     });
                 } else {
@@ -143,7 +143,7 @@ router.get(
                 }
 
                 if (req.query.render === "true") {
-                    res.render("docs/partials/guide-partial", {
+                    res.render("docs-old/partials/guide-partial", {
                         guides: sheets,
                     });
                 } else {

@@ -14,8 +14,7 @@ route.get(
             try {
                 let events = await Events.findAll();
 
-                // res.render('docs/events.ejs', { events : events });
-                res.redirect("/");
+                res.render('docs-old/events.ejs', { events : events });
 
             } catch (e) {
                 next(CreateError(400, err));
@@ -24,7 +23,6 @@ route.get(
     )
 );
 
-/*
 route.get(
     "/events/:eventTitle",
 
@@ -37,7 +35,7 @@ route.get(
             try {
                 let events = await Events.findAll({where: { title: req.params.eventTitle }});
 
-                res.render('docs/one-event.ejs', { event : events[0] });
+                res.render('docs-old/one-event.ejs', { event : events[0] });
 
             } catch (e) {
                 next(CreateError(400, err));
@@ -45,7 +43,5 @@ route.get(
         }
     )
 )
-
-*/
 
 module.exports = route;

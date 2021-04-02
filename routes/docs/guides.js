@@ -11,8 +11,7 @@ route.get(
         "Study Guides",
 
         async (req, res, next) => {
-            // res.render('docs/guides.ejs');
-            res.redirect("/");
+            res.render('docs-old/guides.ejs');
         }
     )
 );
