@@ -1,7 +1,9 @@
 <br>
-New links you add appear at the end, not in the order that they will appear on the website. Click 'Save Order' to fix this and to save the order of the links at any time.
+
+Click a link to modify or delete it. Drag any link over the link you want it to swap places with. (Drag and drop reordering is a WIP)
+
 <br>
-<button class="btn btn-success" onclick="updateOrdering()">Save Order</button>
+<br>
 
 <table id="links-table" class="table table-striped table-dark">
     <thead>
@@ -10,35 +12,42 @@ New links you add appear at the end, not in the order that they will appear on t
             <th scope="col">Url</th>
             <th scope="col">Confirm</th>
             <th scope="col">Delete</th>
-            <th scope="col">Reorder</th>
         </tr>
     </thead>
-    <tbody id='main-links'>
-        <% let order = 0 %>
-        <% for (let link of links) { %>
-            <tr id="<%=link.id%>-thread" data-link-id="<%= link.id %>" data-order="<%= order %>"> 
+    
+    <tbody>
+        <td><input type="text" class="form-control" id="link-alias-input" placeholder="Click a link to modify..." disabled=true /></td>
+        <td><input type="text" class="form-control" id="link-url-input" placeholder="Click a link to modify..." disabled=true /></td> 
+        <td><button class="btn btn-primary" onclick="updateLink()">Update</button></td> 
+        <td><button class="btn btn-danger" onclick="removeLink()">&times;</button></td>
+    </tbody>
 
-                <td><input type="text" class="form-control" id="<%=link.id%>-alias" value="<%= link.alias %>" /></td>
-                <td><input type="text" class="form-control" id="<%=link.id%>-url" value="<%= link.url %>" /></td> 
-                <td id="<%=link.id%>-update"><button class="btn btn-primary" onclick="updateLink('<%= link.id %>')">Update</button></td> 
-                <td id="<%=link.id%>-remove"><button class="btn btn-danger" onclick="removeLink('<%= link.id %>')">&times;</button></td>
-                <td id="<%=link.id%>-reorder">
-                    <button class="btn btn-info" onclick="moveLink(-1, '<%= link.id %>')">&uarr;</button> 
-                    <button class="btn btn-warning" onclick="moveLink(+1, '<%= link.id %>')">&darr;</button> 
-                </td>
-            </tr>
-            <% order++; %>
-        <% } %>
-	</tbody>
-	<tbody>
-		<tr>
-            
-            <td><input type="text" class="form-control" id="add-alias" placeholder="New Link Alias" value="" /></td>
-            <td><input type="text" class="form-control" id="add-url" placeholder="New Link Alias" value="" /></td> 
-            <td id="add-update"><button class="btn btn-success" onclick="addLink()">Add</button></td> 
-            <td id="add-remove"><span></span></td>
-            <td id="add-reorder"><span></span></td>
-
-		</tr>
+    <tbody>
+        <td><input type="text" class="form-control" id="link-alias-add" placeholder="New link alias..." /></td>
+        <td><input type="text" class="form-control" id="link-url-add" placeholder="New link url..." /></td> 
+        <td><button class="btn btn-success" onclick="addLink()">Add</button></td> 
+        <td><button class="btn btn-warning" onclick="clearLink()">Clear</button></td>
     </tbody>
 </table>
+
+<ul id="link-manager">
+
+    <% for (let link of links) { %>
+        
+        <li 
+            data-link-id="<%= link.id %>" 
+            id="link-<%= link.id %>" 
+            draggable="true" 
+            class="link draggable"
+
+            data-alias="<%= link.alias %>"
+            data-url="<%= link.url %>"
+        >
+        
+            <%= link.alias %> (<span><%= link.url %></span>)
+        
+        </li>
+
+    <% } %>
+
+</ul>
