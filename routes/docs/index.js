@@ -9,7 +9,12 @@ route.get(
         "Home Page",
 
         async (req, res, next) => {
-            res.redirect("/links");
+            
+            res.render('docs/', { 
+                title: 'Home',
+                isHomepage: true
+            });
+
         }
     )
 );
