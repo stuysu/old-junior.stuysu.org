@@ -12,5 +12,5 @@
 .small {
     display: block;
     font-size: 50%;
-    font-style: italic;
+    /* font-style: italic; */
 }

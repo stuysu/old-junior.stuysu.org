@@ -30,10 +30,8 @@ function getQuery() {
     return queryChooser.value;
 }
 
-function getSheetHtml(sheet, firstLoad) {
+function getSheetHtml(sheet, nClass) {
     const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-
-    let nClass = !firstLoad ? "no-fade-in" : "";
 
     let html = `
         <td class='study-img ${nClass}' >
@@ -44,8 +42,10 @@ function getSheetHtml(sheet, firstLoad) {
 
     for (let option of [ 'subject', 'teacher', 'author' ]) {
         if (sheet[option]) {
-            html += `<span class='small'>${capitalize(option)}: ${sheet[option]}</span>`;
+            // html += `<span class='small'>${capitalize(option)}: ${sheet[option]}</span>`;
+            html += `<span class='small'>${sheet[option]}</span>`;
         }
+
     }
 
     html += `
@@ -65,6 +65,7 @@ async function fillSearches(firstLoad = false) {
     );
 
     let html = '';
+    let nClass = !firstLoad ? "no-fade-in" : "";
 
     if (result.length != 0) {
 
@@ -78,7 +79,7 @@ async function fillSearches(firstLoad = false) {
             
             let sheet = result[i];
             
-            html += getSheetHtml(sheet, firstLoad);
+            html += getSheetHtml(sheet, nClass);
         }
 
     } else {
