@@ -1,0 +1,16 @@
+.no-fade-in {
+    opacity: 1 !important;
+    animation: none !important;
+}
+
+/*
+.study-img:hover, .study-img:focus {
+    transform: translateY(-1%) scale(1.01);
+}
+*/
+
+.small {
+    display: block;
+    font-size: 50%;
+    font-style: italic;
+}
