@@ -11,6 +11,21 @@ function getInputsEvent(id) {
     };
 }
 
+function removeSpaces(str) {
+    return str.replace(/\s+/g, '');
+}
+
+function validateLink(link) {
+    // return (removeSpaces(link) === '') ? null : link;
+
+    let cleaned = removeSpaces(link);
+    let output = (cleaned === '') ? undefined : link;
+
+    console.log(output);
+    return output;
+
+}
+
 function setCalendarTime(id, time) {
     const { date } = getInputsEvent(id);
     let tmp = new Date(time).toISOString();
@@ -19,8 +34,29 @@ function setCalendarTime(id, time) {
     date.value = tmp;
 }
 
+// gets a timestamp (storable in database) from a js date
 function getTimestamp(dateElement) {
     return new Date(dateElement.value).getTime();
+}
+
+// also in admin/responses/events.ejs
+// gets a formatted string from a timestamp 
+function getDate(dateFromSql) {
+    tmp = new Date(dateFromSql);
+    tmp.setHours(tmp.getHours() - 4);
+    tmp = tmp.toISOString();
+    return tmp.substring(0, tmp.length - 1);
+}
+
+function getBody(id, title, dateElement, description, url, poster) {
+    return JSON.stringify({
+        id: id,
+        title: validateLink(title),
+        date: getTimestamp(dateElement),
+        description: description,
+        url: validateLink(url),
+        poster: validateLink(poster)
+    });
 }
 
 async function removeEvent(id) {
@@ -44,21 +80,13 @@ async function removeEvent(id) {
 
     // if response.id is undefined, response failed
     if (response.id) {
-
         if (response.deleted === false) {
-
             alertManager.addAlert('Failure', 'did not find an event to delete', 'secondary');
-        
         } else {
-
             alertManager.addAlert('Success', `deleted event`, 'warning');
-
         }
-
     } else {
-
         alertManager.addAlert('Failure', `received an error from the server`, "danger");
-    
     }
 
 }
@@ -76,14 +104,14 @@ async function updateEvent(id) {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        body: JSON.stringify({
-            id: id,
-            title: title.value,
-            date: getTimestamp(date),
-            description: description.value,
-            url: url.value,
-            poster: poster.value
-        })
+        body: getBody(
+            id, 
+            title.value, 
+            date, 
+            description.value, 
+            url.value, 
+            poster.value
+        )
     });
 
     response = await response.json(); 
@@ -95,7 +123,9 @@ async function updateEvent(id) {
     } else {
 
 
-        if (response.found && (response.updatedTitle || response.updatedDate || response.updatedDescription || response.updatedUrl || response.updatedPoster)) {
+        if (response.found && 
+            (response.updatedTitle || response.updatedDate || response.updatedDescription || response.updatedUrl || response.updatedPoster)
+        ) {
             let changedMessage = '';
             let comma = false;
             changedMessage += (response.updatedTitle ? (`"${response.old.title}" to "${response.title}"`) : "");
@@ -131,13 +161,14 @@ async function addEvent() {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        body: JSON.stringify({
-            title: title.value,
-            date: getTimestamp(date),
-            description: description.value,
-            url: url.value,
-            poster: poster.value
-        })
+        body: getBody(
+            undefined, 
+            title.value, 
+            date, 
+            description.value, 
+            url.value, 
+            poster.value
+        )
     });
 
     response = await response.json();
@@ -158,7 +189,6 @@ async function addEvent() {
         description.value = '';
         url.value = '';
         poster.value = '';
-        preview.innerHTML = '';
     
         alertManager.addAlert('Success', `created event "${response.title}"`, "success");
 
@@ -170,30 +200,41 @@ async function addEvent() {
 
 }
 
-function updatePreviewEvent(id) {
-    const { preview, title, url } = getInputsEvent(id);
-
-    preview.innerHTML = title.value;
-    preview.href = url.value;
-} 
-
 function addEventToPage(id, title, date, description, url, poster) {
+
+    // validate date
+    date = getDate(date);
 
     // get table body
     const mainLinks = document.getElementById('main-events');
 	var event = {id, title, date, description, url, poster};
-	console.log(event);
-	mainLinks.innerHTML +=
-	eval('`' +
-	('<tr id="<%=event.id%>-thread-e"> \
-        <th scope="col"><a id="<%=event.id%>-link-e" href="<%= event.url %>" target="_blank"><%= event.title %></a></th> \
-        <td><input type="text" class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
-        <td><input type="datetime-local" class="form-control" id="<%=event.id%>-date-e" value="<%= event.date %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
-        <td><input type="text" class="form-control" id="<%=event.id%>-description-e" value="<%= event.description %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
-        <td><input type="text" class="form-control" id="<%=event.id%>-url-e" value="<%= event.url %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
-        <td><input type="text" class="form-control" id="<%=event.id%>-poster-e" value="<%= event.poster %>" oninput="updatePreviewEvent(\'<%= event.id %>\')" /></td> \
-        <td id="<%=event.id%>-update-e"><button class="btn btn-primary" onclick="updateEvent(\'<%= event.id %>\')">Update</button></td> \
-        <td id="<%=event.id%>-remove-e"><button class="btn btn-danger" onclick="removeEvent(\'<%= event.id %>\')">&times;</button></td> \
-    </tr>').replaceAll('<%=', '${').replaceAll('%>','}') +
-	'`');
+    
+    let out = `
+<tr id="${event.id}-thread-e"> 
+
+    <td>
+        <input type="text" placeholder="Title..." class="form-control" id="${event.id}-title-e" value="${ event.title }" oninput="updatePreviewEvent('${ event.id }')" />
+        <input type="datetime-local" class="form-control" id="${event.id}-date-e" value="${ event.date }" />
+    </td>
+
+    <td>
+        <input type="text" class="form-control" placeholder="Speical redirect..." id="${event.id}-url-e" value="${ event.url }" />
+        <input type="text" class="form-control" placeholder="Poster image..." id="${event.id}-poster-e" value="${ event.poster }" />
+    </td>
+
+    <td>
+        <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="${event.id}-description-e"">${event.description}</textarea>
+    </td>
+
+    <td>
+        <button class="btn btn-primary" onclick="updateEvent('${ event.id }')">Update</button>
+        <button class="btn btn-danger" onclick="removeEvent('${ event.id }')">&times;</button>
+    </td>
+
+</tr>
+    `;
+
+    console.log(out);
+
+	mainLinks.innerHTML += out;
 }

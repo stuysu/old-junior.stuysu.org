@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        .event {
+            border: 3px solid black;
+            margin: 10px 0;
+        }
+
+    </style>
+
+    <title>Events</title>
+</head>
+<body onload="markdownify()">
+    
+    <h3>Events:</h3>
+
+    <%
+        function offsetDate(date, hours) {
+            date.setTime(date.getTime() + (hours*60*60*1000));
+        }
+
+        function leadingZero(s) {
+            if (s < 10)
+                return `0${s}`;
+            return `${s}`;
+        }
+
+        function getDateLine(eventDate) {
+            let month = eventDate.getMonth() + 1;
+            let date = eventDate.getDate();
+            let year = eventDate.getFullYear();
+            
+            return `${month}/${date}/${year}`;
+        }
+
+        function getTimeLine(eventDate) {
+            let hours = eventDate.getHours();
+
+            let ofDay = hours >= 12 ? 'PM' : 'AM';
+
+            // validate hours (this is so stupid)
+            if (hours > 12) {
+                hours -= 12;
+            } else if (hours == 0) {
+                hours = 12;
+            }
+
+            let minutes = leadingZero(eventDate.getMinutes());
+            
+
+            return `${hours}:${minutes} ${ofDay}`;
+        }
+
+        function getShortenedDescription(str, length) {
+            return str.substring(0, length) + '...';
+        }
+    %>
+
+    <div class="event" id="event-<%= event.id %>">
+
+        <%
+            let d = new Date(event.date);
+            offsetDate(d, +0);
+        %>
+
+        <h3><a href="/events/<%= event.title %>"><%= event.title %></a></h3>
+        <p><a target="_blank" href="<%= event.url %>">See more here...</a></p>
+        <p><%= getDateLine(d) %> <%= getTimeLine(d) %></p>
+        <p class="description" data-raw-text="<%= event.description %>">Loading long description...</p>
+        <img height="600px" src="<%= event.poster %>" />
+
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+
+        function markdownify() {
+            let descriptions = document.querySelectorAll(".event .description");
+
+            for (let description of descriptions) {
+                description.innerHTML = marked(description.getAttribute('data-raw-text'));
+                description.setAttribute('data-raw-text', '');
+            }
+        }
+
+    </script>
+
+</body>
+</html>

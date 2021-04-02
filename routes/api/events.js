@@ -36,8 +36,8 @@ router.post(
     '/events',
     (req, res, next) => {
 
-        if (req.body.title === undefined || req.body.url   === undefined) {
-            next(CreateError(400, 'Excpected title and url, only one or neither found'));
+        if (req.body.title === undefined || req.body.date   === undefined) {
+            next(CreateError(400, 'Excpected title and date, only one or neither found'));
         } 
 
         Events.create({

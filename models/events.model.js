@@ -18,10 +18,12 @@ module.exports = (sequelize, DataTypes) => {
 
             title : {
                 type: DataTypes.TEXT,
+                allowNull: false
             },
 
             date : {
-                type: DataTypes.DATE
+                type: DataTypes.INTEGER,
+                allowNull: false
             },
 
             description : {
@@ -29,17 +31,11 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             url : {
-                type: DataTypes.TEXT,
-                validate : {
-                    isUrl: true
-                }
+                type: DataTypes.TEXT
             },
 
             poster : {
-                type: DataTypes.TEXT,
-                validate : {
-                    isUrl: true
-                }
+                type: DataTypes.TEXT
             }
 
         },
