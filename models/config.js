@@ -7,6 +7,8 @@ const SEQUELIZE_URL =
         ? SQLITE_URL
         : process.env.DATABASE_URL || SQLITE_URL;
 
+const LOGGING = process.env.LOG || false;
+
 module.exports = {
     development: {
         url: SEQUELIZE_URL,
@@ -16,6 +18,7 @@ module.exports = {
         },
         ssl: true,
         native: true,
+        logging: LOGGING
     },
     production: {
         url: SEQUELIZE_URL,
@@ -31,5 +34,6 @@ module.exports = {
         },
         native: true,
         ssl: true,
+        logging: LOGGING
     },
 };
