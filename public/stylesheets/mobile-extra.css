@@ -75,3 +75,18 @@ body {
 .mobile-event-title {
     font-size: 300% !important;
 }
+
+.container {
+    padding-bottom: 8vw;
+}
+
+#head {
+    text-align: center;
+}
+
+.footer {
+    background: var(--btn-color);
+    color: var(--foreground);
+    font-size: small;
+    transition: all 0.4s ease-in;
+}
