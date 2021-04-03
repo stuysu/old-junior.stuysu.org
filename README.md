@@ -23,6 +23,8 @@ The sophomore student union website.
 
 ### project
 
+* add error page
+* remove `docs-old/` folder
 * add newsletter
 * make sure that in development, the app can be run without google api
 * document environemnt variables
