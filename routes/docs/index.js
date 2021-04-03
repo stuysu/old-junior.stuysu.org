@@ -1,8 +1,10 @@
 const express = require("express");
-const { CreateError, analyticsOn, isMobile } = require("../utils");
+const { CreateError, analyticsOn, isMobile, addModule }  = require("../utils");
 const route = express.Router();
 
 const { Events } = require("./../../models");
+
+const datefuncs = require("../datefuncs");
 
 const MAX_EVENTS = 5;
 
@@ -38,7 +40,7 @@ route.get(
 
             }
 
-            res.render('docs/', {
+            res.render('docs/', addModule({
 
                 title: 'Home',
                 isHomepage: true,
@@ -49,7 +51,7 @@ route.get(
 
                 isMobile: isMobile(req)
 
-            });
+            }, datefuncs));
 
         }
     )

@@ -1,10 +1,12 @@
 const express = require("express");
-const { CreateError, analyticsOn, isMobile } = require("../utils");
+const { CreateError, analyticsOn, isMobile, addModule } = require("../utils");
 const route = express.Router();
 
 const marked = require('marked');
 
 const { Events } = require("./../../models");
+
+const datefuncs = require("../datefuncs.js");
 
 route.get(
     "/events/:id",
@@ -17,26 +19,22 @@ route.get(
 
                 let events = await Events.findAll({where: { id: req.params.id }});
                 if (events.length === 0) {
-                    // the error handler should do this but whatever
-                    res.render('docs-old/error',{ error: {
-                        status: 400, 
-                        message: `Event with ${req.params.id} does not exist`
-                    }});
+                    throw new Error(`Event with ${req.params.id} does not exist`);
                 }
 
                 let event = events[0];
 
-                res.render('docs/', {
+                res.render('docs/', addModule({
                     title: event.title,
                     page: 'an-event',
                     event: event,
                     marked: marked,
                     
                     isMobile: isMobile(req)
-                });
+                }, datefuncs));
 
             } catch (e) {
-                next(CreateError(400, err));
+                next(CreateError(400, e));
             }
         }
     )

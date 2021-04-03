@@ -35,6 +35,12 @@ const isMobile = req => {
     return req.originalUrl.startsWith('/mobile');
 };
 
+const addModule = (object, m) => {
+    for (let func in m) 
+        object[func] = m[func];
+    return object;
+};
+
 module.exports = {
     CreateError: (__code, __error) => {
         return {
@@ -45,6 +51,6 @@ module.exports = {
     },
 
     analyticsOn : analyticsOn,
-
-    isMobile : isMobile
+    isMobile : isMobile,
+    addModule : addModule
 };
