@@ -19,7 +19,7 @@ route.get(
 
                 let events = await Events.findAll({where: { id: req.params.id }});
                 if (events.length === 0) {
-                    throw new Error(`Event with ${req.params.id} does not exist`);
+                    next(CreateError(404, new Error(`Event with id ${req.params.id} does not exist`)));
                 }
 
                 let event = events[0];
