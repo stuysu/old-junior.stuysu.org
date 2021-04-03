@@ -202,6 +202,8 @@ async function addEvent() {
 
 function addEventToPage(id, title, date, description, url, poster) {
 
+    const validate = (e) => e ? e : '';
+
     // validate date
     date = getDate(date);
 
@@ -218,12 +220,12 @@ function addEventToPage(id, title, date, description, url, poster) {
     </td>
 
     <td>
-        <input type="text" class="form-control" placeholder="Speical redirect..." id="${event.id}-url-e" value="${ event.url }" />
-        <input type="text" class="form-control" placeholder="Poster image..." id="${event.id}-poster-e" value="${ event.poster }" />
+        <input type="text" class="form-control" placeholder="Speical redirect..." id="${event.id}-url-e" value="${ validate(event.url) }" />
+        <input type="text" class="form-control" placeholder="Poster image..." id="${event.id}-poster-e" value="${ validate(event.poster) }" />
     </td>
 
     <td>
-        <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="${event.id}-description-e"">${event.description}</textarea>
+        <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="${event.id}-description-e"">${validate(event.description)}</textarea>
     </td>
 
     <td>

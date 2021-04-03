@@ -92,54 +92,50 @@ async function removeSheet(id) {
 
 async function addSheet() {
     const { url, title, subject, teacher, author } = getSheetInfo('add');
-    if (isValidHttpUrl(url)) {
-        let response = await fetch("/api/sheets", {
-            method: "POST",
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify({
-                url: url.value,
-                title: title.value,
-                subject: subject.value,
-                teacher: teacher.value,
-                author: author.value
-            })
-        });
+    let response = await fetch("/api/sheets", {
+        method: "POST",
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify({
+            url: url.value,
+            title: title.value,
+            subject: subject.value,
+            teacher: teacher.value,
+            author: author.value
+        })
+    });
 
-        response = await response.json();
+    response = await response.json();
 
-        if (response.created) {
+    if (response.created) {
 
-            console.log(response);
+        console.log(response);
 
-            // try to sync html
-            addSheetToPage(
-                response.id,
-                response.url,
-                response.title,
-                response.subject,
-                response.teacher,
-                response.author
-            );
+        // try to sync html
+        addSheetToPage(
+            response.id,
+            response.url,
+            response.title,
+            response.subject,
+            response.teacher,
+            response.author
+        );
 
-            // reset all input boxes
-            let tmp = getSheetInfo('add');
-            for (const type in tmp)
-                tmp[type].value = '';
+        // reset all input boxes
+        let tmp = getSheetInfo('add');
+        for (const type in tmp)
+            tmp[type].value = '';
 
-            // send alert
-            alertManager.addAlert('Success', 'created study sheet!', 'success');
-        } else {
-            alertManager.addAlert('Failure', 'failed to create study sheet', "warning");
-        }
+        // send alert
+        alertManager.addAlert('Success', 'created study sheet!', 'success');
     } else {
-        alertManager.addAlert('Failure', 'study sheet url is not a valid url', 'warning');
+        alertManager.addAlert('Failure', 'failed to create study sheet', "warning");
     }
 }
 

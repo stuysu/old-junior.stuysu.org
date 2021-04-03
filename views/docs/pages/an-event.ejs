@@ -1,0 +1,63 @@
+<table id="main">
+    <tr>
+        <td>
+
+            <table class="content">
+
+                <% let date = new Date(event.date); %>
+
+                <tr>
+                
+
+                <td id="img">
+
+                    <% if (event.url) { %>
+                        <a target="_blank" id="#" href="<%= event.url %>">
+                    <% } %>
+
+                    <% if (event.poster) { %>
+                        <img src="<%= event.poster %>" />
+                    <% } else { %> 
+                        <img src="/images/default-event-poster.png" />
+                    <% } %>
+
+                    <% if (event.url) { %>
+                        </a>
+                    <% } %>
+                    
+                </td>
+
+                <td id="content-body">
+
+                    <a id="a" href="/events/<%= event.id %>"><h1><%= event.title %></h1></a>
+                    
+                    <br>
+                    <p><%= getDateLine(date) %> @ <%= getTimeLine(date) %></p>
+                    
+                    <br>
+                    <p>
+                    <% if (event.url) { %>
+                        <a style="color:inherit;" target="_blank" id="#" href="<%= event.url %>">Click to see more</a>
+                        |
+                    <% } %>
+                        <a style="color:inherit;" href="/">Go back</a>
+                    </p>
+
+                </td>
+
+                </tr>
+
+                <tr class="spacer"></tr>
+
+                <tr>
+                    <td colspan="2" class="full-description">
+                        <% if (event.description) { %>
+                            <%- marked(event.description) %>
+                        <% } %>
+                    <td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>

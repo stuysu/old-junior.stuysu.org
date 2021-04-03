@@ -14,9 +14,13 @@ const { CreateError } = require("../utils");
 router.get(
     "/sheets",
 
+    // i think i was on crack when i made this cause it's literally 3 
+    // very similar operations and i wrote all of them out for some reason
     async (req, res, next) => {
+
         try {
             if (req.query.id) {
+                
                 let sheet = await Sheets.findByPk(req.query.id);
                 if (req.query.with_keywords === "true") {
                     let keywords = await Attributes.findAll({
@@ -27,14 +31,10 @@ router.get(
                     sheet.keywords = keywords;
                 }
 
-                if (req.query.render === "true") {
-                    res.render("docs/partials/guide-partial", {
-                        guides: [sheet],
-                    });
-                } else {
-                    res.status(200).json(sheet ? sheet : {});
-                }
+                res.status(200).json(sheet ? sheet : {});
+            
             } else if (req.query.any) {
+
                 let orQuery = [];
 
                 // look away
@@ -79,26 +79,20 @@ router.get(
                     }
                 }
 
-                if (req.query.render === "true") {
-                    res.render("docs/partials/guide-partial", {
-                        guides: sheets,
-                    });
-                } else {
-                    res.status(200).json(sheets);
-                }
+                res.status(200).json(sheets);
+            
             } else {
                 // build up a where clause based on what was in the get request
                 let where = {};
 
                 // look away
-                if (req.query.title)
-                    where["title"] = { [Op.like]: `%${req.query.title}%` };
-                if (req.query.author)
-                    where["author"] = { [Op.like]: `%${req.query.author}%` };
-                if (req.query.teacher)
-                    where["teacher"] = { [Op.like]: `%${req.query.teacher}%` };
-                if (req.query.subject)
-                    where["subject"] = { [Op.like]: `%${req.query.subject}%` };
+
+                for (let searchType in req.query) {
+                    // everything else in req.query is a searchType 
+                    // or an error :D
+                    if (searchType !== 'with_keywords')
+                        where[searchType] = { [Op.like]: `%${req.query[searchType]}%` };              
+                }
 
                 let sheets = await Sheets.findAll({
                     where: where,
@@ -106,6 +100,7 @@ router.get(
 
                 // if a keyword is present, add it to th sheets (avoid duplicates)
                 if (req.query.keyword) {
+
                     let sheetIds = new Set();
                     // go by sheet id's because javascript equality is idk
                     sheets.forEach((sheet) => {
@@ -142,15 +137,11 @@ router.get(
                     }
                 }
 
-                if (req.query.render === "true") {
-                    res.render("docs/partials/guide-partial", {
-                        guides: sheets,
-                    });
-                } else {
-                    res.status(200).json(sheets);
-                }
+                res.status(200).json(sheets);
             }
+
         } catch (err) {
+            console.log("HELLO YOU LITTLE PIECE OF SHIT " + err);
             next(CreateError(400, err));
         }
     }
