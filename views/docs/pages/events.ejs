@@ -41,34 +41,30 @@ function getTimeLine(eventDate) {
 
     return `${hours}:${minutes} ${ofDay}`;
 }
+
+function generateDatemap(events) {
+    let datemap = new Map();
+    
+    for (let event of events) {
+        let date = new Date(event.date);
+        let dateline = getDateLine(date);
+
+        let dates = datemap.get(dateline);
+        if (dates === undefined) {
+            datemap.set(dateline, [ event ]);
+        } else {
+            dates.push(event);
+        }
+    }
+
+    return datemap;
+}
+
 %>
-
-
 
 <table id="main">
     <tr>
         <td class="event-list">
-
-            <%
-                function generateDatemap(events) {
-                    let datemap = new Map();
-                    
-                    for (let event of events) {
-                        let date = new Date(event.date);
-                        let dateline = getDateLine(date);
-        
-                        let dates = datemap.get(dateline);
-                        if (dates === undefined) {
-                            datemap.set(dateline, [ event ]);
-                        } else {
-                            dates.push(event);
-                        }
-                    }
-
-                    return datemap;
-                }
-
-            %>
 
             <% const datemap = generateDatemap(otherEvents) %>
 
@@ -101,32 +97,6 @@ function getTimeLine(eventDate) {
                 <% } %>
 
             </ul>
-
-            <!--
-            <ul>
-    
-                <li id="head">
-                    <h1>Important Dates</h1>
-                </li>
-                <li>
-                    <h1 id="date">01/23/2021</h1>
-                </br>
-                    <h1 id="title">Escape Room Signups Live!</h1>
-                    <p>
-                        Keep your visitors in the know. Want to make this content your own? Just add your images, text and links, or connect to data from your collection.
-                    </p>
-                </li>
-                <li>
-                    <h1 id="date">02/00/2021</h1>
-                </br>
-                    <h1 id="title">Did You Know? You Can Customize This Content</h1>
-                    <p>
-                        Keep your visitors in the know. Want to make this content your own? Just add your images, text and links, or connect to data from your collection.
-                    </p>
-                </li>
-            
-            </ul>
-            -->
 
         </td>
 

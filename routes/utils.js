@@ -31,6 +31,9 @@ const analyticsOn = (name, handler) => {
 
 };
 
+const isMobile = req => {
+    return req.originalUrl.startsWith('/mobile');
+};
 
 module.exports = {
     CreateError: (__code, __error) => {
@@ -42,4 +45,6 @@ module.exports = {
     },
 
     analyticsOn : analyticsOn,
+
+    isMobile : isMobile
 };

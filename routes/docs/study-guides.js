@@ -1,5 +1,5 @@
 const express = require("express");
-const { CreateError, analyticsOn } = require("../utils");
+const { CreateError, analyticsOn, isMobile } = require("../utils");
 const route = express.Router();
 
 route.get(
@@ -12,7 +12,9 @@ route.get(
             
             res.render('docs/', {
                 title: 'Study Guides',
-                page: 'study-guides'
+                page: 'study-guides',
+
+                isMobile: isMobile(req)
             });
        
         }

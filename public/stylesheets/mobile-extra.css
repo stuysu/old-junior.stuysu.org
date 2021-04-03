@@ -1,0 +1,77 @@
+body {
+    background-color: var(--btn-color);
+}
+
+
+.no-fade-in {
+    opacity: 1 !important;
+    animation: none !important;
+}
+
+#content-body a {
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+}
+#content-body a h1 {
+    font-size: 80% !important;
+}
+
+.event-description {
+    font-size: 60% !important;
+}
+
+.small {
+    display: block;
+    font-size: 50%;
+    /* font-style: italic; */
+}
+
+.dateline {
+    text-align: center;
+    font-size: 30% !important;
+}
+
+.dateline a {
+    text-decoration: none;
+    color: var(--foreground);
+}
+
+.dateline a[href]:hover {
+    text-decoration: underline;
+}
+
+
+.important-title a {
+    text-decoration: underline;
+    color: inherit;
+}
+
+.full-description ul {
+    margin: 1.5vw 0;
+    text-align: center;
+    list-style-position: inside;
+    color: var(--foreground);
+    /* font-size: 1.4vw; */
+}
+
+.full-description * {
+    color: var(--foreground);
+    font-size: 100%;
+}
+
+.full-description table, .full-description td, .full-description th {
+    border: 1px solid var(--foreground);
+    border-collapse: collapse;
+    padding: 20px;
+    margin: 10px auto;
+}
+
+.important-title-time {
+    font-size: 50%;
+    vertical-align: middle;
+}
+
+.mobile-event-title {
+    font-size: 300% !important;
+}

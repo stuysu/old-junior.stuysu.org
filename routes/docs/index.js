@@ -1,5 +1,5 @@
 const express = require("express");
-const { CreateError, analyticsOn } = require("../utils");
+const { CreateError, analyticsOn, isMobile } = require("../utils");
 const route = express.Router();
 
 const { Events } = require("./../../models");
@@ -45,7 +45,9 @@ route.get(
                 page: 'index',
 
                 events: upcomingEvents,
-                otherEvents: importantDates
+                otherEvents: importantDates,
+
+                isMobile: isMobile(req)
 
             });
 
