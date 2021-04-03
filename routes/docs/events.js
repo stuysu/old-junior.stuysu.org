@@ -16,6 +16,13 @@ route.get(
             try {
 
                 let events = await Events.findAll({where: { id: req.params.id }});
+                if (events.length === 0) {
+                    res.render('docs-old/error',{ error: {
+                        status: 400, 
+                        message: `Event with ${req.params.id} does not exist`
+                    }});
+                }
+
                 let event = events[0];
 
                 res.render('docs/', {

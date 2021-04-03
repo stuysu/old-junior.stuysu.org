@@ -1,3 +1,8 @@
+body {
+    background-color: var(--btn-color);
+}
+
+
 .no-fade-in {
     opacity: 1 !important;
     animation: none !important;
@@ -17,13 +22,18 @@
 
 p.dateline {
     text-align: center;
-    font-size: 95% !important;
+    font-size: 125% !important;
 }
 
 .dateline a {
     text-decoration: none;
-    color: lightslategray;
+    color: var(--foreground);
 }
+
+.dateline a[href]:hover {
+    text-decoration: underline;
+}
+
 
 .important-title a {
     text-decoration: underline;

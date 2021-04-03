@@ -80,6 +80,7 @@ app.use(parser);
 
 useRoutes(app, "/api", path.join(__dirname, "routes/api"));
 useRoutes(app, "/", path.join(__dirname, "routes/docs"));
+useRoutes(app, "/mobile", path.join(__dirname, "routes/docs"));
 
 app.use(error404);
 app.use(errorHandler);

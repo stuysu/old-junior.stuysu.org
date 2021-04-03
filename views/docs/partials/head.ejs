@@ -11,11 +11,27 @@
     <title><%= title %> | Sophomore Caucus</title>
 
     <script type="text/javascript" src="/javascripts/mobile-redirection.js"></script>
-    
+
     <script type="text/javascript">
-        SA.redirection_mobile ({
-            // mobile_url : "https://pserb.github.io",
-        });
+
+        function getPageLocation() {
+            return window.location.href;
+        }
+
+        function convertToMobile(str) {
+            console.table(document.location);
+            let mobile = document.location.host + '/mobile' + document.location.pathname;
+            alert("mobile is " + mobile);
+            return mobile;
+        }
+
+        if (!getPageLocation().includes('/mobile')) {
+            SA.redirection_mobile ({
+                mobile_prefix : "",
+                mobile_url : convertToMobile(getPageLocation())
+            });
+        }
+
    </script>
 
 </head>
