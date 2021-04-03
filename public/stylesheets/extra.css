@@ -14,3 +14,42 @@
     font-size: 50%;
     /* font-style: italic; */
 }
+
+p.dateline {
+    text-align: center;
+    font-size: 95% !important;
+}
+
+.dateline a {
+    text-decoration: none;
+    color: lightslategray;
+}
+
+.important-title a {
+    text-decoration: underline;
+    color: inherit;
+}
+
+.full-description ul {
+    margin: 1.5vw 0;
+    text-align: center;
+    list-style-position: inside;
+    color: var(--foreground);
+    font-size: 1.4vw;
+}
+
+.full-description * {
+    color: var(--foreground);
+    font-size: 1.4vw;
+}
+
+.full-description table, .full-description td, .full-description th {
+    border: 1px solid var(--foreground);
+    border-collapse: collapse;
+    padding: 1vw;
+}
+
+.important-title-time {
+    font-size: 50%;
+    vertical-align: middle;
+}

@@ -1,16 +1,23 @@
-It is best to use the date feature on chrome because it handles calendar-like input and time zones. (times are stored in +0 offset but are / should be loaded in EST time).
-
 <br>
+It is best to use the date feature on chrome because it handles calendar-like input.
+<br><br>
+It's probably best if you don't go crazy with the length of the event titles.
+<br><br>
+The events get a "shortened" description, which will display up to 200 characters. 
+
+<br><br>
+If you are using special characters (e.g. **bold**) keep in mind these will not be rendered in the
+shortened display, so use them after 200 characters.  
+
+<br><br>
 
 <table id="events-table" class="table table-striped table-dark">
     <thead>
         <tr>
             <th scope="col">Title / Date</th>
-            <!-- <th scope="col">Date</th> -->
             <th scope="col">PDF / Poster</th>
             <th scope="col">Description</th>
             <th scope="col">Update / Delete</th>
-            <!-- <th scope="col">Delete</th> -->
         </tr>
     </thead>
     <tbody id='main-events'>

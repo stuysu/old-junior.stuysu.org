@@ -2,40 +2,28 @@ const express = require("express");
 const { CreateError, analyticsOn } = require("../utils");
 const route = express.Router();
 
+const marked = require('marked');
+
 const { Events } = require("./../../models");
 
 route.get(
-    "/events",
+    "/events/:id",
 
     analyticsOn(
         "Events",
 
         async (req, res, next) => {
             try {
-                let events = await Events.findAll();
 
-                res.render('docs-old/events.ejs', { events : events });
+                let events = await Events.findAll({where: { id: req.params.id }});
+                let event = events[0];
 
-            } catch (e) {
-                next(CreateError(400, err));
-            }
-        }
-    )
-);
-
-route.get(
-    "/events/:eventTitle",
-
-    analyticsOn(
-        "Events",
-
-        async (req, res, next) => {
-            console.log(`query parameters: ${req.params.eventTitle}`);
-
-            try {
-                let events = await Events.findAll({where: { title: req.params.eventTitle }});
-
-                res.render('docs-old/one-event.ejs', { event : events[0] });
+                res.render('docs/', {
+                    title: event.title,
+                    page: 'an-event',
+                    event: event,
+                    marked: marked
+                });
 
             } catch (e) {
                 next(CreateError(400, err));
