@@ -37,3 +37,17 @@ darkModeToggle.addEventListener('click', () => {
     disableDarkMode(); 
   }
 });
+
+function getPreference() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function loadDarkmodePreference() {
+    if (getPreference()) {
+        enableDarkMode();
+    } else {
+        disableDarkMode();
+    }
+}
+
+loadDarkmodePreference();

@@ -1,6 +1,6 @@
 # sophomore.stuysu.org
 
-The sophomore student union website.
+The sophomore student union website. See [our frontend prototype](https://github.com/pserb/sophsu-web).
 
 ## todo
 
