@@ -100,22 +100,16 @@ class Period {
 
     }
 
+    compare(other) {
+        // whichever one starts first
+        return this.first.compare(other.first);
+    }
+
     toString() {
         return `${this.name} (${this.first} - ${this.second})`
     }
 
 }
-
-const PERIODS = [
-    new Period(new Time(00, 00), new Time(09, 10), 'Before school'),
-    new Period(new Time(09, 10), new Time(10, 05), 'Period 1 / 6'),
-    new Period(new Time(10, 15), new Time(11, 10), 'Period 2 / 7'),
-    new Period(new Time(11, 20), new Time(12, 15), 'Period 3 / 8'),
-    new Period(new Time(12, 25), new Time(13, 20), 'Period 4 / 9'),
-    new Period(new Time(13, 30), new Time(14, 25), 'Period 5 / 10'),
-    new Period(new Time(14, 30), new Time(14, 50), 'Office Hours'),
-    new Period(new Time(14, 50), new Time(23, 59), 'After School')
-];
 
 /**
  * takes in a time object and sorted list of periods.
@@ -131,7 +125,7 @@ const PERIODS = [
  * @param {Time} time 
  * @param {Period[]} periods 
  */
-function findPeriod(time, periods = PERIODS) {
+function findPeriod(time, periods) {
     // TODO: replace with binary search ??
 
     return findPeriodIterative(time, periods);
@@ -178,7 +172,7 @@ ${expected}
 `);
 }
 
-testFind(new Time(8, 05), [ PERIODS[0] ]);
-testFind(new Time(9, 10), [ PERIODS[0], PERIODS[1] ]);
-testFind(new Time(11, 15), [ PERIODS[2], PERIODS[3]] );
-testFind(Time.now(), [ 'the period now' ]);
+// testFind(new Time(8, 05), [ PERIODS[0] ]);
+// testFind(new Time(9, 10), [ PERIODS[1] ]);
+// testFind(new Time(11, 15), [ PERIODS[2], PERIODS[3]] );
+// testFind(Time.now(), [ 'the period now' ]);

@@ -1,0 +1,13 @@
+.bell-schedule {
+    padding-top: 2vw;
+    padding-left: 3vw;
+    padding-right: 3vw;
+
+    width: 100vw;
+
+    text-align: center;
+}
+
+.bell-schedule td {
+    /* background-color: black; */
+}
