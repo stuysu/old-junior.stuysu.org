@@ -55,22 +55,13 @@ class Time {
     }
 
     compare(other) {
-        // same hours
-        let sh = this.hours == other.hours;
-
-        // if equal (0)
-        if (sh && this.minutes == other.minutes) {
-            return 0;
+        // if the hours are the same, we must look at minutes
+        if (this.hours == other.hours) {
+            return Math.sign(this.minutes - other.minutes);
         }
 
-        // if this comes after (1)
-        if (this.hours > other.hours)
-            return 1;
-        if (sh && this.minutes > other.minutes) 
-            return 1;
-
-        // if this comes before (-1)
-        return -1;
+        // if hours are different, just compare them
+        return Math.sign(this.hours - other.hours);
     }
 
 }
@@ -190,4 +181,4 @@ ${expected}
 testFind(new Time(8, 05), [ PERIODS[0] ]);
 testFind(new Time(9, 10), [ PERIODS[0], PERIODS[1] ]);
 testFind(new Time(11, 15), [ PERIODS[2], PERIODS[3]] );
-testFind(Time.now(), [ 'unsure' ]);
+testFind(Time.now(), [ 'the period now' ]);
