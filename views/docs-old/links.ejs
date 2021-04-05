@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <link rel="icon" href="/images/stuy-sophomore-caucus.png">
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
     <link href="./stylesheets/old/index.css" rel="stylesheet">
     <link href="./stylesheets/old/links.css" rel="stylesheet">
+    
+    <!-- <link href="./stylesheets/old/link-colors.css" rel="stylesheet"> -->
+    <link href="./stylesheets/old/link-colors-2.css" rel="stylesheet">
+
+    <!-- <link href="./stylesheets/old/special-links.css" rel="stylesheet"> -->
+    <link href="./stylesheets/old/special-links-2.css" rel="stylesheet">
+    
     <title>Sophomore Caucus | Social Links</title>
 
 </head>
@@ -22,13 +31,54 @@
             Sophomore Caucus Links
         </div>
 
+        <ul id="links">
+
+            <% let logoHeight = 15; %>
+
+            <li id="condensed">
+                
+                <a target="_blank" href="https://www.instagram.com/sophomorecaucus/" class="link-anchor instagram special">
+                    <div class="link-item">
+                        <!-- Instagram -->
+                        <img height="<%= logoHeight %>px" src="/images/instagram.png" />
+                    </div>
+                </a>
+
+                <a target="_blank" href="https://www.facebook.com/StuySophCaucus" class="link-anchor facebook special">
+                    <div class="link-item">
+                        <!-- Facebook -->
+                        <img height="<%= logoHeight %>px" src="/images/facebook.png" />
+                    </div>
+                </a>
+
+                <a target="_blank" href="https://twitter.com/sophomorecaucus" class="link-anchor twitter special">
+                    <div class="link-item">
+                        <!-- Twitter -->
+                        <img height="<%= logoHeight %>px" src="/images/twitter.png" />
+                    </div>
+                </a>
+                
+            </li> 
+
         <% for (let link of links) { %>
-            <a target="_blank" href="<%= link.url %>" class="link">
-                <div><%= link.alias %></div>
-            </a>
+            <li>
+                <a target="_blank" href="<%= link.url %>" class="link-anchor">
+                    <div class="link-item">
+                        <%= link.alias %>
+                    </div>
+                </a>
+            </li>
         <% } %>
-        
+
+        </ul>
+<!-- 
+        <div id="three-links">
+            <a target="_blank" href="https://www.instagram.com/sophomorecaucus/" class="link">
+                <div>Instagram</div>
+            </a>
+        </div>
+         -->
     </div>
-    
+
 </body>
 </html>
