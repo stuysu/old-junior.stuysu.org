@@ -22,6 +22,10 @@ class Time {
         return new Time(date.getHours(), date.getMinutes());
     }
 
+    static fromTime(time) {
+        return new Time(time.hours, time.minutes);
+    }
+
     constructor(hours, minutes) {
 
         // store as 24-hour time (infinitely easier)
@@ -64,11 +68,50 @@ class Time {
         return Math.sign(this.hours - other.hours);
     }
 
+    add(time) {
+        let minutes = this.minutes + time.minutes;
+        let overflow = minutes - 60; // <-- max minutes
+        
+        if (overflow >= 0) {
+            minutes = overflow;
+            overflow = 1;
+        } else {
+            overflow = 0;
+        }
+
+        let hours = this.hours + time.hours + overflow;
+        hours %= 24; // loop at 24;
+
+        return new Time(hours, minutes);
+    }
+
+    totalMinutes() {
+        return this.hours * 60 + this.minutes;
+    }
+
+    totalHours() {
+        return this.hours + this.minutes / 60.0;
+    }
+
+    minutesBetween(other) {
+        let hours = this.hours - other.hours;
+        let minutes = this.minutes - other.minutes;
+
+        return Math.abs(hours * 60 + minutes);
+    }
+
+    hoursBetween(other) {
+        let hours = (this.hours - other.hours);
+        let minutes = (this.minutes - other.minutes);
+        
+        return Math.abs(hours + minutes / 60.0);
+    }
+
 }
 
 class Period {
 
-    constructor(first, second, name='') {
+    constructor(first, second, payload={}) {
         if (first.compare(second) !== -1) {
             throw new Error(`${first} does not come before ${second} in creating period ${name}`);
         }
@@ -77,7 +120,7 @@ class Period {
         this.first = first;
         this.second = second;
 
-        this.name = name;
+        this.payload = payload;
     }
 
     when(time) {
@@ -106,7 +149,7 @@ class Period {
     }
 
     toString() {
-        return `${this.name} (${this.first} - ${this.second})`
+        return `${this.payload} (${this.first} - ${this.second})`
     }
 
 }

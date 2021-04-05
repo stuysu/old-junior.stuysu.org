@@ -2,6 +2,9 @@
 
 <table class="bell-schedule">
 
+    <tr id="ticker">
+    </tr>
+
     <tr id="bell-schedule-row">
     </tr>
 
@@ -10,23 +13,54 @@
 <script type="text/javascript" src="/javascripts/bell-schedule.js"></script>
 <script>
 
-    const PERIODS = [
-        // new Period(new Time(00, 00), new Time(09, 09), 'Before school'),
-        new Period(new Time(09, 10), new Time(10, 05), 'Pd 1'),
-        new Period(new Time(10, 15), new Time(11, 10), 'Pd 2'),
-        new Period(new Time(11, 20), new Time(12, 15), 'Pd 3'),
-        new Period(new Time(12, 25), new Time(13, 20), 'Pd 4'),
-        new Period(new Time(13, 30), new Time(14, 25), 'Pd 5'),
-        // new Period(new Time(14, 30), new Time(14, 50), 'Office Hours'),
-        // new Period(new Time(14, 51), new Time(23, 59), 'After School')
-    ];
-
-    function getPeriods() {
-        return findPeriod( Time.now(), PERIODS );
-    }
-
     function getRow() {
         return document.getElementById("bell-schedule-row");
+    }
+
+    function getTicker() {
+        return document.getElementById("ticker");
+    }
+
+    // helper for creating periods
+    function getPayload(n, brk=false) {
+        return {
+            name: n,
+            isBreak: brk
+        }
+    }
+
+    // period table
+    const PERIODS = [
+        
+        new Period(new Time(09, 10), new Time(10, 05), getPayload('Pd 1')),
+        new Period(new Time(10, 06 - 1), new Time(10, 14 + 1), getPayload(null, true)),
+        new Period(new Time(10, 15), new Time(11, 10), getPayload('Pd 2')),
+        new Period(new Time(11, 11 - 1), new Time(11, 19 + 1), getPayload(null, true)),
+        new Period(new Time(11, 20), new Time(12, 15), getPayload('Pd 3')),
+        new Period(new Time(12, 16 - 1), new Time(12, 24 + 1), getPayload(null, true)),
+        new Period(new Time(12, 25), new Time(13, 20), getPayload('Pd 4')),
+        new Period(new Time(13, 21 - 1), new Time(13, 29 + 1), getPayload(null, true)),
+        new Period(new Time(13, 30), new Time(14, 25), getPayload('Pd 5')),
+
+    ];
+
+    function getFirst() {
+        return PERIODS[0].first;
+    }
+
+    function getLast() {
+        return PERIODS[PERIODS.length - 1].second;
+    }
+
+    function timeRange() {
+        const first = getFirst();
+        const last = getLast();
+
+        return first.minutesBetween(last);
+    }
+
+    function getPeriods(time) {
+        return findPeriod(time, PERIODS);
     }
 
     function isPeriod(test, periods) {
@@ -37,25 +71,17 @@
         return false;
     }
 
-    function updateRow() {
-        let periods = getPeriods();
+    function setTime(time) {
+        const row = getRow();
 
-        let row = getRow();
-        row.innerHTML = ''; // clear html
+        const first = getFirst();
+        let timePassed = time.minutesBetween(first);
+        let percentOfDay = 100 * (timePassed / timeRange());
 
-        for (let period of PERIODS) {
+        const ticker = getTicker();
+        let tickerWidth = getComputedStyle(ticker).width;
 
-            let style = (isPeriod(period, periods)) ?
-                'active-period' :
-                '';
-
-            row.innerHTML += `
-                <td class='${style}'>
-                    ${period.name}
-                </td>
-            `;
-
-        }
+        ticker.style.left = `calc(${percentOfDay}% - ${tickerWidth} / 2)`;
     }
 
     function getUpdateRate() {
@@ -63,15 +89,112 @@
         return 1000 * 60;
         // return 500;
     }
+    
+    function updateRow() {
+        setTime(Time.now());
+    }
+
+    function displayPeriods() {
+        let row = getRow();
+
+        let i = 0;
+        for (let period of PERIODS) {
+
+            // this is dubm i need a better way to reference the html by the Period object
+            let tmp = `<span data-idx='${i}' class="period-element timeline"></span>`;
+
+            if (!period.payload.isBreak) {
+
+                row.innerHTML += `
+                    <td>
+                        ${period.payload.name}
+                            <br>
+                        <span class="timeline">
+                            (${period.first} - ${period.second})
+                        </span>
+                        <br>${tmp}
+                    </td>
+                `;
+                
+            } else {
+                row.innerHTML += `
+                    <td class='break'>
+                        ${tmp}
+                    </td>
+                `;
+            }
+
+            ++i;
+        }
+    }
+
+    function getElapsedTime(time, periods = null) {
+        if (periods == null)
+            periods = getPeriods(time);
+
+        if (periods.length == 0)
+            return false;
+
+        let period = periods[0];
+        
+        return {
+            elapsed: time.minutesBetween(period.first),
+            left: time.minutesBetween(period.second)
+        };
+    }
 
     // initial call
+    displayPeriods();
     updateRow();
 
-    // updater thread
+    //updater thread
+    /*
     setInterval(
         updateRow, 
         getUpdateRate()
     );
+    */
 
+    function getPeriodElements() {
+        return document.getElementsByClassName('period-element');
+    }
+
+    let running = true;
+
+    let time = getFirst();
+    setInterval(() => {
+        if (running) {
+
+        time = time.add(new Time(0, 01));
+        if (time.compare(getLast()) == 1) {
+            time = getFirst();
+        }
+
+        let periods = getPeriods(time);
+        const {elapsed, left} = getElapsedTime(time, periods);
+        if (periods.length >= 1) {
+            // this is retarded af, this is abbismal
+            let idx = PERIODS.indexOf(periods[0]);
+            for (let p of getPeriodElements()) {
+                if (p.getAttribute('data-idx') == idx) {
+                    // p.innerHTML = periods[0].payload.isBreak ? `${left}` : `${left}mins left`;
+                    p.innerHTML = `${left}mins left`;
+                } else { 
+                    p.innerHTML = '';
+                }
+            }
+        }
+
+        setTime(time);
+
+        }
+
+    }, 100);
+
+    document.addEventListener('keypress', e => {
+        if (e.keyCode === 112 || e.keyCode === 80) {
+            running = !running;
+        }
+    });
 
 </script>

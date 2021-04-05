@@ -1,3 +1,11 @@
+:root {
+    --important-dates: #a33b3b;
+}
+
+.darkmode {
+    /* --important-dates: #4788B7; */
+}
+
 .footer {
     transition: all 0.4s ease-in;
 }
@@ -26,7 +34,7 @@ body {
 
 p.dateline {
     text-align: center;
-    font-size: 125% !important;
+    font-size: 1.7vw !important;
 }
 
 .dateline a {

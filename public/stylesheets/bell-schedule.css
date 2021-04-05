@@ -1,13 +1,100 @@
-.bell-schedule {
-    padding-top: 2vw;
-    padding-left: 3vw;
-    padding-right: 3vw;
+:root {
+    --schedule-background: var(--btn-color);
+    --ticker-color: #b5a7a9;
+    --tcolor: var(--foreground);
 
-    width: 100vw;
+    --schedule-background: #bd4b4b;
+    --ticker-color: #a33b3b;
+    --tcolor: white; 
+
+    /* --periods: 5;
+    --period-size: 55%;
+    --breaks: 4;
+    --break-length: 10%; */
+
+    --ticker-width: calc(100% / 40);
+    --schedule-height: 120px;
+}
+
+.darkmode {
+    --ticker-color: #4788B7;
+    --schedule-background: var(--btn-color);
+    --tcolor: var(--foreground);
+}
+
+.bell-schedule {
+    margin: 2vh auto 0px auto;
+
+    width: 90vw;
 
     text-align: center;
+
+    background-color: var(--schedule-background);
+
+    font-weight: bold;
+    font-size: 1.1vw;
+
+    z-index: 2;
+
+    position: relative;
+
+    transition: 0.3s;
+
+    overflow: hidden;
+    height: var(--schedule-height);
+}
+
+#bell-schedule-row {
+    height: 100%;
 }
 
 .bell-schedule td {
-    /* background-color: black; */
+    box-sizing: border-box !important;
+
+    margin: 0;
+    padding: 1.2vh 0;
+    width: calc(55% / ((55 * 5 + 4 * 10)) );
+}
+
+td.break {
+    width: calc(10% / ((55 * 5 + 4 * 10)) );
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0,0,0,0.2);
+    margin: 0 !important;
+    padding: 0!important;
+}
+
+#ticker {
+    width: var(--ticker-width);
+    /* it doesnt matter what this is cause it gerts cutoff */
+    --correction: 1px; 
+
+    background-color: var(--ticker-color);
+    /* overflow: auto */
+    height: calc(100% + var(--correction));
+    top: calc(var(--correction) * -1);
+
+    z-index: -1;
+/* 
+    opacity: 0.1; */
+
+    position: absolute;
+}
+
+.bell-schedule td {
+    z-index: 3;
+
+    /* mix-blend-mode: difference; */
+    color: var(--tcolor);
+}
+
+/* .bell-schedule td.active-period {
+    background-color: #a33b3b;
+    color: white;
+    z-index: 10001;
+} */
+
+.timeline {
+    font-size: 0.95vw;
+    font-weight: normal !important;
 }
