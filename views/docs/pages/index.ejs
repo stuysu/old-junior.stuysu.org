@@ -7,5 +7,14 @@
 */
 %>
 
-<%- include('bell-schedule.ejs'); %>
+<style>
+    .tight {
+        width: 90vw;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="tight">
+    <%- include('bell-schedule.ejs'); %>
+</div>
 <%- include('events.ejs'); %>
