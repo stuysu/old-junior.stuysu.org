@@ -19,7 +19,7 @@ const disableDarkMode = () => {
  
 // If the user already visited and enabled darkMode
 // start things off with it on
-if (darkMode === 'enabled') {
+if (darkMode === 'enabled' || getPreference()) {
   enableDarkMode();
 }
 
@@ -41,13 +41,3 @@ darkModeToggle.addEventListener('click', () => {
 function getPreference() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
-
-function loadDarkmodePreference() {
-    if (getPreference()) {
-        enableDarkMode();
-    } else {
-        disableDarkMode();
-    }
-}
-
-loadDarkmodePreference();
