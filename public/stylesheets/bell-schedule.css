@@ -4,7 +4,8 @@
     --tcolor: var(--foreground);
 
     --schedule-background: #bd4b4b;
-    --ticker-color: #a33b3b;
+    /* --ticker-color: #a33b3b; */
+    --ticker-color: #4788B7;
     --tcolor: white; 
 
     /* --periods: 5;
@@ -16,6 +17,9 @@
     --schedule-height: auto;
 }
 
+#bell-schedule-times {
+    border-bottom: 3px solid var(--ticker-color);
+}
 
 .darkmode {
     --ticker-color: #4788B7;

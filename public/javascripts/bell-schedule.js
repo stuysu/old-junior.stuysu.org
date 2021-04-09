@@ -44,50 +44,6 @@ function isPeriod(test, periods) {
     return false;
 }
 
-/*
-HTML CODE
-*/
-
-const row = document.getElementById("bell-schedule-row");
-const ticker = document.getElementById("ticker");
-
-function setTicker(time) {
-    // Set the position of the ticker
-    let timePassed = time.minutesBetween(first);
-    let percentOfDay = 100 * (timePassed / timeRange());
-    let tickerWidth = getComputedStyle(ticker).width;
-    ticker.style.left = `calc(${percentOfDay}% - ${tickerWidth} / 2)`;
-}
-
-function setTime(time) {
-    setTicker(time);
-}
-
-function displayPeriods() {
-    for (let period of PERIODS) {
-
-        if (!period.payload.isBreak) {
-
-            row.innerHTML += `
-                    <td>
-                        ${period.payload.name}
-                            <br>
-                        <span class="timeline">
-                            (${period.first} - ${period.second})
-                        </span>
-                    </td>
-                `;
-
-        } else {
-            row.innerHTML += `
-                    <td class='break'>
-                    </td>
-                `;
-        }
-
-    }
-}
-
 function getElapsedTime(time, periods = null) {
     if (periods == null)
         periods = getPeriods(time);
@@ -101,6 +57,58 @@ function getElapsedTime(time, periods = null) {
         elapsed: time.minutesBetween(period.first),
         left: time.minutesBetween(period.second)
     };
+}
+
+/*
+HTML CODE
+*/
+
+const row = document.getElementById("bell-schedule-row");
+const ticker = document.getElementById("ticker");
+
+const timePast = document.getElementById("time-past-number");
+const timeLeft = document.getElementById("time-left-number");
+
+function setTicker(time) {
+    // Set the position of the ticker
+    let timePassed = time.minutesBetween(first);
+    let percentOfDay = 100 * (timePassed / timeRange());
+    let tickerWidth = getComputedStyle(ticker).width;
+    ticker.style.left = `calc(${percentOfDay}% - ${tickerWidth} / 2)`;
+}
+
+function setTime(time) {
+    setTicker(time);
+
+    const { elapsed, left } = getElapsedTime(time);
+    timePast.innerHTML = elapsed;
+    timeLeft.innerHTML = left;
+
+}
+
+function displayPeriods() {
+    for (let period of PERIODS) {
+
+        if (!period.payload.isBreak) {
+
+            row.innerHTML += `
+                    <td class='table-period'>
+                        ${period.payload.name}
+                            <br>
+                        <span class="timeline">
+                            (${period.first} - ${period.second})
+                        </span>
+                    </td>
+                `;
+
+        } else {
+            row.innerHTML += `
+                    <td class='table-period break'>
+                    </td>
+                `;
+        }
+
+    }
 }
 
 // MAIN CODE
