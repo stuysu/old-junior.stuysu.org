@@ -13,7 +13,7 @@
     --break-length: 10%; */
 
     --ticker-width: calc(100% / 40);
-    /* --schedule-height: auto; */
+    --schedule-height: auto;
 }
 
 
@@ -25,8 +25,6 @@
 
 .bell-schedule {
     margin: 2vh auto 0px auto;
-
-    /* width: 90vw; */
 
     text-align: center;
 
@@ -53,7 +51,7 @@
     box-sizing: border-box !important;
 
     margin: 0;
-    padding: 1.2vh 0;
+    padding: 2.7vh 0;
     width: calc(55% / ((55 * 5 + 4 * 10)) );
 }
 
@@ -61,8 +59,6 @@ td.break {
     width: calc(10% / ((55 * 5 + 4 * 10)) );
     border-left: 1px solid rgba(0,0,0,0.2);
     border-right: 1px solid rgba(0,0,0,0.2);
-    margin: 0 !important;
-    padding: 0!important;
 }
 
 #ticker {

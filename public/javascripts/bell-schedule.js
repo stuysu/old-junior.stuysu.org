@@ -1,221 +1,137 @@
-function validateRange(val, min, max, what='a value', error = true) {
-    if (error && val < min || val > max) {
-        throw new Error(`${what} (${val}) is outside valid range [${min}, ${max}]`);
-    }
+/*
+PERIOD SCHEDULE CODE
+*/
 
-    return val > max ? max : (val < min) ? min : val;
+// helper for creating periods
+function getPayload(n, brk = false) {
+    return {
+        name: n,
+        isBreak: brk
+    }
 }
 
-function leadingZero(s) {
-    if (s < 10) 
-        return `0${s}`
-    return `${s}`
+// period table
+const PERIODS = [
+
+    new Period(new Time(09, 10), new Time(10, 05), getPayload('Pd 1')),
+    new Period(new Time(10, 06 - 1), new Time(10, 14 + 1), getPayload(null, true)),
+    new Period(new Time(10, 15), new Time(11, 10), getPayload('Pd 2')),
+    new Period(new Time(11, 11 - 1), new Time(11, 19 + 1), getPayload(null, true)),
+    new Period(new Time(11, 20), new Time(12, 15), getPayload('Pd 3')),
+    new Period(new Time(12, 16 - 1), new Time(12, 24 + 1), getPayload(null, true)),
+    new Period(new Time(12, 25), new Time(13, 20), getPayload('Pd 4')),
+    new Period(new Time(13, 21 - 1), new Time(13, 29 + 1), getPayload(null, true)),
+    new Period(new Time(13, 30), new Time(14, 25), getPayload('Pd 5')),
+
+];
+
+const first = PERIODS[0].first;
+const last = PERIODS[PERIODS.length - 1].second;
+
+function timeRange() {
+    return first.minutesBetween(last);
 }
 
-class Time {
+function getPeriods(time) {
+    return findPeriod(time, PERIODS);
+}
 
-    static now() {
-        return Time.fromDate(new Date(Date.now()));
+function isPeriod(test, periods) {
+    for (let period of periods) {
+        if (test.compare(period) == 0)
+            return true;
     }
+    return false;
+}
 
-    static fromDate(date) {
-        return new Time(date.getHours(), date.getMinutes());
-    }
+/*
+HTML CODE
+*/
 
-    static fromTime(time) {
-        return new Time(time.hours, time.minutes);
-    }
+const row = document.getElementById("bell-schedule-row");
+const ticker = document.getElementById("ticker");
 
-    constructor(hours, minutes) {
+function setTicker(time) {
+    // Set the position of the ticker
+    let timePassed = time.minutesBetween(first);
+    let percentOfDay = 100 * (timePassed / timeRange());
+    let tickerWidth = getComputedStyle(ticker).width;
+    ticker.style.left = `calc(${percentOfDay}% - ${tickerWidth} / 2)`;
+}
 
-        // store as 24-hour time (infinitely easier)
-        this.hours = validateRange(
-            hours, 
-            0, 23, 
-            'hours'
-        );
-        
-        this.minutes = validateRange(
-            minutes, 
-            0, 59, 
-            'minutes'
-        );
+function setTime(time) {
+    setTicker(time);
+}
 
-    }
+function displayPeriods() {
+    for (let period of PERIODS) {
 
-    get12Hour() {
-        if (this.hours == 0) {
-            return 12;
-        }
-        return this.hours - (12 * (this.hours > 12));
-    }
+        if (!period.payload.isBreak) {
 
-    getMeridiem() {
-        return (this.hours >= 12) ? 'PM' : 'AM';
-    }
+            row.innerHTML += `
+                    <td>
+                        ${period.payload.name}
+                            <br>
+                        <span class="timeline">
+                            (${period.first} - ${period.second})
+                        </span>
+                    </td>
+                `;
 
-    toString() {
-        return `${this.get12Hour()}:${leadingZero(this.minutes)} ${this.getMeridiem()}`;
-    }
-
-    compare(other) {
-        // if the hours are the same, we must look at minutes
-        if (this.hours == other.hours) {
-            return Math.sign(this.minutes - other.minutes);
-        }
-
-        // if hours are different, just compare them
-        return Math.sign(this.hours - other.hours);
-    }
-
-    add(time) {
-        let minutes = this.minutes + time.minutes;
-        let overflow = minutes - 60; // <-- max minutes
-        
-        if (overflow >= 0) {
-            minutes = overflow;
-            overflow = 1;
         } else {
-            overflow = 0;
+            row.innerHTML += `
+                    <td class='break'>
+                    </td>
+                `;
         }
 
-        let hours = this.hours + time.hours + overflow;
-        hours %= 24; // loop at 24;
-
-        return new Time(hours, minutes);
     }
-
-    totalMinutes() {
-        return this.hours * 60 + this.minutes;
-    }
-
-    totalHours() {
-        return this.hours + this.minutes / 60.0;
-    }
-
-    minutesBetween(other) {
-        let hours = this.hours - other.hours;
-        let minutes = this.minutes - other.minutes;
-
-        return Math.abs(hours * 60 + minutes);
-    }
-
-    hoursBetween(other) {
-        let hours = (this.hours - other.hours);
-        let minutes = (this.minutes - other.minutes);
-        
-        return Math.abs(hours + minutes / 60.0);
-    }
-
 }
 
-class Period {
+function getElapsedTime(time, periods = null) {
+    if (periods == null)
+        periods = getPeriods(time);
 
-    constructor(first, second, payload={}) {
-        if (first.compare(second) !== -1) {
-            throw new Error(`${first} does not come before ${second} in creating period ${name}`);
-        }
+    if (periods.length == 0)
+        return false;
 
-        // range is inclusive
-        this.first = first;
-        this.second = second;
+    let period = periods[0];
 
-        this.payload = payload;
-    }
-
-    when(time) {
-        let tf = time.compare(this.first);
-        let ts = time.compare(this.second);
-
-        let sum = tf + ts;
-
-        // if before first and after second
-        // OR is first or is second
-        if (Math.abs(sum) <= 1) 
-            return 0;
-
-        // if after second (because it is after both)
-        if (sum == 2)
-            return +1;
-        
-        // (by elimination) if before
-        return -1;
-
-    }
-
-    compare(other) {
-        // whichever one starts first
-        return this.first.compare(other.first);
-    }
-
-    toString() {
-        return `${this.payload} (${this.first} - ${this.second})`
-    }
-
+    return {
+        elapsed: time.minutesBetween(period.first),
+        left: time.minutesBetween(period.second)
+    };
 }
 
-/**
- * takes in a time object and sorted list of periods.
- * 
- * The periods should be sorted, but two consecutive periods can
- * overlap or be non-adjacent. As long as a period starts before 
- * the next period.
- * 
- * If a time is between two periods or a time falls in the overlap 
- * of two periods, all the periods will be returned. 
- * 
- * 
- * @param {Time} time 
- * @param {Period[]} periods 
- */
-function findPeriod(time, periods) {
-    // TODO: replace with binary search ??
+// MAIN CODE
 
-    return findPeriodIterative(time, periods);
+// must be called once
+displayPeriods();
+
+function getUpdateRate() {
+    // every minute (1000 ms * 60 seconds)
+    return 1000 * 60;
 }
 
-function findPeriodIterative(time, periods) {
-    let out = [];
+function update(time = Time.now()) {
+    setTime(time);
+}
 
-    for (let i = 0; i < periods.length; ++i) {
-        let period = periods[i];
+let running = true;
+let time = first;
 
-        let when = period.when(time);
-
-        if (when == 0) {
-            out.push(period);
-        } 
-        else if (when == -1 && i > 0) {
-            let before = periods[i-1];
-
-            if (before.when(time) == 1) {
-                out.push(period);
-                out.push(before);
-            }
+setInterval(() => {
+    if (running) {
+        update(time);
+        time = time.add(new Time(0, 01));
+        if (time.compare(last) == 0) {
+            time = first;
         }
     }
+}, 100);
 
-    return out
-}
-
-function testFind(time, expectedPeriods) {
-    let periods = findPeriod(time);
-
-    let got = "Got: ";
-    periods.forEach(period => got += `(${period}) `);
-    
-    let expected = "Expected: ";
-    expectedPeriods.forEach(period => expected += `(${period}) `);
-
-    // this multiline string is ugly but i like how it looks
-    console.log(`
-At ${time}:
-${got}
-${expected}
-`);
-}
-
-// testFind(new Time(8, 05), [ PERIODS[0] ]);
-// testFind(new Time(9, 10), [ PERIODS[1] ]);
-// testFind(new Time(11, 15), [ PERIODS[2], PERIODS[3]] );
-// testFind(Time.now(), [ 'the period now' ]);
+document.addEventListener('keypress', e => {
+    if (e.keyCode === 112 || e.keyCode === 80) {
+        running = !running;
+    }
+});
