@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
 
             isImportant : {
                 type: DataTypes.BOOLEAN
+            },
+
+            isHidden : {
+                type: DataTypes.BOOLEAN
             }
 
         },

@@ -45,7 +45,8 @@ router.post(
             description: req.body.description,
             url: req.body.url,
             poster: req.body.poster,
-            isImportant: req.body.isImportant
+            isImportant: req.body.isImportant,
+            isHidden: req.body.isHidden
         }).then(instance => {
             
             res.status(200).json({
@@ -56,6 +57,7 @@ router.post(
                 url: req.body.url,
                 poster: req.body.poster,
                 isImportant: req.body.isImportant,
+                isHidden: req.body.isHidden,
                 id: instance.id
             });
             
@@ -91,6 +93,7 @@ router.put(
                 const hasUrl = req.body.url !== undefined;
                 const hasPoster = req.body.poster !== undefined;
                 const hasIsImportant = req.body.isImportant !== undefined;
+                const hasIsHidden = req.body.isHidden !== undefined;
 
                 const options = { where: { id: req.body.id } };
 
@@ -101,6 +104,7 @@ router.put(
                     url: req.body.url !== undefined ? event.url : undefined,
                     poster: req.body.poster !== undefined ? event.poster : undefined,
                     isImportant: req.body.isImportant !== undefined ? event.isImportant : undefined,
+                    isHidden: req.body.isHidden !== undefined ? event.isHidden : undefined,
                 };
 
                 await Events.update({
@@ -109,7 +113,8 @@ router.put(
                     description: req.body.description,
                     url: req.body.url,
                     poster: req.body.poster,
-                    isImportant: req.body.isImportant
+                    isImportant: req.body.isImportant,
+                    isHidden: req.body.isHidden
                 }, options);
 
                 result.title = req.body.title;
@@ -118,6 +123,7 @@ router.put(
                 result.url = req.body.url;
                 result.poster = req.body.poster;
                 result.isImportant = req.body.isImportant;
+                result.isHidden = req.body.isHidden;
 
                 result.updatedTitle = hasTitle ? (result.title !== event.title) : undefined;
                 result.updatedDate = hasDate ? (result.date !== event.date) : undefined;
@@ -125,6 +131,7 @@ router.put(
                 result.updatedUrl = hasUrl ? (result.url !== event.url) : undefined;
                 result.updatedPoster = hasPoster ? (result.poster !== event.poster) : undefined;
                 result.updatedIsImportant = hasIsImportant ? (result.isImportant !== event.isImportant) : undefined;
+                result.updatedIsHidden = hasIsHidden ? (result.isHidden !== event.isHidden) : undefined;
             }
             
             res.status(200).json(result);

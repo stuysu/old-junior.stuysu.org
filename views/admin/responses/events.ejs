@@ -44,6 +44,16 @@ shortened display, so use them after 200 characters.
                     <% } %>
 
                     />
+                    <br>
+                    <label for="<%= event.id %>-hidden-e">Is hidden?:</label>
+                    <input type="checkbox" id="<%= event.id %>-hidden-e"
+
+                    <% if (event.isHidden) { %>
+                        checked
+                    <% } %>
+
+                    />
+
                 </td>
 
                 <td>
@@ -74,6 +84,12 @@ shortened display, so use them after 200 characters.
                     Is important?:
                 </label>
                 <input type="checkbox" id="add-important-e" />
+
+                <br>
+                
+                <label for="add-hidden-e">Is hidden?:</label>
+                <input type="checkbox" id="add-hidden-e"/>
+                
             </td>
             
             <td>

@@ -26,9 +26,11 @@ route.get(
             const now = Date.now();
             for (let event of events) {
 
+                console.log(event.isHidden + " <-> " + event.isImportant);
+
                 // If difference > 0, event hasn't happened yet
                 const difference = event.date - now;
-                if (difference > 0) {
+                if (!event.isHidden && difference > 0) {
 
                     let list = event.isImportant ?
                         importantDates :
@@ -39,6 +41,8 @@ route.get(
                 }
 
             }
+
+            console.log(importantDates);
 
             res.render('docs/', addModule({
 
