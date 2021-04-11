@@ -22,7 +22,6 @@ function validateLink(link) {
     let cleaned = removeSpaces(link);
     let output = (cleaned === '') ? undefined : link;
 
-    console.log(output);
     return output;
 
 }
@@ -265,8 +264,6 @@ function addEventToPage(id, title, date, description, url, poster, isImportant, 
 
 </tr>
     `;
-
-    console.log(out);
 
 	mainLinks.innerHTML += out;
 }

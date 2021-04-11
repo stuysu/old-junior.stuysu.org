@@ -84,8 +84,6 @@ router.put(
                 found: event !== null
             };
 
-            console.log(req.body.isImportant)
-
             if (result.found) {
                 const hasTitle = req.body.title !== undefined;
                 const hasDate = req.body.date !== undefined;
