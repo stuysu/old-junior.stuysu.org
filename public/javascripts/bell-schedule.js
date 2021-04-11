@@ -1,27 +1,44 @@
+function getFirstPeriod() {
+    return Number(document.getElementById("time-day").getAttribute('data-first-period'));
+}
+
+function isLateDay() {
+    return getFirstPeriod() == 6;
+}
+
 /*
 PERIOD SCHEDULE CODE
 */
 
 // helper for creating periods
-function getPayload(n, brk = false) {
+function getPayload(n) {
+    if (n === undefined) {
+        return {
+            name: 'BRK',
+            isBreak: true
+        }
+    }
+
+    let name = `Pd ${n + isLateDay() * 5}`;
+
     return {
-        name: n,
-        isBreak: brk
+        name: name,
+        isBreak: false
     }
 }
 
 // period table
 const PERIODS = [
 
-    new Period(new Time(09, 10), new Time(10, 05), getPayload('Pd 1')),
-    new Period(new Time(10, 06 - 1), new Time(10, 14 + 1), getPayload(null, true)),
-    new Period(new Time(10, 15), new Time(11, 10), getPayload('Pd 2')),
-    new Period(new Time(11, 11 - 1), new Time(11, 19 + 1), getPayload(null, true)),
-    new Period(new Time(11, 20), new Time(12, 15), getPayload('Pd 3')),
-    new Period(new Time(12, 16 - 1), new Time(12, 24 + 1), getPayload(null, true)),
-    new Period(new Time(12, 25), new Time(13, 20), getPayload('Pd 4')),
-    new Period(new Time(13, 21 - 1), new Time(13, 29 + 1), getPayload(null, true)),
-    new Period(new Time(13, 30), new Time(14, 25), getPayload('Pd 5')),
+    new Period(new Time(09, 10), new Time(10, 05), getPayload(1)),
+    new Period(new Time(10, 05), new Time(10, 15), getPayload()),
+    new Period(new Time(10, 15), new Time(11, 10), getPayload(2)),
+    new Period(new Time(11, 10), new Time(11, 20), getPayload()),
+    new Period(new Time(11, 20), new Time(12, 15), getPayload(3)),
+    new Period(new Time(12, 15), new Time(12, 25), getPayload()),
+    new Period(new Time(12, 25), new Time(13, 20), getPayload(4)),
+    new Period(new Time(13, 20), new Time(13, 30), getPayload()),
+    new Period(new Time(13, 30), new Time(14, 25), getPayload(5)),
 
 ];
 
@@ -32,24 +49,12 @@ function timeRange() {
     return first.minutesBetween(last);
 }
 
-function getPeriods(time) {
-    return findPeriod(time, PERIODS);
-}
-
-function isPeriod(test, periods) {
-    for (let period of periods) {
-        if (test.compare(period) == 0)
-            return true;
-    }
-    return false;
-}
-
-function getElapsedTime(time, periods = null) {
-    if (periods == null)
-        periods = getPeriods(time);
-
-    if (periods.length == 0)
-        return false;
+function getElapsedTime(time, periods) {
+    if (periods.length < 1)
+        return {
+            elapsed: '..',
+            left: '..'
+        };
 
     let period = periods[0];
 
@@ -69,7 +74,12 @@ const ticker = document.getElementById("ticker");
 const timePast = document.getElementById("time-past-number");
 const timeLeft = document.getElementById("time-left-number");
 
+const dayPeriod = document.getElementById("time-day-period");
+const dayTime = document.getElementById("time-day-time");
+
 function setTicker(time) {
+    ticker.style.visibility = 'visible';
+    
     // Set the position of the ticker
     let timePassed = time.minutesBetween(first);
     let percentOfDay = 100 * (timePassed / timeRange());
@@ -78,15 +88,36 @@ function setTicker(time) {
 }
 
 function setTime(time) {
-    setTicker(time);
+    // display the time that was passed into the function
+    dayTime.innerHTML = time.toString();
 
-    const { elapsed, left } = getElapsedTime(time);
+    // Find the period according to the time,
+    // and display its name
+    let periods = findPeriod(time, PERIODS);
+    let periodText = '--';
+    if (periods.length > 0) {
+        periodText = periods[0].payload.name;
+    }
+    dayPeriod.innerHTML = periodText;
+
+
+    // If there are any periods, move the ticker
+    // if not, hide the ticker
+    if (periods.length > 0) {
+        setTicker(time);
+    } else {
+        ticker.style.visibility = 'hidden';
+    }
+
+    // Using the period(s) it is now, find past time
+    // and time left
+    const { elapsed, left } = getElapsedTime(time, periods);
     timePast.innerHTML = elapsed;
     timeLeft.innerHTML = left;
-
 }
 
 function displayPeriods() {
+    // for every period, add its html
     for (let period of PERIODS) {
 
         if (!period.payload.isBreak) {
@@ -102,6 +133,7 @@ function displayPeriods() {
                 `;
 
         } else {
+
             row.innerHTML += `
                     <td class='table-period break'>
                     </td>
@@ -111,32 +143,54 @@ function displayPeriods() {
     }
 }
 
-// MAIN CODE
-
 // must be called once
 displayPeriods();
 
-function getUpdateRate() {
-    // every minute (1000 ms * 60 seconds)
-    return 1000 * 60;
-}
-
-function update(time = Time.now()) {
-    setTime(time);
-}
-
-let running = true;
-let time = first;
-
-setInterval(() => {
-    if (running) {
-        update(time);
-        time = time.add(new Time(0, 01));
-        if (time.compare(last) == 0) {
-            time = first;
-        }
+class NowTimer {
+    getTime() {
+        return Time.now();
     }
-}, 100);
+}
+
+class LoopTimer {
+
+    constructor() {
+        this.time = first;
+    }
+
+    getTime() {
+        this.time = this.time.add(new Time(0, 1));
+
+        if (this.time.compare(last) == 0) {
+            this.time = first;
+        }
+
+        return this.time;
+    }
+
+}
+
+let timer = new NowTimer();
+let lastTime = undefined;
+let timeInterval = 1000;
+
+function updateTime() {
+    let currentTime = timer.getTime();
+    if (
+        lastTime === undefined || 
+        currentTime.compare(lastTime) !== 0
+    ) {
+        setTime(currentTime);
+    }
+
+    lastTime = currentTime;
+}
+
+updateTime();
+setInterval(
+    updateTime, 
+    timeInterval
+);
 
 document.addEventListener('keypress', e => {
     if (e.keyCode === 112 || e.keyCode === 80) {

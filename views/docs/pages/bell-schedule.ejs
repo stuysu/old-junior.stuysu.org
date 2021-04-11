@@ -2,10 +2,27 @@
 <table id="bell-schedule-times" class="bell-schedule">
     <tr>
         <td id="time-remaining">
-            <span id="time-past-number">30</span> Minutes Past
+            <span id="time-past-number">..</span> Minutes Past
         </td>
+
+        <% if (locals.dayInfo) { %>
+        <td id="time-day" data-first-period="<%= dayInfo.firstPeriod %>">
+            <span id="time-day-letter"><%= dayInfo.type %></span> Day	
+        <% } else { %>
+            <td id="time-day" data-first-period="1">
+                <span id="time-day-letter">--</span> Day	
+        <% } %>
+            &#8226;
+            <span id="time-day-period">Pd 1</span>
+            <br>
+
+            <span id="time-day-time" class="timeline">
+                ..
+            </span>
+        </td>
+        
         <td id="time-left">
-            <span id="time-left-number">25</span> Minutes Left
+            <span id="time-left-number">..</span> Minutes Left
         </td> 
     </tr>
 </tr>

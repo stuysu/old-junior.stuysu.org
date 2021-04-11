@@ -1,5 +1,6 @@
 const express = require("express");
 const { CreateError, analyticsOn, isMobile } = require("../utils");
+const { getDayInfo } = require("../scheduleutils");
 const route = express.Router();
 
 route.get(
@@ -14,6 +15,7 @@ route.get(
                 title: 'Bell Schedule',
                 page: 'bell-schedule',
 
+                dayInfo: getDayInfo(),
                 isMobile: isMobile(req)
             });
 

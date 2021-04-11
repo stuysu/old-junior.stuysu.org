@@ -28,7 +28,6 @@
 }
 
 .bell-schedule {
-    margin: 2vh auto 0px auto;
 
     text-align: center;
 
@@ -47,7 +46,8 @@
     height: var(--schedule-height);
 }
 
-#bell-schedule-row {
+.bell-schedule tr{
+    margin: 0 !important;
     height: 100%;
 }
 
