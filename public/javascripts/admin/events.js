@@ -1,13 +1,14 @@
 function getInputsEvent(id) {
     return {
-        preview: document.getElementById(id + '-link-e'),
         title: document.getElementById(id + '-title-e'),
         date: document.getElementById(id + '-date-e'),
         description: document.getElementById(id + '-description-e'),
         url: document.getElementById(id + '-url-e'),
         poster: document.getElementById(id + '-poster-e'),
         thread: document.getElementById(id + '-thread-e'),
-        update: document.getElementById(id + '-update-e')
+        update: document.getElementById(id + '-update-e'),
+        important: document.getElementById(id + '-important-e'),
+        hidden: document.getElementById(id + '-hidden-e')
     };
 }
 
@@ -21,7 +22,6 @@ function validateLink(link) {
     let cleaned = removeSpaces(link);
     let output = (cleaned === '') ? undefined : link;
 
-    console.log(output);
     return output;
 
 }
@@ -48,14 +48,16 @@ function getDate(dateFromSql) {
     return tmp.substring(0, tmp.length - 1);
 }
 
-function getBody(id, title, dateElement, description, url, poster) {
+function getBody(id, title, dateElement, description, url, poster, important, hidden) {
     return JSON.stringify({
         id: id,
         title: validateLink(title),
         date: getTimestamp(dateElement),
         description: description,
         url: validateLink(url),
-        poster: validateLink(poster)
+        poster: validateLink(poster),
+        isImportant: important,
+        isHidden: hidden, 
     });
 }
 
@@ -93,7 +95,7 @@ async function removeEvent(id) {
 
 async function updateEvent(id) {
 
-    const { title, date, description, url, poster} = getInputsEvent(id);
+    const { title, date, description, url, poster, important, hidden } = getInputsEvent(id);
     let response = await fetch("/api/events", {
         method: "PUT",
         mode: 'cors',
@@ -110,7 +112,9 @@ async function updateEvent(id) {
             date, 
             description.value, 
             url.value, 
-            poster.value
+            poster.value,
+            important.checked,
+            hidden.checked
         )
     });
 
@@ -124,7 +128,7 @@ async function updateEvent(id) {
 
 
         if (response.found && 
-            (response.updatedTitle || response.updatedDate || response.updatedDescription || response.updatedUrl || response.updatedPoster)
+            (response.updatedTitle || response.updatedDate || response.updatedDescription || response.updatedUrl || response.updatedPoster || response.updatedIsImportant || response.updatedIsHidden)
         ) {
             let changedMessage = '';
             let comma = false;
@@ -137,7 +141,11 @@ async function updateEvent(id) {
             changedMessage += (response.updatedUrl ? (`${comma ? ", ":""}"${response.old.url}" to "${response.url}"`) : "");
             comma = response.updatedUrl ? true : false;
             changedMessage += (response.updatedPoster ? (`${comma ? ", ":""}"${response.old.poster}" to "${response.poster}"`) : "");
-            
+            comma = response.updatedIsImportant ? true : false;
+            changedMessage += (response.updatedIsImportant ? (`${comma ? ", ":""}"'is important' ${response.old.isImportant}" to "${response.isImportant}"`) : "");
+            comma = response.updatedIsHidden ? true : false;
+            changedMessage += (response.updatedIsHidden ? (`${comma ? ", ":""}"'is hidden' ${response.old.isHidden}" to "${response.isHidden}"`) : "");
+
             alertManager.addAlert('Success', `changed ${changedMessage}`, 'primary');
         } else {
             alertManager.addAlert('', `Entry not found or no changes were made`, 'secondary');
@@ -149,7 +157,7 @@ async function updateEvent(id) {
 
 async function addEvent() {
 
-    const { preview, title, date, description, url, poster } = getInputsEvent('add');
+    const { title, date, description, url, poster, important, hidden } = getInputsEvent('add');
 
     let response = await fetch("/api/events", {
         method: "POST",
@@ -167,7 +175,9 @@ async function addEvent() {
             date, 
             description.value, 
             url.value, 
-            poster.value
+            poster.value,
+            important.checked,
+            hidden.checked
         )
     });
 
@@ -181,7 +191,9 @@ async function addEvent() {
             response.date,
             response.description,
             response.url,
-            response.poster
+            response.poster,
+            response.isImportant,
+            response.isHidden
         );
 
         title.value = '';
@@ -189,6 +201,7 @@ async function addEvent() {
         description.value = '';
         url.value = '';
         poster.value = '';
+        important.checked = false;
     
         alertManager.addAlert('Success', `created event "${response.title}"`, "success");
 
@@ -200,7 +213,7 @@ async function addEvent() {
 
 }
 
-function addEventToPage(id, title, date, description, url, poster) {
+function addEventToPage(id, title, date, description, url, poster, isImportant, isHidden) {
 
     const validate = (e) => e ? e : '';
 
@@ -209,14 +222,30 @@ function addEventToPage(id, title, date, description, url, poster) {
 
     // get table body
     const mainLinks = document.getElementById('main-events');
-	var event = {id, title, date, description, url, poster};
+	var event = {id, title, date, description, url, poster, isImportant, isHidden };
     
     let out = `
 <tr id="${event.id}-thread-e"> 
 
     <td>
-        <input type="text" placeholder="Title..." class="form-control" id="${event.id}-title-e" value="${ event.title }" oninput="updatePreviewEvent('${ event.id }')" />
+
+        <input type="text" placeholder="Title..." class="form-control" id="${event.id}-title-e" value="${ event.title }" />
         <input type="datetime-local" class="form-control" id="${event.id}-date-e" value="${ event.date }" />
+        
+        <label for="${ event.id }-important-e">Is important?:</label>
+        <input 
+            type="checkbox" 
+            id="${ event.id }-important-e" 
+            ${ event.isImportant ? 'checked': ''}
+        />
+        <br>
+        <label for="${ event.id }-hidden-e">Is hidden?:</label>
+        <input 
+            type="checkbox" 
+            id="${ event.id }-hidden-e"
+            ${ event.isImportant ? 'checked': ''}
+        />
+        
     </td>
 
     <td>
@@ -235,8 +264,6 @@ function addEventToPage(id, title, date, description, url, poster) {
 
 </tr>
     `;
-
-    console.log(out);
 
 	mainLinks.innerHTML += out;
 }
