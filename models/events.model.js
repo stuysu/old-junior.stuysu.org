@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
 
             poster : {
                 type: DataTypes.TEXT
+            },
+
+            isImportant : {
+                type: DataTypes.BOOLEAN
             }
 
         },

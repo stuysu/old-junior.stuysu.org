@@ -2,7 +2,7 @@ const express = require("express");
 const { CreateError, analyticsOn, isMobile, addModule }  = require("../utils");
 const route = express.Router();
 
-const { Events } = require("./../../models");
+const { Events, sequelize } = require("./../../models");
 
 const datefuncs = require("../datefuncs");
 
@@ -16,9 +16,9 @@ route.get(
 
         async (req, res, next) => {
             
-            let events = await Events.findAll();
+            let events = await Events.findAll({ order: sequelize.col('date') });
 
-            events.sort((a, b) => a.date - b.date);
+            // events.sort((a, b) => a.date - b.date);
 
             let upcomingEvents = [];
             let importantDates = [];
@@ -30,7 +30,7 @@ route.get(
                 const difference = event.date - now;
                 if (difference > 0) {
 
-                    let list = upcomingEvents.length >= MAX_EVENTS ?
+                    let list = event.isImportant ?
                         importantDates :
                         upcomingEvents;
 
