@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             date : {
-                type: DataTypes.INTEGER,
+                type: DataTypes.BIGINT,
                 allowNull: false
             },
 

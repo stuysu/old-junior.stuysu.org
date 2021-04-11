@@ -18,15 +18,11 @@ route.get(
             
             let events = await Events.findAll({ order: sequelize.col('date') });
 
-            // events.sort((a, b) => a.date - b.date);
-
             let upcomingEvents = [];
             let importantDates = [];
 
             const now = Date.now();
             for (let event of events) {
-
-                console.log(event.isHidden + " <-> " + event.isImportant);
 
                 // If difference > 0, event hasn't happened yet
                 const difference = event.date - now;
@@ -41,8 +37,6 @@ route.get(
                 }
 
             }
-
-            console.log(importantDates);
 
             res.render('docs/', addModule({
 
