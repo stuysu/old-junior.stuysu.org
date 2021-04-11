@@ -36,6 +36,24 @@ shortened display, so use them after 200 characters.
                 <td>
                     <input type="text" placeholder="Title..." class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent('<%= event.id %>')" />
                     <input type="datetime-local" class="form-control" id="<%=event.id%>-date-e" value="<%= getDate(event.date) %>" />
+                    <label for="<%= event.id %>-important-e">Is important?:</label>
+                    <input type="checkbox" id="<%= event.id %>-important-e"
+
+                    <% if (event.isImportant) { %>
+                        checked
+                    <% } %>
+
+                    />
+                    <br>
+                    <label for="<%= event.id %>-hidden-e">Is hidden?:</label>
+                    <input type="checkbox" id="<%= event.id %>-hidden-e"
+
+                    <% if (event.isHidden) { %>
+                        checked
+                    <% } %>
+
+                    />
+
                 </td>
 
                 <td>
@@ -61,6 +79,17 @@ shortened display, so use them after 200 characters.
             <td>
                 <input class="form-control" id="add-title-e" placeholder="New Event Title" value="" />
                 <input type="datetime-local" class="form-control" id="add-date-e" placeholder="New Event Date" value="" />
+
+                <label for="add-important-e">
+                    Is important?:
+                </label>
+                <input type="checkbox" id="add-important-e" />
+
+                <br>
+                
+                <label for="add-hidden-e">Is hidden?:</label>
+                <input type="checkbox" id="add-hidden-e"/>
+                
             </td>
             
             <td>

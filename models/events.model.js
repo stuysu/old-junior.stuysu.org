@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             date : {
-                type: DataTypes.INTEGER,
+                type: DataTypes.BIGINT,
                 allowNull: false
             },
 
@@ -36,6 +36,14 @@ module.exports = (sequelize, DataTypes) => {
 
             poster : {
                 type: DataTypes.TEXT
+            },
+
+            isImportant : {
+                type: DataTypes.BOOLEAN
+            },
+
+            isHidden : {
+                type: DataTypes.BOOLEAN
             }
 
         },
