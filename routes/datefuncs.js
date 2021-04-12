@@ -4,7 +4,7 @@
 
 function getDateFromSql(timestamp) {
     let date = new Date(timestamp);
-    date.setHours(date.getHours() - 4);
+    date.setHours(date.getHours() + 0);
     return date;
 }
 
