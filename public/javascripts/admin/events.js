@@ -37,7 +37,6 @@ function getTimestamp(dateElement) {
 // gets a formatted string from a timestamp 
 function getDate(dateFromSql) {
     tmp = new Date(dateFromSql);
-    tmp.setHours(tmp.getHours() - 4);
     tmp = tmp.toISOString();
     return tmp.substring(0, tmp.length - 1);
 }
