@@ -49,7 +49,13 @@ const SIDE_MAX_CHARACTERS = 100;
 
                 <% for (let event of events) { %>
 
-                    <% let date = new Date(event.date); %>
+                    <% 
+                        // this should be put in a standard
+                        // helper so conversions work consistently
+                        // on both the admin panel and docs
+                        let date = new Date(event.date); 
+                        date.setHours(date.getHours() - 4);
+                    %>
 
                     <tr>
                     
