@@ -1,4 +1,4 @@
-<br>
+<br><br>
 It is best to use the date feature on chrome because it handles calendar-like input.
 <br><br>
 It's probably best if you don't go crazy with the length of the event titles.
@@ -27,7 +27,6 @@ shortened display, so use them after 200 characters.
                 <% 
                     function getDate(dateFromSql) {
                         tmp = new Date(dateFromSql);
-                        tmp.setHours(tmp.getHours() - 4);
                         tmp = tmp.toISOString();
                         return tmp.substring(0, tmp.length - 1);
                     }

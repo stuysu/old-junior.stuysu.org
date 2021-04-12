@@ -21,7 +21,10 @@ route.get(
             let upcomingEvents = [];
             let importantDates = [];
 
-            const now = Date.now();
+            let now = new Date(Date.now());
+            // now.setHours(now.getHours() - 4);
+            // now = now.getTime();
+
             for (let event of events) {
 
                 // If difference > 0, event hasn't happened yet
