@@ -4,7 +4,7 @@
 
 function getDateFromSql(timestamp) {
     let date = new Date(timestamp);
-    date.setHours(date.getHours() + 0);
+    date.setHours(date.getHours() - 4);
     return date;
 }
 
@@ -73,5 +73,5 @@ module.exports = {
     getDateLine: getDateLine,
     getShortenedDescription: getShortenedDescription,
     leadingZero: leadingZero,
-    // getDateFromSql, getDateFromSql
+    getDateFromSql, getDateFromSql
 };

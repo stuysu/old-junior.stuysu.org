@@ -50,7 +50,7 @@ const SIDE_MAX_CHARACTERS = 100;
                 <% for (let event of events) { %>
 
                     <%
-                        let date = new Date(event.date); 
+                        let date = getDateFromSql(event.date); 
                     %>
 
                     <tr>
