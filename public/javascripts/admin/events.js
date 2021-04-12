@@ -26,17 +26,24 @@ function validateLink(link) {
 
 }
 
+function setCalendarTime(id, time) {
+    const { date } = getInputsEvent(id);
+    let tmp = new Date(time).toISOString();
+    tmp = tmp.substring(0, tmp.length - 1);
+
+    date.value = tmp;
+}
+
 // gets a timestamp (storable in database) from a js date
 function getTimestamp(dateElement) {
-    let date = new Date(dateElement.value);
-    // date.setHours(date.getHours() - 4);
-    return date.getTime();
+    return new Date(dateElement.value).getTime();
 }
 
 // also in admin/responses/events.ejs
 // gets a formatted string from a timestamp 
 function getDate(dateFromSql) {
     tmp = new Date(dateFromSql);
+    tmp.setHours(tmp.getHours() - 4);
     tmp = tmp.toISOString();
     return tmp.substring(0, tmp.length - 1);
 }
