@@ -47,11 +47,7 @@ async function createCalendarEntry(req, res, next) {
 
     try {
 
-        let newDay = await Calendar.create({
-            day: req.body.day,
-            year: req.body.year,
-            month: req.body.month
-        });
+        let newDay = await Calendar.create(req.body);
 
         newDay.created = true;
 
@@ -76,6 +72,7 @@ router.put("/calendar", async (req, res, next) => {
 
         if (oldDay === null) {
             createCalendarEntry(req, res, next);
+            return;
         }
 
         for (let col in oldDay) {

@@ -74,7 +74,7 @@ function clearInputs() {
 }
 
 function getDateFromCalendar(a) {
-    return new Date(a.yeaer, a.month - 1, a.day);
+    return new Date(a.year, a.month - 1, a.day);
 }
 
 async function updateCalendarForm() {

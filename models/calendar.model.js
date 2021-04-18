@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             year : {
-                type: DataTypes.TEXT,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
 

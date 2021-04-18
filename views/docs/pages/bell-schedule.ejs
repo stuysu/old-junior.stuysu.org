@@ -5,20 +5,43 @@
             <span id="time-past-number">..</span> Minutes Past
         </td>
 
-        <% if (locals.dayInfo) { %>
+        <% if (locals.dayInfo !== null) { %>
         <td id="time-day" data-first-period="<%= dayInfo.firstPeriod %>">
+            <span class="timeline">
+            <% if (dayInfo.today) { %>
+                Today is...
+            <% } else { %>
+                <%= dayInfo.month %>/<%= dayInfo.day %> is...
+            <% } %>
+            </span><br>
+
             <span id="time-day-letter"><%= dayInfo.dayLetter %></span> Day	
-        <% } else { %>
-            <td id="time-day" data-first-period="1">
-                <span id="time-day-letter">--</span> Day	
-        <% } %>
             &#8226;
-            <span id="time-day-period">Pd 1</span>
+            <span><%= dayInfo.remoteGroup %></span>
+            
             <br>
 
             <span id="time-day-time" class="timeline">
                 ..
             </span>
+            &#8226;
+            <span class="timeline" id="time-day-period">Pd 1</span>
+
+            <% if (dayInfo.note !== null && dayInfo.note.trim() !== '') { %>
+                <br>
+                <span class="timeline"><%= dayInfo.note %></span>
+            <% } %>
+
+        <% } else { %>
+        <td id="time-day" data-first-period="1">
+            <span id="time-day-time">
+                ..
+            </span>
+            &#8226;
+            <span id="time-day-period">Pd 1</span>
+        <% } %>
+
+            
         </td>
         
         <td id="time-left">
