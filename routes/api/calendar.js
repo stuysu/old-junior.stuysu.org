@@ -97,26 +97,11 @@ router.put("/calendar", async (req, res, next) => {
 
 router.delete("/calendar/:id", async (req, res, next) => {
     try {
-        let wasDeleted = await Calendar.destroy({ where: { id: req.body.id }});
+        let wasDeleted = await Calendar.destroy({ where: { id: req.params.id }});
         res.status(200).json({id: req.body.id, deleted: wasDeleted == 1});
     } catch (e) {
         next(CreateError(400, e));
     }
-    
-    Link.destroy({
-        where: {
-            id: n,
-        },
-    })
-        .then((wasDeleted) => {
-            res.status(200).json({
-                deleted: wasDeleted == 1 ? true : false,
-                id: n,
-            });
-        })
-        .catch((err) => {
-            next(CreateError(400, err));
-        });
 });
 
 module.exports = router;

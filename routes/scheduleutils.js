@@ -8,8 +8,6 @@ const UNKNOWN_DAY = {
 };
 
 async function getDayInfo(date = new Date(Date.now())) {
-    console.log("sup bitches");
-
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     let day = date.getDate();

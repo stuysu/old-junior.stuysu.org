@@ -68,9 +68,13 @@ function getSelectIndex(select, value) {
 
 function clearInputs() {
     calendarInputs.isLate.checked = false;
-    calendarInputs.remoteGroup.selectedIndex =0;
-    calendarInputs.dayLetter.selectedIndex = 0; 
+    calendarInputs.remoteGroup.selectedIndex = -1;
+    calendarInputs.dayLetter.selectedIndex = -1; 
     calendarInputs.notes.value = '';
+}
+
+function getDateFromCalendar(a) {
+    return new Date(a.yeaer, a.month - 1, a.day);
 }
 
 async function updateCalendarForm() {
@@ -82,7 +86,9 @@ async function updateCalendarForm() {
 
     let existingDate = await getExistingDate(currentDate);
 
-    calendarInputs.dateline.innerText = `${currentDate.month}/${currentDate.day}/${currentDate.year}`
+    let dayIndex = getDateFromCalendar(currentDate).getDay();
+    const days = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
+    calendarInputs.dateline.innerHTML = `${currentDate.month}/${currentDate.day}/${currentDate.year}<br>${days[dayIndex]}`
     
     if (existingDate != null) {
         console.log("updating ");
@@ -94,6 +100,14 @@ async function updateCalendarForm() {
         console.log("clearing");
         clearInputs();
     }
+}
+
+function isCalendarInputValid() {
+
+    return !(
+        calendarInputs.remoteGroup.selectedIndex < 0 || 
+        calendarInputs.dayLetter.selectedIndex < 0
+    ) 
 }
 
 function getCalendarBodyData() {
@@ -112,6 +126,11 @@ function getCalendarBodyData() {
 }
 
 async function saveDate() {
+    if (!isCalendarInputValid()) {
+        alertManager.addAlert("Failure", "not all date inputs are filled out, cannot make a new date entry", "warning");
+        return;
+    }
+
     let response = await fetch("/api/calendar", {
         method: "PUT",
         cache: "no-cache",
@@ -125,6 +144,46 @@ async function saveDate() {
     });
     response = await response.json();
     console.log(response);
+
+    if (response.updated) {
+        alertManager.addAlert("Success", "updated existing date with new information");
+    } 
+    else if (response.id) {
+        alertManager.addAlert("Success", "created new date entry with given data");
+    }
+    else {
+        alertManager.addAlert("Failure", "likely database error", "warning");
+    }
+}
+
+async function clearDate() {
+    clearInputs();
+
+
+    let existingDate = await getExistingDate(getCurrentDate());
+    if (existingDate != null) {
+
+        let response = await fetch("/api/calendar/" + existingDate.id, {
+            method: "DELETE",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer"
+        });
+
+        response = await response.json();
+
+        if (response.deleted) {
+            alertManager.addAlert("Success", "Selected date cleared from the database");
+            return;
+        }
+
+    }
+
+    alertManager.addAlert("Failure", "No date to clear from database, or database error", "warning");
 }
 
 addResponse(onResponseLoad);
