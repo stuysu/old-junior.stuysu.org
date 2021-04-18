@@ -10,7 +10,9 @@ const SIDE_MAX_CHARACTERS = 80;
 
     <% for (let event of events) { %>
 
-        <% let date = new Date(event.date); %>
+        <% 
+            let date = getDateFromSql(event.date);
+        %>
 
         <tr>
         
@@ -79,10 +81,11 @@ const SIDE_MAX_CHARACTERS = 80;
                         <h1 id="event-date"><%= date %></h1>
                         
                         <% for (let event of eventsOnDay) { %>
+                            <% let eventDate = getDateFromSql(event.date); %>
 
                             <h1 class="important-title" id="event-title">
                                 <a href="/events/<%= event.id %>"><%= event.title %></a>
-                                <span class="important-title-time">&#8226 <%= getTimeLine(new Date(event.date)) %></span>
+                                <span class="important-title-time">&#8226 <%= getTimeLine(eventDate) %></span>
                             </h1>
                             <% if (event.description) { %>
                                 <p>

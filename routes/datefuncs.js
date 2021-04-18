@@ -2,6 +2,15 @@
 /// This is for events docs
 /// 
 
+const TIMEZONE_SHIFT = Number(process.env.TIMEZONE_SHIFT) || 0;
+
+function getDateFromSql(timestamp) {
+    let date = new Date(timestamp);
+    date.setHours(date.getHours() - 4);
+    // date.setHours(date.getHours() + 0);
+    return date;
+}
+
 function leadingZero(s) {
     if (s < 10)
         return `0${s}`;
@@ -46,7 +55,7 @@ function generateDatemap(events) {
     let datemap = new Map();
     
     for (let event of events) {
-        let date = new Date(event.date);
+        let date = getDateFromSql(event.date);
         let dateline = getDateLine(date);
 
         let dates = datemap.get(dateline);
@@ -66,5 +75,6 @@ module.exports = {
     getTimeLine: getTimeLine,
     getDateLine: getDateLine,
     getShortenedDescription: getShortenedDescription,
-    leadingZero: leadingZero
+    leadingZero: leadingZero,
+    getDateFromSql, getDateFromSql
 };

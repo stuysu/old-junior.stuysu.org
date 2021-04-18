@@ -4,7 +4,7 @@
 
             <table class="content">
 
-                <% let date = new Date(event.date); %>
+                <% let date = getDateFromSql(event.date); %>
 
                 <tr>
                 
@@ -33,16 +33,16 @@
 
                 <td id="content-body">
 
-                    <a id="a" style="font-size: 300%;" href="/mobile/events/<%= event.id %>"><h1><%= event.title %></h1></a>
+                    <a id="a" style="font-size: 3.0vw;" href="/mobile/events/<%= event.id %>"><h1><%= event.title %></h1></a>
                     
-                    <p style="font-size: 150%;"><%= getDateLine(date) %> @ <%= getTimeLine(date) %></p>
+                    <p style="font-size: 2.2vw;"><%= getDateLine(date) %> @ <%= getTimeLine(date) %></p>
 
                     <p>
                     <% if (event.url) { %>
                         <a style="color:inherit; font-size: 5vw;" target="_blank" id="#" href="<%= event.url %>">Click to see more</a>
                         |
                     <% } %>
-                        <a style="color:inherit; font-size: 5vw;" href="/mobile/">Go back</a>
+                        <a style="color:inherit; font-size: 2.0vw;" href="/mobile/">Go back</a>
                     </p>
 
                 </td>

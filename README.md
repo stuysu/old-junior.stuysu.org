@@ -23,6 +23,7 @@ The sophomore student union website. See [our frontend prototype](https://github
 
 ### project
 
+* figure out a better way to store and display times (timezones are messing me up)
 * redesign error page
 * remove `docs-old/` folder
 * add newsletter
