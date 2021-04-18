@@ -3,6 +3,7 @@ const { CreateError, analyticsOn, isMobile } = require("../utils");
 const { getDayInfo } = require("../scheduleutils");
 const route = express.Router();
 
+
 route.get(
     "/bell-schedule",
 
@@ -11,11 +12,13 @@ route.get(
 
         async (req, res, next) => {
             
+            let dayInfo = await getDayInfo();
+
             res.render('docs/', { 
                 title: 'Bell Schedule',
                 page: 'bell-schedule',
 
-                dayInfo: getDayInfo(),
+                dayInfo: dayInfo,
                 isMobile: isMobile(req)
             });
 
