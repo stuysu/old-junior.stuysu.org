@@ -31,6 +31,15 @@ const analyticsOn = (name, handler) => {
 
 };
 
+const isMobile = req => {
+    return req.originalUrl.startsWith('/mobile');
+};
+
+const addModule = (object, m) => {
+    for (let func in m) 
+        object[func] = m[func];
+    return object;
+};
 
 module.exports = {
     CreateError: (__code, __error) => {
@@ -42,4 +51,6 @@ module.exports = {
     },
 
     analyticsOn : analyticsOn,
+    isMobile : isMobile,
+    addModule : addModule
 };

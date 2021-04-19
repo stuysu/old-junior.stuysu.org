@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%/* this could be better -- maybe make a helper method for getting a path */%>
+<% let prefix = locals.isMobile ? 'mobile/' : ''; %>
+
+<head>
+
+    <%- include(prefix + 'partials/head'); %>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <%- include(prefix + 'partials/menu') %>
+
+        <% if (locals.isHomepage) { %> 
+
+            <%- include(prefix + 'partials/banner'); %>
+
+        <% } %>
+
+        <% let className = (locals.isHomepage) ? 'body' : 'general-body'; %>
+        <div class="<%= className %>">
+            
+            <% if (locals.page) { %>
+                <%- include(prefix + 'pages/' + locals.page); %>
+            <% } %>
+
+        </div> 
+
+    </div>
+
+    <%- include(prefix + 'partials/footer'); %>
+    <script type="text/javascript" src="/javascripts/darkmode.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+:root {
+    --important-dates: #a33b3b;
+}
+
+.darkmode {
+    /* --important-dates: #4788B7; */
+}
+
+.footer {
+    transition: all 0.4s ease-in;
+}
+
+body {
+    background-color: var(--btn-color);
+}
+
+
+.no-fade-in {
+    opacity: 1 !important;
+    animation: none !important;
+}
+
+/*
+.study-img:hover, .study-img:focus {
+    transform: translateY(-1%) scale(1.01);
+}
+*/
+
+.small {
+    display: block;
+    font-size: 50%;
+    /* font-style: italic; */
+}
+
+p.dateline {
+    text-align: center;
+    font-size: 1.5vw !important;
+}
+
+.dateline a {
+    text-decoration: none;
+    color: var(--foreground);
+}
+
+.dateline a[href]:hover {
+    text-decoration: underline;
+}
+
+
+.important-title a {
+    text-decoration: underline;
+    color: inherit;
+}
+
+.full-description ul {
+    margin: 1.5vw 0;
+    text-align: center;
+    list-style-position: inside;
+    color: var(--foreground);
+    font-size: 1.4vw;
+}
+
+.full-description * {
+    color: var(--foreground);
+    font-size: 1.4vw;
+}
+
+.full-description table, .full-description td, .full-description th {
+    border: 1px solid var(--foreground);
+    border-collapse: collapse;
+    padding: 1vw;
+}
+
+.important-title-time {
+    font-size: 50%;
+    vertical-align: middle;
+}

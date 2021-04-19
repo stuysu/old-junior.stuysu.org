@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='/stylesheets/admin.css' />
-    <link rel='stylesheet' href='/stylesheets/admin-analytics.css' />
+    
+    <!-- add stylesheets here -->
+    <link rel='stylesheet' href='/stylesheets/admin/admin.css' />
+    <link rel='stylesheet' href='/stylesheets/admin/analytics.css' />
+    <link rel='stylesheet' href="/stylesheets/admin/links.css" />
+
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="<%= client_id %>">
+    
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
@@ -24,6 +29,11 @@
     <button style="display: none;" class="signout btn btn-secondary" onclick="signOut()">Sign out</button>
 
     <script>
+
+        let responseCallbacks = [];
+        function addResponse(cb) {
+            responseCallbacks.push(cb);
+        }
 
         function getResponse(id_token) {
             const url = `/api/admin`;
@@ -54,6 +64,11 @@
                 document.getElementsByClassName('g-signin2')[0].style.display = 'none';
                 document.getElementsByClassName('signout')[0].style.display = 'block';
                 document.getElementById("response").innerHTML = data;
+
+                for (let responseCallback of responseCallbacks) {
+                    responseCallback();
+                }
+
             }).catch(err => {
                 document.getElementsByClassName('g-signin2')[0].style.display = 'none';
                 document.getElementsByClassName('signout')[0].style.display = 'block';
@@ -65,14 +80,17 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="/javascripts/admin-alerts.js"></script>
+    
+    <script src="/javascripts/admin/alerts.js"></script>
     
     <!-- add other javascripts here -->
-    <script src="/javascripts/admin.js"></script>
-    <script src="/javascripts/admin-events.js"></script>
-    <script src="/javascripts/admin-analytics.js"></script>
-    <script src="/javascripts/admin-sheets.js"></script>
-    <script src="/javascripts/admin-controller.js"></script>
+    <script src="/javascripts/admin/links.js"></script>
+    <script src="/javascripts/admin/events.js"></script>
+    <script src="/javascripts/admin/analytics.js"></script>
+    <script src="/javascripts/admin/sheets.js"></script>
+    <script src="/javascripts/admin/controller.js"></script>
+    <script src="/javascripts/admin/calendar.js"></script>
+
 
 </body>
 

@@ -1,0 +1,17 @@
+.instagram {
+    --gradient: linear-gradient(45deg, red, blue);
+    --hover-color: white;
+    --border-width: -3px;
+}
+
+.twitter {
+    --gradient: linear-gradient(45deg, blue, lightblue);
+    --hover-color: white;
+    --border-width: -3px;
+}
+
+.facebook {
+    --gradient: linear-gradient(45deg, darkblue, blue);
+    --hover-color: white;
+    --border-width: -3px;
+}

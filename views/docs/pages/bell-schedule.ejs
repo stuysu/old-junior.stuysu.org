@@ -1,0 +1,63 @@
+<link href="/stylesheets/bell-schedule.css" rel="stylesheet">
+<table id="bell-schedule-times" class="bell-schedule">
+    <tr>
+        <td id="time-remaining">
+            <span id="time-past-number">.. Minutes Past</span>
+        </td>
+
+        <% if (locals.dayInfo !== null) { %>
+        <td id="time-day" data-first-period="<%= dayInfo.firstPeriod %>">
+            <span class="timeline">
+            <% if (dayInfo.today) { %>
+                Today is...
+            <% } else { %>
+                <%= dayInfo.month %>/<%= dayInfo.day %> is...
+            <% } %>
+            </span><br>
+
+            <span id="time-day-letter"><%= dayInfo.dayLetter %></span> Day <span class="">(<%= dayInfo.firstPeriod %>-<%= dayInfo.firstPeriod + 4 %>)</span>
+            &#8226;
+            <span><%= dayInfo.remoteGroup %></span>
+            
+            <br>
+
+            <span id="time-day-time" class="timeline">
+                ..
+            </span>
+            <span class="timeline" id="time-day-period">Pd 1</span>
+
+            <% if (dayInfo.note !== null && dayInfo.note.trim() !== '') { %>
+                <br>
+                <span class="timeline"><%= dayInfo.note %></span>
+            <% } %>
+
+        <% } else { %>
+        <td id="time-day" data-first-period="1">
+            <span id="time-day-time">
+                ..
+            </span>
+            <span id="time-day-period">Pd 1</span>
+        <% } %>
+
+            
+        </td>
+        
+        <td id="time-left">
+            <span id="time-left-number">.. Minutes Left</span>
+        </td> 
+    </tr>
+</tr>
+
+<table class="bell-schedule">
+
+        <tr id="ticker">
+        </tr>
+
+        <tr id="bell-schedule-row">
+        </tr>
+
+    </table>
+</table>
+
+<script type="text/javascript" src="/javascripts/bell-schedule-lib.js"></script>
+<script type="text/javascript" src="/javascripts/bell-schedule.js"></script>

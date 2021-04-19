@@ -1,0 +1,51 @@
+<h1>Study Guides</h1>
+<p id="study-p">Hey everyone! Here are the study guides that we collected from Sophomores and the upperclassmen, feel
+    free to use them to your heart's content! (pro tip: use the search bar for faster results!)</p>
+
+</br>
+
+<div class="search-bar-container">
+
+    <table class="elementsContainer">
+        
+        <tr>
+
+            <td class="search-bar-input">
+
+                <input 
+                    oninput="fillSearches()" 
+                    type="text" 
+                    id="search-text"
+                    placeholder="Search for study guides..."
+                />
+            
+                </td>
+            <td class="search-spacer">&nbsp;</td>
+            
+            <td class="search-type">
+                
+                
+                <select onchange="fillSearches()" id="search-type">
+                    <option value="&any=">Any</option>
+                    <option value="&subject=">Subject</option>
+                    <option value="&title=">Title</option>
+                    <option value="&teacher=">Teacher</option>
+                </select>
+
+            </td>
+        
+        </tr>
+    
+    </table>
+
+</div>
+
+<table class="study-guides-table" id="sheets-table">
+    
+</table>
+
+<script src="/javascripts/study-guides-interface.js"></script>
+<script src="/javascripts/study-guides.js"></script>
+<script>
+    let SHEETS_PER_ROW = 2;
+</script>

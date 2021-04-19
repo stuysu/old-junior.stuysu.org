@@ -1,0 +1,103 @@
+<%
+
+const MAX_CHARACTERS = 80;
+const SIDE_MAX_CHARACTERS = 80;
+
+%>
+
+<br>
+<table class="content">
+
+    <% for (let event of events) { %>
+
+        <% 
+            let date = getDateFromSql(event.date);
+        %>
+
+        <tr>
+        
+        <td id="img">
+
+            <% if (event.url) { %>
+                <a target="_blank" id="#" href="<%= event.url %>">
+            <% } %>
+
+            <% if (event.poster) { %>
+                <img src="<%= event.poster %>" />
+            <% } else { %> 
+                <img src="/images/default-event-poster.png" />
+            <% } %>
+
+            <% if (event.url) { %>
+                </a>
+            <% } %>
+            
+        </td>
+
+        <td id="content-body">
+
+            <a id="a" href="/events/<%= event.id %>">
+                <h1><%= event.title %></h1>
+            </a>
+        
+            <% if (event.description) { %>
+                <p class="event-description"><%= getShortenedDescription(event.description, MAX_CHARACTERS) %></p>
+            <% } %>
+
+            <p class='dateline'>
+
+                <a><%= getDateLine(date) %> @ <%= getTimeLine(date) %></a>
+
+                | <a id="#" href="/events/<%= event.id %>">Click to read more</a>
+
+                <% if (event.url) { %>
+                    | <a id="#" target="_blank" href="<%=event.url %>">Click to see more</a>
+                <% } %>
+            
+            </p>
+
+        </td>
+
+        </tr>
+
+    <% } %>
+
+</table>
+
+<% const datemap = generateDatemap(otherEvents) %>
+
+<table class="event-list-parent">
+    <tr>
+        <td class="event-list">
+            <ul>
+                <li id="head">
+                    <h1>Important Dates</h1>
+                </li>
+
+                <% for (let dateEvent of datemap) { %>
+                    <% let [ date, eventsOnDay ] = dateEvent; %>
+                    <li>
+
+                        <h1 id="event-date"><%= date %></h1>
+                        
+                        <% for (let event of eventsOnDay) { %>
+                            <% let eventDate = getDateFromSql(event.date); %>
+
+                            <h1 class="important-title" id="event-title">
+                                <a href="/events/<%= event.id %>"><%= event.title %></a>
+                                <span class="important-title-time">&#8226 <%= getTimeLine(eventDate) %></span>
+                            </h1>
+                            <% if (event.description) { %>
+                                <p>
+                                    <%= getShortenedDescription(event.description, SIDE_MAX_CHARACTERS) %>
+                                </p>
+                            <% } %>
+                        <% } %>
+
+                    </li>
+                <% } %>
+
+            </ul>
+        </td>
+    </tr>
+</table>

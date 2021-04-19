@@ -1,0 +1,85 @@
+
+/*
+page styles
+*/
+
+ul#link-manager {
+    list-style-type: none;
+    margin: 30px;
+    padding: 0;
+}
+
+ul#link-manager li.link {
+    margin: 0 0;
+    border: 1px solid gray;
+    padding: 15px;
+    background-color: white;
+}
+
+ul#link-manager li.modifying {
+    background: lightgray;
+    transform: scale(1.01);
+}
+
+li.link:hover {
+    box-shadow: 0 0 5px 5px lightgray;
+}
+
+/*
+Drag-and-Drop CSS Styles
+*/
+
+[draggable] {
+    cursor: grab;
+}
+
+.draggable {
+    transition: 0.3s;
+}
+
+.dragging {
+    opacity: 0.4;
+    animation: none !important;
+    box-shadow: none !important;
+    transform: scale(0.99);
+}
+
+@keyframes over-drop {
+    0% { 
+        transform: scale(1.001) rotate(0deg); 
+    }
+    50% {
+        transform: scale(1.001) rotate(+0.2deg);
+    }
+    100% {
+        transform: scale(1.001) rotate(-0.2deg);
+    }
+}
+
+.over {
+    /* animation */
+    animation-name: over-drop;
+    animation-duration: 0.175s;
+    animation-iteration-count: infinite;
+
+    /* transform: scale(1.025); */
+    box-shadow: 0 0 8px 8px lightgray;
+}
+
+@keyframes dropped-animation {
+    0% { 
+        transform: scale(1.00); 
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1.00);
+    }
+}
+
+.dropped {
+    animation-name: dropped-animation;
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+}

@@ -1,0 +1,37 @@
+.special {
+    position: relative;
+
+    transition: none;
+    border: 0px solid black;
+}
+
+.special .link-item {
+    background: var(--gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.special:hover {
+    background: var(--gradient);
+}
+
+.special:hover .link-item {
+    background: none;
+    color: var(--hover-color);
+}
+
+.special::after {
+
+    position: absolute;
+
+    top: var(--border-width); bottom: var(--border-width);
+    left: var(--border-width); right: var(--border-width);
+
+    background: var(--gradient);
+    content: '';
+    z-index: -1;
+
+
+    border-radius: var(--border-radius);
+}

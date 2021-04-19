@@ -1,0 +1,97 @@
+.bell-schedule {
+    font-size: 2.2vw !important;
+}
+
+.timeline {
+    font-size: 1.55vw !important;
+    /* font-size: 2.2vw !important; */
+}
+
+body {
+    background-color: var(--background) !important;
+}
+
+
+.no-fade-in {
+    opacity: 1 !important;
+    animation: none !important;
+}
+
+#content-body a {
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+}
+#content-body a h1 {
+    font-size: 80% !important;
+}
+
+.small {
+    display: block;
+    font-size: 50%;
+    /* font-style: italic; */
+}
+
+.dateline {
+    text-align: center;
+    font-size: 2.3vw !important;
+}
+
+.dateline a {
+    text-decoration: none;
+    color: var(--foreground);
+}
+
+.dateline a[href]:hover {
+    text-decoration: underline;
+}
+
+
+.important-title a {
+    text-decoration: underline;
+    color: inherit;
+}
+
+.full-description ul {
+    margin: 1.5vw 0;
+    text-align: center;
+    list-style-position: inside;
+    color: var(--foreground);
+    /* font-size: 1.4vw; */
+}
+
+.full-description * {
+    color: var(--foreground);
+    font-size: 5vw !important;
+}
+
+.full-description table, .full-description td, .full-description th {
+    border: 1px solid var(--foreground);
+    border-collapse: collapse;
+    padding: 2vw;
+    margin: 1vw auto;
+}
+
+.important-title-time {
+    font-size: 3.0vw;
+    vertical-align: middle;
+}
+
+.mobile-event-title {
+    font-size: 6vw !important;
+}
+
+.container {
+    padding-bottom: 8vw;
+}
+
+#head {
+    text-align: center;
+}
+
+.footer {
+    background: var(--btn-color);
+    color: var(--foreground);
+    font-size: small;
+    transition: all 0.4s ease-in;
+}

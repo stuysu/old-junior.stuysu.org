@@ -48,9 +48,7 @@ route.post(
                     process.env.AUTH_ADMIN === "always");
 
             if (process.env.NODE_ENV !== 'production') {
-                console.log(payload);
-            
-                fs.appendFileSync('.people', `${payload.name} (${payload.email}) has token ${sub}\n`);
+                console.log(`${payload.given_name} ${payload.family_name} (${payload.email}) has sub token ${payload.sub}`);
             }
 
             if (validated) {

@@ -1,0 +1,19 @@
+<%
+/*
+
+    The root page is just the events page, but it could be separated
+    and more stuff could be added here.
+
+*/
+%>
+<style>
+    .tight {
+        width: 90vw;
+        margin: 2vh auto;
+    }
+</style>
+
+<div class="tight">
+    <%- include('bell-schedule.ejs'); %>
+</div>
+<%- include('events.ejs'); %>
