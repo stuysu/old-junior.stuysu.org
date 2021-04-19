@@ -26,7 +26,7 @@
             </span>
             <span class="timeline" id="time-day-period">Pd 1</span>
 
-            <% if (dayInfo.note !== null && dayInfo.note !== '') { %>
+            <% if (dayInfo.note !== null && dayInfo.note.trim() !== '') { %>
                 <br>
                 <span class="timeline"><%= dayInfo.note %></span>
             <% } %>
