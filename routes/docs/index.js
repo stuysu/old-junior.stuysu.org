@@ -7,7 +7,7 @@ const { Events, sequelize } = require("./../../models");
 const datefuncs = require("../datefuncs");
 
 const MAX_EVENTS = 5;
-
+const { getDayInfo } = require("../scheduleutils");
 route.get(
     "/",
 
@@ -38,11 +38,14 @@ route.get(
 
             }
 
+            let dayInfo = await getDayInfo();
+
             res.render('docs/', addModule({
 
                 title: 'Home',
                 isHomepage: true,
                 page: 'index',
+                dayInfo: dayInfo,
 
                 events: upcomingEvents,
                 otherEvents: importantDates,

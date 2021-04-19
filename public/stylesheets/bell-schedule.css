@@ -1,0 +1,101 @@
+:root {
+    --schedule-background: var(--btn-color);
+    --ticker-color: #b5a7a9;
+    --tcolor: var(--foreground);
+
+    --schedule-background: #bd4b4b;
+    /* --ticker-color: #a33b3b; */
+    --ticker-color: #4788B7;
+    --tcolor: white; 
+
+    /* --periods: 5;
+    --period-size: 55%;
+    --breaks: 4;
+    --break-length: 10%; */
+
+    --ticker-width: calc(100% / 40);
+    --schedule-height: auto;
+}
+
+#bell-schedule-times {
+    border-bottom: 3px solid var(--ticker-color);
+}
+
+.darkmode {
+    --ticker-color: #4788B7;
+    --schedule-background: var(--btn-color);
+    --tcolor: var(--foreground);
+}
+
+.bell-schedule {
+
+    text-align: center;
+
+    background-color: var(--schedule-background);
+
+    font-weight: bold;
+    font-size: 1.1vw;
+
+    z-index: 2;
+
+    position: relative;
+
+    transition: 0.3s;
+
+    overflow: hidden;
+    height: var(--schedule-height);
+}
+
+.bell-schedule tr{
+    margin: 0 !important;
+    height: 100%;
+}
+
+.bell-schedule td {
+    box-sizing: border-box !important;
+
+    margin: 0;
+    padding: 2.7vh 0;
+    width: calc(55% / ((55 * 5 + 4 * 10)) );
+}
+
+td.break {
+    width: calc(10% / ((55 * 5 + 4 * 10)) );
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+#ticker {
+    width: var(--ticker-width);
+    /* it doesnt matter what this is cause it gerts cutoff */
+    --correction: 1px; 
+
+    background-color: var(--ticker-color);
+    /* overflow: auto */
+    height: calc(100% + var(--correction));
+    top: calc(var(--correction) * -1);
+
+    z-index: -1;
+/* 
+    opacity: 0.1; */
+
+    position: absolute;
+}
+
+.bell-schedule td {
+    z-index: 3;
+
+    /* mix-blend-mode: difference; */
+    color: var(--tcolor);
+}
+
+/* .bell-schedule td.active-period {
+    background-color: #a33b3b;
+    color: white;
+    z-index: 10001;
+} */
+
+.timeline {
+    font-size: 0.95vw;
+    font-weight: normal !important;
+}

@@ -1,3 +1,11 @@
+:root {
+    --important-dates: #a33b3b;
+}
+
+.darkmode {
+    /* --important-dates: #4788B7; */
+}
+
 .footer {
     transition: all 0.4s ease-in;
 }
