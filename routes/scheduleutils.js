@@ -15,6 +15,7 @@ function getWhereFromDate(date) {
 }
 
 async function getDayInfo(date = new Date(Date.now())) {
+    date.setHours(date.getHours() - 4);
     let dayInfo = await Calendar.findOne({ 
         where: getWhereFromDate(date)
     });
