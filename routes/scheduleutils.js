@@ -35,7 +35,7 @@ async function getDayInfo(date = new Date(Date.now())) {
         }
     }
 
-    console.log(dayInfo);
+    // console.log(dayInfo);
     return dayInfo;
 }
 

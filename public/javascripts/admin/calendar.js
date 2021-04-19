@@ -121,7 +121,7 @@ function getCalendarBodyData() {
         remoteGroup: calendarInputs.remoteGroup.value,
         note: document.getElementById('calendar-notes').value
     };
-    console.log(a);
+    // console.log(a);
     return a;
 }
 
