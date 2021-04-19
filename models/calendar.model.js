@@ -49,14 +49,12 @@ module.exports = (sequelize, DataTypes) => {
             },
 
             remoteGroup: {
-                type: DataTypes.INTEGER
+                type: DataTypes.TEXT
             },
 
             note: {
-                type: DataTypes.INTEGER
+                type: DataTypes.TEXT
             }
-
-
 
         },
 
