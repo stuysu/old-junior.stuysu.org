@@ -51,10 +51,7 @@ function timeRange() {
 
 function getElapsedTime(time, periods) {
     if (periods.length < 1)
-        return {
-            elapsed: '..',
-            left: '..'
-        };
+        return false;
 
     let period = periods[0];
 
@@ -94,9 +91,9 @@ function setTime(time) {
     // Find the period according to the time,
     // and display its name
     let periods = findPeriod(time, PERIODS);
-    let periodText = '--';
+    let periodText = '';
     if (periods.length > 0) {
-        periodText = periods[0].payload.name;
+        periodText = `&#8226; ${periods[0].payload.name}`;
     }
     dayPeriod.innerHTML = periodText;
 
@@ -111,9 +108,17 @@ function setTime(time) {
 
     // Using the period(s) it is now, find past time
     // and time left
-    const { elapsed, left } = getElapsedTime(time, periods);
-    timePast.innerHTML = elapsed;
-    timeLeft.innerHTML = left;
+    let times = getElapsedTime(time, periods);
+    if (!times) {
+        times = { elapsed: '', left: '' };
+    } else {
+        times.elapsed += ' Minutes Past';
+        times.left += ' Minutes Left';
+    }
+    timePast.innerHTML = times.elapsed;
+    timeLeft.innerHTML = times.left;
+
+    
 }
 
 function displayPeriods() {

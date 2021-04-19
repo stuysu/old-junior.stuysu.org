@@ -2,7 +2,7 @@
 <table id="bell-schedule-times" class="bell-schedule">
     <tr>
         <td id="time-remaining">
-            <span id="time-past-number">..</span> Minutes Past
+            <span id="time-past-number">.. Minutes Past</span>
         </td>
 
         <% if (locals.dayInfo !== null) { %>
@@ -24,7 +24,6 @@
             <span id="time-day-time" class="timeline">
                 ..
             </span>
-            &#8226;
             <span class="timeline" id="time-day-period">Pd 1</span>
 
             <% if (dayInfo.note !== null && dayInfo.note.trim() !== '') { %>
@@ -37,7 +36,6 @@
             <span id="time-day-time">
                 ..
             </span>
-            &#8226;
             <span id="time-day-period">Pd 1</span>
         <% } %>
 
@@ -45,7 +43,7 @@
         </td>
         
         <td id="time-left">
-            <span id="time-left-number">..</span> Minutes Left
+            <span id="time-left-number">.. Minutes Left</span>
         </td> 
     </tr>
 </tr>
