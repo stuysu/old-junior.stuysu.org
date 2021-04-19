@@ -1,5 +1,14 @@
+.bell-schedule {
+    font-size: 2.2vw !important;
+}
+
+.timeline {
+    font-size: 1.55vw !important;
+    /* font-size: 2.2vw !important; */
+}
+
 body {
-    background-color: var(--btn-color);
+    background-color: var(--background) !important;
 }
 
 

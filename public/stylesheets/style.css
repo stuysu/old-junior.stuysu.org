@@ -139,7 +139,7 @@ div.menu {
     vertical-align: top;
     padding: 0.6vw;
     width: 20vw;
-    background: #a33b3b;
+    background: var(--important-dates);
 }
 .event-list ul li {
     list-style: none;
