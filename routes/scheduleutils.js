@@ -29,7 +29,7 @@ async function getDayInfo(date = new Date(Date.now())) {
     if (dayInfo !== null) {
         dayInfo.today = true;
 
-        if (date.getHours() >= MAX_TIME.hours && date.getMinutes() > MAX_TIME.minutes) {
+        if (date.getHours() > MAX_TIME.hours || date.getHours() == MAX_TIME.hours && date.getMinutes() >= MAX_TIME.minutes) {
             dayInfo = null;
         }
     } 
