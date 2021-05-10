@@ -60,18 +60,12 @@ const SIDE_MAX_CHARACTERS = 100;
 
                     <td id="img">
 
-                        <% if (event.url) { %>
-                            <a target="_blank" id="#" href="<%= event.url %>">
-                        <% } %>
-
                         <% if (event.poster) { %>
-                            <img src="<%= event.poster %>" />
+                            <a target="_blank" id="#" href="<%= event.poster %>">
+                                <img src="<%= event.poster %>" />
+                            </a>
                         <% } else { %> 
                             <img src="/images/default-event-poster.png" />
-                        <% } %>
-
-                        <% if (event.url) { %>
-                            </a>
                         <% } %>
                         
                     </td>

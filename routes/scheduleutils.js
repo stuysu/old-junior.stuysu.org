@@ -6,8 +6,6 @@ const MAX_TIME = { hours: 16, minutes: 30 };
 MAX_TIME.hours = Number(process.env.MAX_TIME_HOURS) || MAX_TIME.hours;
 MAX_TIME.minutes = Number(process.env.MAX_TIME_MINUES) || MAX_TIME.minutes;
 
-console.log(MAX_TIME);
-
 function getWhereFromDate(date) {
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
