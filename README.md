@@ -2,7 +2,14 @@
 
 The sophomore student union website. See [our frontend prototype](https://github.com/pserb/sophsu-web).
 
+## Available scripts
+
+`npm run start`
+`npm run test`
+
 ## Environment Variables
+
+It's easiest to make a `.env` file to use these locally.
 
 | Name | Description |
 |:----:|:-----------:|
@@ -15,7 +22,7 @@ The sophomore student union website. See [our frontend prototype](https://github
 | **CLIENT_ID** | the google api client id for the google admin panel authorization (not necessary if NO_AUTH is on) |
 | **NO_AUTH** | determines if the google api should be used when authenticating |
 
-## TODO
+## Todo
 
 * add session to admin page
 * think about better study guide and event interface for admin page
