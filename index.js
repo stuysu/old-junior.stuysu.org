@@ -40,8 +40,7 @@ function errorHandler(err, req, res, next) {
         );
     } else {
         res.status(err.status || 500)
-            .render('docs-old/error',{error: err});
-            // .redirect("/");
+            .render('error',{error: err});
     }
 }
 

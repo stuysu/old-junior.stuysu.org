@@ -15,7 +15,7 @@ route.get(
 
             try {
                 let links = await Link.findAll({ order: sequelize.col('ordering') });
-                res.render("docs-old/links", { links: links });
+                res.render("links", { links: links });
             } catch (err) {
                 next(CreateError(400, err));
             }
