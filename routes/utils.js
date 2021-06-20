@@ -41,6 +41,9 @@ const addModule = (object, m) => {
     return object;
 };
 
+const NO_AUTH = process.env.NODE_ENV !== 'production' &&
+    process.env.NO_AUTH;
+
 module.exports = {
     CreateError: (__code, __error) => {
         return {
@@ -52,5 +55,6 @@ module.exports = {
 
     analyticsOn : analyticsOn,
     isMobile : isMobile,
-    addModule : addModule
+    addModule : addModule,
+    NO_AUTH: NO_AUTH
 };

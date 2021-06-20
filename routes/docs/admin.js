@@ -1,21 +1,26 @@
 const express = require("express");
 const route = express.Router();
 
-const { analyticsOn } = require("../utils.js");
+const { analyticsOn, NO_AUTH } = require("../utils.js");
 
-const IS_ADMIN_ROUTE =
+const HAS_ADMIN_ROUTE =
     process.env.ADMIN_ROUTE !== undefined && process.env.ADMIN_ROUTE.length > 0;
 
 const ADMIN_ROUTE = process.env.ADMIN_ROUTE;
 
 route.get(
-    IS_ADMIN_ROUTE ? `/admin/${ADMIN_ROUTE}` : `/admin`,
+    HAS_ADMIN_ROUTE ? `/admin/${ADMIN_ROUTE}` : `/admin`,
 
     analyticsOn(
         "Admin Homepage",
 
         (req, res, next) => {
-            res.render("admin/", { client_id: process.env.CLIENT_ID });
+
+            if (NO_AUTH)
+                res.render("admin/no-auth");
+            else
+                res.render("admin/", { client_id: process.env.CLIENT_ID });
+
         }
     )
 );

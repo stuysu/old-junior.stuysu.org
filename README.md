@@ -11,7 +11,9 @@ The sophomore student union website. See [our frontend prototype](https://github
 | **DATABASE_URL** | a database url to use (default is a SQLite DB at ./app.db) |
 | **LOG** | if the database should log (default is no logging) |
 | **AUTH_ADMIN**| if the admin panel should ask for verification in development (default is no verification development) |
-| **ADMIN_ROUTE** | the route that the admin panel should be on (default is /admin) |
+| **ADMIN_ROUTE** | the route that the admin panel should be on (e.g. new-name --> /admin/new-name, default is /admin) |
+| **CLIENT_ID** | the google api client id for the google admin panel authorization (not necessary if NO_AUTH is on) |
+| **NO_AUTH** | determines if the google api should be used when authenticating |
 
 ## TODO
 
