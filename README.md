@@ -2,31 +2,22 @@
 
 The sophomore student union website. See [our frontend prototype](https://github.com/pserb/sophsu-web).
 
-## todo
+## Environment Variables
 
-### desktop
+| Name | Description |
+|:----:|:-----------:|
+| **PORT** | what port to run on (default is 3001) |
+| **DATABASE_LOAD** | describes how to load the Sequelize ORM (force, alter) |
+| **DATABASE_URL** | a database url to use (default is a SQLite DB at ./app.db) |
+| **LOG** | if the database should log (default is no logging) |
+| **AUTH_ADMIN**| if the admin panel should ask for verification in development (default is no verification development) |
+| **ADMIN_ROUTE** | the route that the admin panel should be on (default is /admin) |
 
-* fix sizing of individual event page
-* fix sizing of "important dates"
-* add newsletter for desktop
+## TODO
 
-### mobile
-
-* fix sizing of home page
-* add newsletter for mobile
-
-### admin
-
-* add session data to track login
-* think about better study guide and event interface
-* add newsletter for admin panel
-
-### project
-
-* figure out a better way to store and display times (timezones are messing me up)
-* redesign error page
-* remove `docs-old/` folder
+* add session to admin page
+* think about better study guide and event interface for admin page
 * add newsletter
+* timezones are messed up between local and remote website (e.g. event interface)
+* redesign error page
 * make sure that in development, the app can be run without google api
-* document environemnt variables
-* document how to run / what to do

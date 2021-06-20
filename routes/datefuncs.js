@@ -2,12 +2,11 @@
 /// This is for events docs
 /// 
 
-const TIMEZONE_SHIFT = Number(process.env.TIMEZONE_SHIFT) || 0;
-
 function getDateFromSql(timestamp) {
     let date = new Date(timestamp);
+    // IMPORTANT: this hack was necessary to get
+    // the times to appear correctly on the main page
     date.setHours(date.getHours() - 4);
-    // date.setHours(date.getHours() + 0);
     return date;
 }
 
