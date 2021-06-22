@@ -1,7 +1,7 @@
 const express = require("express");
 const route = express.Router();
 
-const { analyticsOn, NO_AUTH } = require("../utils.js");
+const { AUTH_MODE, analyticsOn } = require("../utils.js");
 
 const HAS_ADMIN_ROUTE =
     process.env.ADMIN_ROUTE !== undefined && process.env.ADMIN_ROUTE.length > 0;
@@ -16,10 +16,10 @@ route.get(
 
         (req, res, next) => {
 
-            if (NO_AUTH)
-                res.render("admin/no-auth");
-            else
+            if (AUTH_MODE.shouldAsk())
                 res.render("admin/", { client_id: process.env.CLIENT_ID });
+            else // if (AUTH_MODE.shouldSkip())
+                res.render("admin/no-auth");
 
         }
     )

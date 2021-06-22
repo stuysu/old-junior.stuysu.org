@@ -1,7 +1,7 @@
 const express = require("express");
 const route = express.Router();
 
-const { NO_AUTH } = require('../utils');
+const { AUTH_MODE } = require('../utils');
 
 // Sequlize models
 const { Analytics, Events, Link, Subs, Sheets, Attributes, sequelize } = require('../../models');
@@ -34,7 +34,7 @@ async function forceLoad() {
 async function withoutAuthentication(req, res, next) {
     try {
         res.render('admin/response', await forceLoad());
-    } catch {
+    } catch(err) {
         res.end('<h3>Error: Could not load data</h3>');
     }
 }
@@ -75,16 +75,18 @@ async function withAuthentication(req, res, next) {
 
     try {
         let payload = await verifyToken(id_token);
-
-        const { sub } = payload;
-        let validated = await Subs.findOne({ where: { sub: sub } });
-        validated =
-            validated !== null ||
-            (process.env.NODE_ENV !== "production" &&
-                process.env.AUTH_ADMIN === "always");
+        
+        let validated = true;
+        
+        if (AUTH_MODE.shouldAuth()) {
+            const { sub } = payload;
+            const tmp = await Subs.findOne({ where: { sub: sub } });
+            validated = (tmp !== null);
+        }
 
         if (process.env.NODE_ENV !== 'production') {
             console.log(`${payload.given_name} ${payload.family_name} (${payload.email}) has sub token ${payload.sub}`);
+            if (AUTH_MODE.shouldAuth()) console.log(`They are ${validated?'':'not'} in the database.`);
         }
 
         if (validated) {
@@ -104,10 +106,10 @@ route.post(
     "/admin",
 
     async (req, res, next) => {
-        if (NO_AUTH)
-            await withoutAuthentication(req, res, next);
-        else
+        if (AUTH_MODE.shouldAsk())
             await withAuthentication(req, res, next);
+        else // if (AUTH_MODE.shouldSkip())
+            await withoutAuthentication(req, res, next);
     }
 );
 

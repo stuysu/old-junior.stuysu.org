@@ -61,12 +61,20 @@
             getResponse(
                 googleUser.getAuthResponse().id_token
             ).then(response => response.text()).then(data => {
+                
                 document.getElementsByClassName('g-signin2')[0].style.display = 'none';
                 document.getElementsByClassName('signout')[0].style.display = 'block';
                 document.getElementById("response").innerHTML = data;
 
-                for (let responseCallback of responseCallbacks) {
-                    responseCallback();
+                try {
+                    for (let responseCallback of responseCallbacks) {
+                        responseCallback();
+                    }
+                } catch(err){
+                    // The callbacks will usually error when the user was not authentication,
+                    // which is the same html repsonse as when there was authentication, so 
+                    // don't let these errors and be added to the page, send them to teh console
+                    console.error(err);
                 }
 
             }).catch(err => {
