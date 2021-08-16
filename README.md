@@ -23,9 +23,10 @@ It's easiest to make a `.env` file to use these locally.
 
 ## Todo
 
-* add session to admin page
+* add session to admin page (protest api routes)
 * think about better study guide and event interface for admin page
 * add newsletter
 * timezones are messed up between local and remote website (e.g. event interface)
 * redesign error page
-* make sure that in development, the app can be run without google api
+
+
