@@ -90,6 +90,6 @@ module.exports = {
 
     AUTH_MODE: new AuthMode(
         process.env.NODE_ENV, 
-        process.env.AUTH_MODE
+        process.env.AUTHENTICATION_MODE
     )
 };
