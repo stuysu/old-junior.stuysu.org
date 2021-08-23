@@ -16,18 +16,24 @@
 </head>
 
 <body>
-
-    <div id="alerts"></div>
-
-    <div id="response">Welcome to the admin panel...<br>Please sign in,</div>
+    <div id="response">
+        <div>Welcome to the admin panel...</div>
+        
+        <% if (locals.message) { %>
+            <div><%= message %></div>
+        <% } %>
+        
+        <div>Please sign in...</div>
+    </div>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <div id="g_id_onload"
         data-client_id="<%- client_id %>"
-        data-login_uri="/api/admin"
+        data-login_uri="/admin"
     >
     </div>
     <div class="g_id_signin" data-type="standard"></div>
+
 </body>
 
 </html>

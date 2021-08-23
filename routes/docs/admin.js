@@ -1,44 +1,96 @@
 const express = require("express");
 const route = express.Router();
 
-const { AUTH_MODE, analyticsOn } = require("../utils.js");
+const { AuthMode, verify, isDoubleCookieValid } = require("../auth.js");
+const { Analytics, Events, Link, Sheets, Attributes, sequelize } = require('../../models');
 
 route.get('/admin/signin', (req, res, next) => {
-    res.render("admin/signin", {client_id: process.env.CLIENT_ID});
+    res.render("admin/signin", {
+        client_id: process.env.CLIENT_ID,
+        message: req.query.message
+    });
 });
+
+function toSignIn(res, message=undefined) {
+    if (message === undefined) {
+        message = `Could not authenticate account, try logging in again!`;
+    }
+    res.redirect(`/admin/signin?${querystring.stringify({message})}`);
+}
+
+route.get('/admin/signout', (req, res, next) => {
+    res.clearCookie('jid');
+    res.redirect('/admin/signin');
+}); 
+
+
+// Loads all the data necessary for the admin panel
+async function getAllCmsData() {
+    let events = await Events.findAll();
+                    
+    // Get the study sheets
+    let sheets = await Sheets.findAll();
+    for (let sheet of sheets) 
+        sheet['keywords'] = await Attributes.findAll({ where: { SheetId: sheet.id }});;
+
+    // Get all the links
+    let links = await Link.findAll({ order: sequelize.col('ordering') });
+
+    // Get the analytics
+    let analytics = await Analytics.findAll({ order: [ ['views', 'DESC'] ] });
+
+    // Return the object with all the admin data
+    return { 
+        links : links,
+        sheets : sheets,
+        analytics : analytics,
+        events : events
+    };
+}
+
+const querystring = require('querystring');
 
 route.get(
     '/admin',
 
     // TODO: extract this middleware
     async (req, res, next) => {
-        if (AUTH_MODE.shouldSkip()) {
+        if (AuthMode.shouldSkip()) {
             next();
         } else {
-            
-            if (req.cookies['jid'] !== undefined) {
+            let { ok, _ } = await verify(req.cookies['jid']);
+
+            if (ok) {
                 next();
             } else {
-                res.redirect('/admin/signin');
+                toSignIn(res);
             }
         }
     },
 
     async (req, res, next) => {
-        // if (req.cookies.get(''))
-        // res.json(req.cookies['jid']);
+        res.render('admin/cms', { response: await getAllCmsData() });
+    }
+);
 
-        res.type('html').send(`
-            <h3>Aye bruh you good</h3>
-            ${req.cookies['jid']}
-        `);
+route.post(
+    '/admin',
 
-        // res.render("admin/", { client_id: process.env.CLIENT_ID });
+    async (req, res, next) => {
+        try {
+            await isDoubleCookieValid(req); // throws error if invalid for now
+            let { ok, token } = await verify(req.body.credential);
 
-        // if (AUTH_MODE.shouldAsk())
-        // else // if (AUTH_MODE.shouldSkip())
-        //     res.type('html').send('<h3>You good bruh</h3>');
-            // await withoutAuthentication(req, res, next);
+            if (ok) {
+                res.cookie('jid', token);
+                res.redirect('/admin');
+            } else {
+                toSignIn(res);
+            }
+        } catch (err) {
+            console.error(err);
+            res.redirect("/admin/signin");
+        }
     }
 );
 
