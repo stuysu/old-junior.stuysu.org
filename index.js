@@ -14,6 +14,8 @@ const parser = require("express").Router();
 parser.use(express.json());
 parser.use(express.urlencoded({ extended: false }));
 
+const cookieParser = require('cookie-parser');
+
 const staticServe = express.static(path.join(__dirname, "public"));
 
 // Should be the last middleware before the error handler for a 404
@@ -76,6 +78,7 @@ app.set("view engine", "ejs");
 app.use(staticServe);
 app.use(logger);
 app.use(parser);
+app.use(cookieParser());
 
 useRoutes(app, "/api", path.join(__dirname, "routes/api"));
 useRoutes(app, "/", path.join(__dirname, "routes/docs"));
