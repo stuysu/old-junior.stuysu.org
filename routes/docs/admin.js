@@ -4,7 +4,7 @@ const route = express.Router();
 const { AUTH_MODE, analyticsOn } = require("../utils.js");
 
 route.get('/admin/signin', (req, res, next) => {
-    res.render("admin/", {client_id: process.env.CLIENT_ID});
+    res.render("admin/signin", {client_id: process.env.CLIENT_ID});
 });
 
 route.get(
@@ -18,8 +18,9 @@ route.get(
             
             if (req.cookies['jid'] !== undefined) {
                 next();
+            } else {
+                res.redirect('/admin/signin');
             }
-            res.redirect('/admin/signup');
         }
     },
 
@@ -27,7 +28,10 @@ route.get(
         // if (req.cookies.get(''))
         // res.json(req.cookies['jid']);
 
-        res.status(200).type('html').send("<h3>Aye bruh you good</h3>");
+        res.type('html').send(`
+            <h3>Aye bruh you good</h3>
+            ${req.cookies['jid']}
+        `);
 
         // res.render("admin/", { client_id: process.env.CLIENT_ID });
 

@@ -33,12 +33,7 @@ async function forceLoad() {
 // Renders the admin response with no authentication 
 async function withoutAuthentication(req, res, next) {
     try {
-        res.render('admin/response', await forceLoad(), (err, html) => {
-            if (err)
-                throw err;
-
-            res.render('admin/no-load', {response: html});
-        });
+        res.render('admin/cms', {response: await forceLoad()});
     } catch(err) {
         res.type('html').end('<h3>Error: Could not load data</h3>');
     }

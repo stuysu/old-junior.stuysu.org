@@ -18,7 +18,7 @@
 <body onload="onLoadIn()">
 
     <div id="alerts"></div>
-    <div id="response"><%- response %></div>
+    <div id="response"><%- include('./response.ejs', response) %></div>
 
     <script>
         // List of callbacks that the admin scripts can access that will
