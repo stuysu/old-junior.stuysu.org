@@ -10,22 +10,28 @@ route.get('/admin/signin', (req, res, next) => {
 route.get(
     '/admin',
 
+    // TODO: extract this middleware
     async (req, res, next) => {
-        console.log('HELLO');
-
         if (AUTH_MODE.shouldSkip()) {
             next();
         } else {
-            res.redirect('/admin/signin');
+            
+            if (req.cookies['jid'] !== undefined) {
+                next();
+            }
+            res.redirect('/admin/signup');
         }
     },
 
     async (req, res, next) => {
         // if (req.cookies.get(''))
-        res.json(req.cookies['jid']);
+        // res.json(req.cookies['jid']);
+
+        res.status(200).type('html').send("<h3>Aye bruh you good</h3>");
+
+        // res.render("admin/", { client_id: process.env.CLIENT_ID });
 
         // if (AUTH_MODE.shouldAsk())
-        //     res.render("admin/", { client_id: process.env.CLIENT_ID });
         // else // if (AUTH_MODE.shouldSkip())
         //     res.type('html').send('<h3>You good bruh</h3>');
             // await withoutAuthentication(req, res, next);
