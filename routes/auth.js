@@ -35,9 +35,66 @@ class AuthMode {
 
 module.exports.AuthMode = AuthMode;
 
+/**************************** 
+ * AUTHORIZATION MIDDLEWARE *
+ ****************************/
+
+// create a authorization middleware by providing two other middlewares
+function authed(options) {
+
+    async function middleware(req, res, next) {
+        if (AuthMode.shouldSkip()) {
+            return next();
+        }
+
+        let { ok, _ } = await verify(req.cookies['jid']);
+
+        if (ok) {
+            options.authorized(req, res, next); 
+        } else {
+            options.unauthorized(req, res, next);
+        }
+    }
+
+    return middleware;
+}
+
+// A redirect to the signin page with a default message
+const querystring = require('querystring');
+function toSignIn(res, message=undefined) {
+    if (message === undefined) {
+        message = `Could not authenticate account, try logging in again!`;
+    }
+    res.redirect(`/admin/signin?${querystring.stringify({message})}`);
+}
+
+// middleware for auth-only admin pages
+function requireAuth() {
+    return authed({
+        authorized: (_req, _res, next) => { return next(); }, // pass through
+        unauthorized: (_req, res, _next) => toSignIn(res, 'Cannot go there without signing in') // go back to sign in page
+    })
+}
+
+// middleware for unauth-only admin pages
+function requireUnauth() {
+    return authed({
+        authorized: (_req, res, _next) => res.redirect('/admin'), // go back to admin page 
+        unauthorized: (_req, _res, next) => { return next(); } // pass through
+    })
+}
+
+module.exports.requireAuth = requireAuth;
+module.exports.requireUnauth = requireUnauth;
+module.exports.authed = authed;
+module.exports.toSignIn = toSignIn;
+
 /**********************
  * VERIFY GOOGLE JWTS *
  **********************/
+
+// this is used for both authentication and authorization, which is potentially bad
+// but it works because the authentication jwt has an expiration tag so it's convenient
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;

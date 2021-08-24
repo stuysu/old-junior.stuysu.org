@@ -1,30 +1,35 @@
 const express = require("express");
 const route = express.Router();
 
-const { AuthMode, verify, isDoubleCookieValid } = require("../auth.js");
+const { verify, isDoubleCookieValid, requireAuth, requireUnauth, toSignIn } = require("../auth.js");
 const { Analytics, Events, Link, Sheets, Attributes, sequelize } = require('../../models');
 
-route.get('/admin/signin', (req, res, next) => {
-    res.render("admin/signin", {
-        client_id: process.env.CLIENT_ID,
-        message: req.query.message
-    });
-});
+// Render the signin page
+route.get(
+    '/admin/signin', 
 
-function toSignIn(res, message=undefined) {
-    if (message === undefined) {
-        message = `Could not authenticate account, try logging in again!`;
+    requireUnauth(),
+
+    (req, res, next) => {
+        res.render("admin/signin", {
+            client_id: process.env.CLIENT_ID,
+            message: req.query.message
+        });
     }
-    res.redirect(`/admin/signin?${querystring.stringify({message})}`);
-}
+);
 
-route.get('/admin/signout', (req, res, next) => {
-    res.clearCookie('jid');
-    res.redirect('/admin/signin');
-}); 
+// Signout page (clears and then redirects)
+route.get(
+    '/admin/signout', 
+    requireAuth(),
+    (req, res, next) => {
+        res.clearCookie('jid');
+        res.redirect('/admin/signin');
+    }
+); 
 
 
-// Loads all the data necessary for the admin panel
+// Loads all the data necessary for the cms panel
 async function getAllCmsData() {
     let events = await Events.findAll();
                     
@@ -48,48 +53,45 @@ async function getAllCmsData() {
     };
 }
 
-const querystring = require('querystring');
-
+// Loads the cms (with proper authorization)
 route.get(
     '/admin',
 
-    // TODO: extract this middleware
-    async (req, res, next) => {
-        if (AuthMode.shouldSkip()) {
-            next();
-        } else {
-            let { ok, _ } = await verify(req.cookies['jid']);
-
-            if (ok) {
-                next();
-            } else {
-                toSignIn(res);
-            }
-        }
-    },
+    requireAuth(),
 
     async (req, res, next) => {
         res.render('admin/cms', { response: await getAllCmsData() });
     }
 );
 
+// This request is sent a google token and double cookies for authentication
 route.post(
     '/admin',
 
+    requireUnauth(),
+    
     async (req, res, next) => {
         try {
             await isDoubleCookieValid(req); // throws error if invalid for now
             let { ok, token } = await verify(req.body.credential);
 
             if (ok) {
-                res.cookie('jid', token);
+                
+                // may need expiration, but the token already has that
+                // so this will just be regenerated
+                res.cookie('jid', token, { 
+                    httpOnly: true,
+                    sameSite: true, 
+                    // path: '/admin' 
+                });
+
                 res.redirect('/admin');
             } else {
                 toSignIn(res);
             }
         } catch (err) {
             console.error(err);
-            res.redirect("/admin/signin");
+            toSignIn(res);
         }
     }
 );
