@@ -103,7 +103,7 @@ function requireUnauthAdmin() {
 // middleware for auth-only api routes (no need for UnauthApi i think)
 function requireAuthApi() {
     return authed({
-        authorized: (_req, res, _next) => next(),
+        authorized: (_req, _res, next) => next(),
         unauthorized: (_req, res, _next) => unauthorizedApiAccess(res, false), // next(CreateError(400, 'Proper authorization for this route not present')),
         expired: (_req, res, _next) => unauthorizedApiAccess(res, true)
     })
