@@ -32,3 +32,5 @@ It's easiest to make a `.env` file to use these locally.
 * not all of the alerts actually respond to what the server is saying
 * by solving the JWT, sfetch can be removed, which is a huge upgrade. this also applies to the expired callback in auth
 * add READMEs to each folder
+* fix the way admin panel login fails work (it's a url query)
+
