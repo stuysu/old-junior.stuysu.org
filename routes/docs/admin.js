@@ -1,14 +1,14 @@
 const express = require("express");
 const route = express.Router();
 
-const { verify, isDoubleCookieValid, requireAuth, requireUnauth, toSignIn } = require("../auth.js");
+const { verify, isDoubleCookieValid, requireAuthAdmin, requireUnauthAdmin, toSignIn } = require("../auth.js");
 const { Analytics, Events, Link, Sheets, Attributes, sequelize } = require('../../models');
 
 // Render the signin page
 route.get(
     '/admin/signin', 
 
-    requireUnauth(),
+    requireUnauthAdmin(),
 
     (req, res, next) => {
         res.render("admin/signin", {
@@ -21,7 +21,7 @@ route.get(
 // Signout page (clears and then redirects)
 route.get(
     '/admin/signout', 
-    requireAuth(),
+    requireAuthAdmin(),
     (req, res, next) => {
         res.clearCookie('jid');
         res.redirect('/admin/signin');
@@ -57,7 +57,7 @@ async function getAllCmsData() {
 route.get(
     '/admin',
 
-    requireAuth(),
+    requireAuthAdmin(),
 
     async (req, res, next) => {
         res.render('admin/cms', { response: await getAllCmsData() });
@@ -68,7 +68,7 @@ route.get(
 route.post(
     '/admin',
 
-    requireUnauth(),
+    requireUnauthAdmin(),
     
     async (req, res, next) => {
         try {

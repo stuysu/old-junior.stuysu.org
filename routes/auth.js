@@ -1,3 +1,7 @@
+/************************************************
+ * Authentication and Authorization helper file *
+ ***********************************************/
+
 /*********************** 
  * AUTHENTICATION TYPE *
  ***********************/
@@ -69,23 +73,32 @@ function toSignIn(res, message=undefined) {
 }
 
 // middleware for auth-only admin pages
-function requireAuth() {
+function requireAuthAdmin() {
     return authed({
-        authorized: (_req, _res, next) => { return next(); }, // pass through
+        authorized: (_req, _res, next) => next(), // pass through
         unauthorized: (_req, res, _next) => toSignIn(res, 'Cannot go there without signing in') // go back to sign in page
     })
 }
 
 // middleware for unauth-only admin pages
-function requireUnauth() {
+function requireUnauthAdmin() {
     return authed({
         authorized: (_req, res, _next) => res.redirect('/admin'), // go back to admin page 
-        unauthorized: (_req, _res, next) => { return next(); } // pass through
+        unauthorized: (_req, _res, next) => next() // pass through
     })
 }
 
-module.exports.requireAuth = requireAuth;
-module.exports.requireUnauth = requireUnauth;
+// middleware for auth-only api routes (no need for UnauthApi i think)
+function requireAuthApi() {
+    return authed({
+        authorized: (_req, _res, next) => next(),
+        unauthorized: (_req, _res, next) => next(CreateError(400, 'Proper authorization for this route not present')),
+    })
+}
+
+module.exports.requireAuthAdmin = requireAuthAdmin;
+module.exports.requireUnauthAdmin = requireUnauthAdmin;
+module.exports.requireAuthApi = requireAuthApi;
 module.exports.authed = authed;
 module.exports.toSignIn = toSignIn;
 
@@ -101,6 +114,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 const { OAuth2Client } = require("google-auth-library");
 const { Subs } = require('../models');
+const { CreateError } = require('./utils');
 const client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET);
 
 async function verify(token) {

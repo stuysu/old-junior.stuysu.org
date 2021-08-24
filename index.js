@@ -80,6 +80,11 @@ app.use(logger);
 app.use(parser);
 app.use(cookieParser());
 
+// Instead of manually routing each api endpoint
+const { requireAuthApi } = require("./routes/auth");
+app.use("/api", requireAuthApi());
+///////////////
+
 useRoutes(app, "/api", path.join(__dirname, "routes/api"));
 useRoutes(app, "/", path.join(__dirname, "routes/docs"));
 useRoutes(app, "/mobile", path.join(__dirname, "routes/docs"));
