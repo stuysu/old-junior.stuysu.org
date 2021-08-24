@@ -28,3 +28,7 @@ It's easiest to make a `.env` file to use these locally.
 * timezones are messed up between local and remote website (e.g. event interface, consider using Date datatype in the models)
 * redesign error page
 * rethink how google api is used + the jwts (consider storing them elsewhere, generating different JWTs, using refresh tokens, etc.)
+* as of now, the google jwt helpers don't check for expired tokens explicitly, so a hacky check must be done. If this check passes, the user is somtimes redirected to signin. This is unideal as a new JWT can just be generated, but because teh JWT is google's, this cannot be done
+* not all of the alerts actually respond to what the server is saying
+* by solving the JWT, sfetch can be removed, which is a huge upgrade. this also applies to the expired callback in auth
+* add READMEs to each folder
