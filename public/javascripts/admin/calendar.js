@@ -50,8 +50,7 @@ function getCurrentDate() {
 }
 
 async function getExistingDate(date) {
-    let request = await fetch(`/api/calendar?day=${date.day}&month=${date.month}&year=${date.year}`);
-    request = await request.json();
+    let request = await sfetch(`/api/calendar?day=${date.day}&month=${date.month}&year=${date.year}`);
     
     return request;
 }
@@ -131,7 +130,7 @@ async function saveDate() {
         return;
     }
 
-    let response = await fetch("/api/calendar", {
+    let response = await sfetch("/api/calendar", {
         method: "PUT",
         cache: "no-cache",
         credentials: "same-origin",
@@ -142,8 +141,6 @@ async function saveDate() {
         referrerPolicy: "no-referrer",
         body: JSON.stringify(getCalendarBodyData())
     });
-    response = await response.json();
-    console.log(response);
 
     if (response.updated) {
         alertManager.addAlert("Success", "updated existing date with new information");
@@ -163,7 +160,7 @@ async function clearDate() {
     let existingDate = await getExistingDate(getCurrentDate());
     if (existingDate != null) {
 
-        let response = await fetch("/api/calendar/" + existingDate.id, {
+        let response = await sfetch("/api/calendar/" + existingDate.id, {
             method: "DELETE",
             cache: "no-cache",
             credentials: "same-origin",
@@ -173,8 +170,6 @@ async function clearDate() {
             redirect: "follow",
             referrerPolicy: "no-referrer"
         });
-
-        response = await response.json();
 
         if (response.deleted) {
             alertManager.addAlert("Success", "Selected date cleared from the database");
@@ -186,4 +181,4 @@ async function clearDate() {
     alertManager.addAlert("Failure", "No date to clear from database, or database error", "warning");
 }
 
-addResponse(onResponseLoad);
+onResponseLoad();

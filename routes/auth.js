@@ -51,12 +51,18 @@ function authed(options) {
             return next();
         }
 
-        let { ok, _ } = await verify(req.cookies['jid']);
+        let { ok, payload, err } = await verify(req.cookies['jid']);
+        res.locals.payload = payload;
 
         if (ok) {
             options.authorized(req, res, next); 
         } else {
-            options.unauthorized(req, res, next);
+            const tokenExpired = err.message.startsWith('Token used too late')
+            if (options.expired && tokenExpired) {
+                options.expired(req, res, next);
+            } else {
+                options.unauthorized(req, res, next);
+            }
         }
     }
 
@@ -72,11 +78,17 @@ function toSignIn(res, message=undefined) {
     res.redirect(`/admin/signin?${querystring.stringify({message})}`);
 }
 
+
+function unauthorizedApiAccess(res, expired) {
+    res.status(401).json({unauthorized: true, expired: expired });
+}
+
 // middleware for auth-only admin pages
 function requireAuthAdmin() {
     return authed({
         authorized: (_req, _res, next) => next(), // pass through
-        unauthorized: (_req, res, _next) => toSignIn(res, 'Cannot go there without signing in') // go back to sign in page
+        unauthorized: (_req, res, _next) => toSignIn(res, 'Cannot go there without signing in'), // go back to sign in page
+        expired: (_req, res, _next) => toSignIn(res, 'Session expired, plaese sign in again (this is a bug and will be fixed soon)')
     })
 }
 
@@ -91,8 +103,9 @@ function requireUnauthAdmin() {
 // middleware for auth-only api routes (no need for UnauthApi i think)
 function requireAuthApi() {
     return authed({
-        authorized: (_req, _res, next) => next(),
-        unauthorized: (_req, _res, next) => next(CreateError(400, 'Proper authorization for this route not present')),
+        authorized: (_req, res, _next) => next(),
+        unauthorized: (_req, res, _next) => unauthorizedApiAccess(res, false), // next(CreateError(400, 'Proper authorization for this route not present')),
+        expired: (_req, res, _next) => unauthorizedApiAccess(res, true)
     })
 }
 
@@ -140,10 +153,10 @@ async function verify(token) {
             }
         }
 
-        return { ok: true, token: token };
+        return { ok: true, payload: payload,  err: undefined };
     } catch (err) {
         console.error(err);
-        return { ok: false, token: token };
+        return { ok: false, payload: undefined, err: err };
     }
 }
 
