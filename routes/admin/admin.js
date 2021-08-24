@@ -6,7 +6,7 @@ const { Analytics, Events, Link, Sheets, Attributes, sequelize } = require('../.
 
 // Render the signin page
 route.get(
-    '/admin/signin', 
+    '/signin', 
 
     requireUnauthAdmin(),
 
@@ -20,7 +20,7 @@ route.get(
 
 // Signout page (clears and then redirects)
 route.get(
-    '/admin/signout', 
+    '/signout', 
     requireAuthAdmin(),
     (req, res, next) => {
         res.clearCookie('jid');
@@ -55,7 +55,7 @@ async function getAllCmsData() {
 
 // Loads the cms (with proper authorization)
 route.get(
-    '/admin',
+    '/',
 
     requireAuthAdmin(),
 
@@ -66,7 +66,7 @@ route.get(
 
 // This request is sent a google token and double cookies for authentication
 route.post(
-    '/admin',
+    '/',
 
     requireUnauthAdmin(),
     

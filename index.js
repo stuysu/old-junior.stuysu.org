@@ -87,6 +87,7 @@ app.use("/api", requireAuthApi());
 
 useRoutes(app, "/api", path.join(__dirname, "routes/api"));
 useRoutes(app, "/", path.join(__dirname, "routes/docs"));
+useRoutes(app, "/admin", path.join(__dirname, "routes/admin"));
 useRoutes(app, "/mobile", path.join(__dirname, "routes/docs"));
 
 app.use(error404);
