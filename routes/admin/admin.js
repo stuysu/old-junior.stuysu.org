@@ -3,6 +3,7 @@ const route = express.Router();
 
 const { verify, isDoubleCookieValid, requireAuthAdmin, requireUnauthAdmin, toSignIn } = require("../auth.js");
 const { Analytics, Events, Link, Sheets, Attributes, sequelize } = require('../../models');
+const { getRedirects } = require("../adminutil.js");
 
 // Render the signin page
 route.get(
@@ -28,39 +29,19 @@ route.get(
     }
 ); 
 
-
-// Loads all the data necessary for the cms panel
-async function getAllCmsData() {
-    let events = await Events.findAll();
-                    
-    // Get the study sheets
-    let sheets = await Sheets.findAll();
-    for (let sheet of sheets) 
-        sheet['keywords'] = await Attributes.findAll({ where: { SheetId: sheet.id }});;
-
-    // Get all the links
-    let links = await Link.findAll({ order: sequelize.col('ordering') });
-
-    // Get the analytics
-    let analytics = await Analytics.findAll({ order: [ ['views', 'DESC'] ] });
-
-    // Return the object with all the admin data
-    return { 
-        links : links,
-        sheets : sheets,
-        analytics : analytics,
-        events : events
-    };
-}
-
-// Loads the cms (with proper authorization)
+// Loads the admin panel (with proper authorization)
 route.get(
     '/',
 
     requireAuthAdmin(),
 
     async (req, res, next) => {
-        res.render('admin/cms', { response: await getAllCmsData() });
+        res.render('admin/', {
+            data: { name: res.locals.payload.given_name + '  ' + res.locals.payload.family_name },
+            redirects: getRedirects(''),
+            scripts: [],
+            page: './welcome'
+        });
     }
 );
 
@@ -73,13 +54,13 @@ route.post(
     async (req, res, next) => {
         try {
             await isDoubleCookieValid(req); // throws error if invalid for now
-            let { ok, token } = await verify(req.body.credential);
+            let verification = await verify(req.body.credential);
 
-            if (ok) {
+            if (verification.ok) {
                 
                 // may need expiration, but the token already has that
                 // so this will just be regenerated
-                res.cookie('jid', token, { 
+                res.cookie('jid', req.body.credential, { 
                     httpOnly: true,
                     sameSite: true, 
                     // path: '/admin' 

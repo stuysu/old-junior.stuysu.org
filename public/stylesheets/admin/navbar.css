@@ -1,0 +1,30 @@
+.nnavbar {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    width: 100%;
+    background-color: rgb(64, 64, 64);
+    padding: 10px 0;
+}
+
+.nnavbar-item {
+    margin: 0 15px;
+}
+
+.nnavbar-link.em {
+    font-weight: 400 !important;
+    color: white;
+}
+
+.nnavbar-link {
+    font-weight: 300;
+    transition: 0.3s ;
+    color: lightgray;
+    text-decoration: none;
+}
+
+.nnavbar-link:hover {
+    color: white;
+}
