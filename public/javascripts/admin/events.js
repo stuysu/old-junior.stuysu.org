@@ -66,7 +66,7 @@ async function removeEvent(id) {
     
     thread.remove();
 
-    let response = await fetch('/api/events/' + id, {
+    let response = await sfetch('/api/events/' + id, {
         method: 'DELETE', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -77,8 +77,6 @@ async function removeEvent(id) {
         redirect: 'follow', 
         referrerPolicy: 'no-referrer',
     });
-
-    response = await response.json();
 
     // if response.id is undefined, response failed
     if (response.id) {
@@ -96,7 +94,7 @@ async function removeEvent(id) {
 async function updateEvent(id) {
 
     const { title, date, description, url, poster, important, hidden } = getInputsEvent(id);
-    let response = await fetch("/api/events", {
+    let response = await sfetch("/api/events", {
         method: "PUT",
         mode: 'cors',
         cache: 'no-cache',
@@ -117,8 +115,6 @@ async function updateEvent(id) {
             hidden.checked
         )
     });
-
-    response = await response.json(); 
 
     if (response.error) {
 
@@ -159,7 +155,7 @@ async function addEvent() {
 
     const { title, date, description, url, poster, important, hidden } = getInputsEvent('add');
 
-    let response = await fetch("/api/events", {
+    let response = await sfetch("/api/events", {
         method: "POST",
         mode: 'cors',
         cache: 'no-cache',
@@ -180,8 +176,6 @@ async function addEvent() {
             hidden.checked
         )
     });
-
-    response = await response.json();
 
     if (response.created) {
 

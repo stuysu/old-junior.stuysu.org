@@ -1,6 +1,6 @@
 async function resetViews(url) {
 
-    let response = await fetch("/api/analytics/reset", {
+    let response = await sfetch("/api/analytics/reset", {
         method: "PUT",
         mode: 'cors',
         cache: 'no-cache',
@@ -14,8 +14,6 @@ async function resetViews(url) {
             url: url
         })
     });
-
-    response = await response.json();
 
     if (response.error) {
        alertManager.addAlert("Failure", "received an error from the server", 'danger');
@@ -32,7 +30,7 @@ async function resetViews(url) {
 
 async function toggleTracking(url) {
 
-    let response = await fetch("/api/analytics/toggle", {
+    let response = await sfetch("/api/analytics/toggle", {
         method: "PUT",
         mode: 'cors',
         cache: 'no-cache',
@@ -46,8 +44,6 @@ async function toggleTracking(url) {
             url: url
         })
     });
-
-    response = await response.json();
 
     if (response.error) {
        alertManager.addAlert("Failure", "received an error from the server", 'danger');
@@ -64,8 +60,7 @@ async function toggleTracking(url) {
 
 async function updateInfo() {
 
-    let response = await fetch("/api/analytics");
-    response = await response.json();
+    let response = await sfetch("/api/analytics");
 
     if (response.error) {
         alertManager.addAlert("Failure", "received an error from the server", 'danger');

@@ -14,7 +14,7 @@ function getSheetInfo(id) {
 async function updateSheet(id) {
     const { title, url, subject, teacher, author } = getSheetInfo(id);
 
-    let response = await fetch("/api/sheets", {
+    let response = await sfetch("/api/sheets", {
         method: "PUT",
         mode: 'cors',
         cache: 'no-cache',
@@ -33,8 +33,6 @@ async function updateSheet(id) {
             author: author.value
         })
     });
-
-    response = await response.json();
 
     if (response.error) {
         alertManager.addAlert('Failure', 'received an error from the server', "danger");
@@ -57,7 +55,7 @@ async function removeSheet(id) {
 
     guide.remove();
 
-    let response = await fetch('/api/sheets/' + id, {
+    let response = await sfetch('/api/sheets/' + id, {
         method: 'DELETE', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -68,8 +66,6 @@ async function removeSheet(id) {
         redirect: 'follow', 
         referrerPolicy: 'no-referrer',
     });
-
-    response = await response.json();
 
     if (response.id) {
         
@@ -92,7 +88,7 @@ async function removeSheet(id) {
 
 async function addSheet() {
     const { url, title, subject, teacher, author } = getSheetInfo('add');
-    let response = await fetch("/api/sheets", {
+    let response = await sfetch("/api/sheets", {
         method: "POST",
         mode: 'cors',
         cache: 'no-cache',
@@ -110,8 +106,6 @@ async function addSheet() {
             author: author.value
         })
     });
-
-    response = await response.json();
 
     if (response.created) {
 
@@ -185,7 +179,7 @@ async function removeKeyword(keywordId) {
 
     document.getElementById(keywordId + '-keyword').remove();
 
-    let response = await fetch('/api/sheets/keywords/' + keywordId, {
+    let response = await sfetch('/api/sheets/keywords/' + keywordId, {
         method: 'DELETE', 
         mode: 'cors', 
         cache: 'no-cache', 
@@ -196,8 +190,6 @@ async function removeKeyword(keywordId) {
         redirect: 'follow', 
         referrerPolicy: 'no-referrer',
     });
-
-    response = await response.json();
 
     if (response.id) {
         
@@ -218,7 +210,7 @@ async function removeKeyword(keywordId) {
 async function addKeyword(sheetId) {
     const keywordText = document.getElementById(sheetId + '-add-keyword-text').value;
 
-    let response = await fetch("/api/sheets/keywords", {
+    let response = await sfetch("/api/sheets/keywords", {
         method: "POST",
         mode: 'cors',
         cache: 'no-cache',
@@ -233,8 +225,6 @@ async function addKeyword(sheetId) {
             keyword: keywordText
         })
     });
-
-    response = await response.json();
 
     if (response.error) {
         alertManager.addAlert('Failure', 'received an error from the server', 'danger');
