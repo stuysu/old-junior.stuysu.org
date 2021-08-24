@@ -5,6 +5,7 @@ const { sequelize } = require('./../../models');
 const Events = sequelize.models.Events;
 
 const { CreateError } = require('../utils');
+const { requireAuthApi } = require('../auth');
 
 router.get(
     '/events',
@@ -33,6 +34,7 @@ router.get(
 
 router.post(
     '/events',
+    requireAuthApi(), 
     (req, res, next) => {
 
         if (req.body.title === undefined || req.body.date   === undefined) {
@@ -73,6 +75,8 @@ router.post(
 router.put(
 
     '/events',
+
+    requireAuthApi(),
 
     async (req, res, next) => {
 
@@ -147,6 +151,8 @@ router.put(
 router.delete(
 
     '/events/:id',
+
+    requireAuthApi(),
 
     async (req, res, next) => {
 

@@ -4,13 +4,14 @@ const router = express.Router();
 const { sequelize, Calendar } = require("./../../models");
 
 const { CreateError } = require("../utils");
+const { requireAuthApi } = require("../auth");
 
 router.get("/calendar", async (req, res, next) => {
 
     try {
 
         let findByDate = true;
-        for (let bodyData of [ req.query.day, req.query.year, req.query.month ]) {
+        for (let bodyData of [req.query.day, req.query.year, req.query.month]) {
             if (bodyData === undefined) {
                 findByDate = false;
                 break;
@@ -39,7 +40,7 @@ router.get("/calendar", async (req, res, next) => {
 });
 
 async function createCalendarEntry(req, res, next) {
-    for (let bodyData of [ req.body.day, req.body.year, req.body.month ]) {
+    for (let bodyData of [req.body.day, req.body.year, req.body.month]) {
         if (bodyData === undefined) {
             next(CreateError(400, "Request data for new calendar missing either day, year, or month"));
         }
@@ -58,14 +59,20 @@ async function createCalendarEntry(req, res, next) {
     }
 }
 
-router.post("/calendar", createCalendarEntry);
+router.post(
+    "/calendar",
+    requireAuthApi(),
+    createCalendarEntry
+);
 
-router.put("/calendar", async (req, res, next) => {
-    let where = {where: {
-        day: req.body.day || -1,
-        month: req.body.month || -1,
-        year: req.body.year || -1
-    }}
+router.put("/calendar", requireAuthApi(), async (req, res, next) => {
+    let where = {
+        where: {
+            day: req.body.day || -1,
+            month: req.body.month || -1,
+            year: req.body.year || -1
+        }
+    }
 
     try {
         let oldDay = await Calendar.findOne(where);
@@ -84,18 +91,18 @@ router.put("/calendar", async (req, res, next) => {
         await Calendar.update(req.body, where);
 
         res.status(200).json({ updated: true });
-        
-    } catch(e) {
+
+    } catch (e) {
         next(CreateError(400, e));
     }
 
 });
 
 
-router.delete("/calendar/:id", async (req, res, next) => {
+router.delete("/calendar/:id", requireAuthApi(), async (req, res, next) => {
     try {
-        let wasDeleted = await Calendar.destroy({ where: { id: req.params.id }});
-        res.status(200).json({id: req.body.id, deleted: wasDeleted == 1});
+        let wasDeleted = await Calendar.destroy({ where: { id: req.params.id } });
+        res.status(200).json({ id: req.body.id, deleted: wasDeleted == 1 });
     } catch (e) {
         next(CreateError(400, e));
     }

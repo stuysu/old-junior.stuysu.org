@@ -4,6 +4,7 @@ const router = express.Router();
 const { sequelize, Analytics } = require("./../../models");
 
 const { CreateError } = require("../utils");
+const { requireAuthApi } = require("../auth");
 
 router.get(
     '/analytics',
@@ -22,6 +23,8 @@ router.get(
 
 router.put(
     '/analytics/reset',
+
+    requireAuthApi(),
 
     async (req, res, next) => {
 
@@ -47,6 +50,8 @@ router.put(
 
 router.put(
     '/analytics/toggle',
+
+    requireAuthApi(),
 
     async (req, res, next) => {
 
