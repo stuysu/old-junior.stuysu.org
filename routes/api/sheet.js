@@ -14,6 +14,8 @@ const { CreateError } = require("../utils");
 router.get(
     "/sheets",
 
+    (req, res, next) => {return next();}, // allow passthrough on this route specifically
+
     // i think i was on crack when i made this cause it's literally 3 
     // very similar operations and i wrote all of them out for some reason
     async (req, res, next) => {
