@@ -1,9 +1,12 @@
+/**
+ * This file contains all the routes that 
+ * are necessary for complete authentication
+ */
+
 const express = require("express");
 const route = express.Router();
 
 const { verify, isDoubleCookieValid, requireAuthAdmin, requireUnauthAdmin, toSignIn } = require("../auth.js");
-const { Analytics, Events, Link, Sheets, Attributes, sequelize } = require('../../models');
-const { getRedirects } = require("../adminutil.js");
 
 // Render the signin page
 route.get(
@@ -11,7 +14,7 @@ route.get(
 
     requireUnauthAdmin(),
 
-    (req, res, next) => {
+    (req, res, _next) => {
         res.render("admin/signin", {
             client_id: process.env.CLIENT_ID,
             message: req.query.message
@@ -23,35 +26,19 @@ route.get(
 route.get(
     '/signout', 
     requireAuthAdmin(),
-    (req, res, next) => {
+    (_req, res, _next) => {
         res.clearCookie('jid');
         res.redirect('/admin/signin');
     }
 ); 
 
-// Loads the admin panel (with proper authorization)
-route.get(
-    '/',
-
-    requireAuthAdmin(),
-
-    async (req, res, next) => {
-        res.render('admin/', {
-            data: { name: res.locals.payload.given_name + '  ' + res.locals.payload.family_name },
-            redirects: getRedirects(''),
-            scripts: [],
-            page: './welcome'
-        });
-    }
-);
-
 // This request is sent a google token and double cookies for authentication
 route.post(
-    '/',
+    '/login',
 
     requireUnauthAdmin(),
     
-    async (req, res, next) => {
+    async (req, res, _next) => {
         try {
             await isDoubleCookieValid(req); // throws error if invalid for now
             let verification = await verify(req.body.credential);
