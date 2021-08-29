@@ -116,13 +116,13 @@ const ACCESS_TOKEN_OPTIONS = {
 
 // Web Cookie Options
 const WHERE = 'jid';
-const TOKEN_COOKIE_AGE = 604800000;
-const TOKEN_COOKIE_OPTIONS = { 
+const TOKEN_COOKIE_AGE = 604800000; // 7 days i think
+const TOKEN_COOKIE_OPTIONS = {
     httpOnly: true,
-    sameSite: true, 
+    sameSite: true,
     secure: process.env.NODE_ENV !== "development",
     path: '/', // shoudl really be /admin and /api but not possible (could change /api to /admin/api)
-    maxAge: TOKEN_COOKIE_AGE // 7 days i think
+    maxAge: TOKEN_COOKIE_AGE
 };
 
 // Token Helpers
@@ -130,7 +130,7 @@ const TOKEN_COOKIE_OPTIONS = {
 // takes only relevant information from google jwt payload
 // this is necessary (as opposed to just a userid or sub) because there's no database of users
 function getAccessTokenPayload(payload) {
-    return { 
+    return {
         sub: payload.sub,
         name: payload.name,
         picture: payload.picture,
@@ -148,7 +148,7 @@ function getAccessToken(payload) {
 
 function verifyAccessToken(token) {
     return jwt.verify(
-        token, 
+        token,
         SECRET
     );
 }
@@ -158,7 +158,7 @@ function getTokenCookie(req) {
     return req.cookies[WHERE];
 }
 
-function setTokenCookie(res, payload, options=undefined) {
+function setTokenCookie(res, payload) {
     res.cookie(
         WHERE,
         getAccessToken(payload),
@@ -184,7 +184,7 @@ function verifyRequest(req, res) {
 
             // Get the expired payload
             let rawPayload = jwt.decode(token);
-            
+
             // Remove timestamp in payload (this is kinda hacky)
             delete rawPayload.iat;
             delete rawPayload.exp;
@@ -218,7 +218,7 @@ function authed(options) {
         }
 
         let { ok, payload } = verifyRequest(req, res);
-        
+
         if (ok) {
             res.locals.payload = payload;
             options.authorized(req, res, next);
@@ -240,16 +240,12 @@ function toSignIn(res, message = undefined) {
 }
 
 
-function unauthorizedApiAccess(res, expired) {
-    res.status(401).json({ unauthorized: true, expired: expired });
-}
 
 // middleware for auth-only admin pages
 function requireAuthAdmin() {
     return authed({
         authorized: (_req, _res, next) => next(), // pass through
         unauthorized: (_req, res, _next) => toSignIn(res, 'Cannot go there without signing in'), // go back to sign in page
-        expired: (_req, res, _next) => toSignIn(res, 'Session expired, plaese sign in again (this is a bug and will be fixed soon)')
     })
 }
 
@@ -265,8 +261,7 @@ function requireUnauthAdmin() {
 function requireAuthApi() {
     return authed({
         authorized: (_req, _res, next) => next(),
-        unauthorized: (_req, res, _next) => unauthorizedApiAccess(res, false), // next(CreateError(400, 'Proper authorization for this route not present')),
-        expired: (_req, res, _next) => unauthorizedApiAccess(res, true)
+        unauthorized: (_req, res, _next) => res.status(401).json({error:"Unauthorized Access"})
     })
 }
 
