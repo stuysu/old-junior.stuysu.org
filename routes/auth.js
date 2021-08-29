@@ -110,9 +110,8 @@ const jwt = require('jsonwebtoken');
 
 // Web Token Options
 const SECRET = process.env.ACCESS_TOKEN_SECRET;
-const ACCESS_TOKEN_AGE = 10;
 const ACCESS_TOKEN_OPTIONS = {
-    "expiresIn": `${ACCESS_TOKEN_AGE}s`
+    "expiresIn": "15m"
 };
 
 // Web Cookie Options
