@@ -24,9 +24,12 @@
 
 
         <div class="status">There has been an error!</div>
-        <center><div style="margin: 20px;" class="status">Status: <%= error.status %></div>
+        <center>
+            <div style="margin: 20px;" class="status">Name: <%= error.name %></div>
+            <div style="margin: 20px;" class="status">Status: <%= status %></div>
             <%= error.message %> 
-        <br></center>
+            <br>
+        </center>
         <a style="margin: 20px;" class="status" href="/">try this</a>
 
     </div>

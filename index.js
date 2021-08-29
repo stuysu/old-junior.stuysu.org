@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const express = require("express");
-const app = express();
+let app = express();
 
 // MIDDLEWARE
 
@@ -17,30 +17,34 @@ parser.use(express.urlencoded({ extended: false }));
 const staticServe = express.static(path.join(__dirname, "public"));
 
 // Should be the last middleware before the error handler for a 404
-function error404(req, res, next) {
-    next({
-        status: 404,
-        message: `Could not ${req.method}/ on ${req._parsedUrl.pathname}`,
-    });
+function handleError404(req, res, next) {
+    res.status(404);
+    next(
+        new Error(
+            `Could not ${req.method}/ on ${req._parsedUrl.pathname}`
+        )
+    );
 }
 
 // Error handling routine (send json response for our application)
-function errorHandler(err, req, res, next) {
-    console.log(err);
+function handleError(err, req, res, _next) {
+    console.error(err);
 
-    const apiError = req.url.startsWith("/api");
+    const isApiError = req.url.startsWith("/api");
 
-    if (apiError) {
-        if (err) err.error = err.error || true;
-        res.status(err.status || 500).json(
-            err || {
-                error: true,
-                message: "Server error",
+    if (isApiError) {
+        res.status(res.statusCode || 500).json({
+            status: res.statusCode,
+            error: {
+                name: err.name,
+                message: err.message
             }
-        );
+        });
     } else {
-        res.status(err.status || 500)
-            .render('error',{error: err});
+        res.render('error', {
+            status: res.statusCode || 500,
+            error: err
+        });
     }
 }
 
@@ -81,16 +85,42 @@ useRoutes(app, "/api", path.join(__dirname, "routes/api"));
 useRoutes(app, "/", path.join(__dirname, "routes/docs"));
 useRoutes(app, "/mobile", path.join(__dirname, "routes/docs"));
 
-app.use(error404);
-app.use(errorHandler);
+app.use(handleError404);
+app.use(handleError);
 
 const port = Number(process.env.PORT) || 3001;
-setup(sequelize)
-    .then(() => {
+(async () => {
+    
+    // setup database 
+    try {
+        await setup(sequelize);
+    } 
+    
+    // if fails, reset app
+    catch (err) {
+        console.error(err);
+        
+        app = express();
+        app.get("/*", (_, res) => {
+            res.status(500).type('html').end(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head><title>Database Error</title></head>
+                <body>
+                    <div>Couldn't start application</div>
+                    <div>${err.name}</div>
+                    <div>${err.message}</div>
+                </body>
+                </html>
+            `);
+        });
+    }
+
+    // run app (whether it's reset or not)
+    finally {
         app.listen(port, () => {
             console.log(`Started application on port ${port}`);
         });
-    })
-    .catch((err) => {
-        console.log(`Did not start due to database error: ${err}`);
-    });
+    }
+
+})();
