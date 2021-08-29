@@ -103,7 +103,7 @@ route.get(
 
         res.render('admin/', {
             data: { 
-                name: payload.given_name + '  ' + payload.family_name, 
+                name: payload.name,
                 picture: payload.picture
             },
             redirects: getRedirects(''),

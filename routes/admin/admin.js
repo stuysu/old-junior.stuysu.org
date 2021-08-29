@@ -6,7 +6,20 @@
 const express = require("express");
 const route = express.Router();
 
-const { verify, isDoubleCookieValid, requireAuthAdmin, requireUnauthAdmin, toSignIn } = require("../auth.js");
+const { 
+    // authentication
+    verifySignInToken, 
+    isDoubleCookieValid, 
+
+    // authorization
+    setTokenCookie,
+    clearTokenCookie,
+
+    // page guards & redirects
+    requireAuthAdmin, 
+    requireUnauthAdmin, 
+    toSignIn 
+} = require("../auth.js");
 
 // Render the signin page
 route.get(
@@ -27,7 +40,7 @@ route.get(
     '/signout', 
     requireAuthAdmin(),
     (_req, res, _next) => {
-        res.clearCookie('jid');
+        clearTokenCookie(res);
         res.redirect('/admin/signin');
     }
 ); 
@@ -41,18 +54,12 @@ route.post(
     async (req, res, _next) => {
         try {
             await isDoubleCookieValid(req); // throws error if invalid for now
-            let verification = await verify(req.body.credential);
+            let verification = await verifySignInToken(req.body.credential);
 
             if (verification.ok) {
+                // uses default options
+                setTokenCookie(res, verification.payload);
                 
-                // may need expiration, but the token already has that
-                // so this will just be regenerated
-                res.cookie('jid', req.body.credential, { 
-                    httpOnly: true,
-                    sameSite: true, 
-                    // path: '/admin' 
-                });
-
                 res.redirect('/admin');
             } else {
                 toSignIn(res);
