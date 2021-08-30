@@ -1,7 +1,7 @@
 {
     "name": "sophomore.stuysu.org",
     "version": "1.0.0",
-    "description": "backend api for sophomore caucus website",
+    "description": "The Sophomore Caucus Website developed in Node with EJS, Express, and Sequelize. Features a publicly available frontend, REST API, and CMS.",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",

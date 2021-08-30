@@ -1,6 +1,14 @@
 # sophomore.stuysu.org
 
-The sophomore student union website. See [our frontend prototype](https://github.com/pserb/sophsu-web).
+The Sophomore Caucus Website developed in Node with EJS, Express, and Sequelize. Features a publicly available frontend, REST API, and CMS.
+
+See [our frontend prototype](https://github.com/pserb/sophsu-web).
+
+## Installation
+
+* Download zip
+* `git clone https://github.com/stuysu/sophomore.stuysu.org.git`
+* `git clone git@github.com:stuysu/sophomore.stuysu.org.git`
 
 ## Available scripts
 
@@ -21,6 +29,13 @@ It's easiest to make a `.env` file to use these locally.
 | **CLIENT_ID** | the google api client id for the google admin panel authentication (not necessary if AUTH_MODE is set to not use google) |
 | **CLIENT_SECRET**| the google api client secret for google authentication |
 | **ACCESS_TOKEN_SECRET** | the signuture of the JWTs distrubted for authorization |
+
+## Setup
+
+* Install project
+* Create `.env` file with `AUTHENTICATION_MODE=skip`
+* `npm run test`
+* Add CLIENT_ID, CLIENT_SECRET, and ACCESS_TOKEN_SECRET to test google authentication and JWT authorization with AUTHENTICATION_MODE=show or full
 
 ## Todo
 
