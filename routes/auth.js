@@ -208,7 +208,18 @@ function authed(options) {
 
     async function middleware(req, res, next) {
         if (AuthMode.shouldSkip()) {
-            return next();
+            res.locals.payload = getAccessTokenPayload({
+                sub: 0,
+                email: 'john@doe.com',
+                name: 'John Doe',
+                picture: 'https://i.stack.imgur.com/34AD2.jpg'
+            });
+
+            if (options.allowSkip) {
+                return next();
+            } else {
+                return res.redirect('/admin');
+            }
         }
 
         let { ok, payload, error } = verifyRequest(req, res);
@@ -240,6 +251,7 @@ function requireAuthAdmin() {
     return authed({
         authorized: (_req, _res, next) => next(), // pass through
         unauthorized: (error, _req, res, _next) => toSignIn(res, error.message), // go back to sign in page
+        allowSkip: true // this is for when the auth mode is skip
     })
 }
 
@@ -247,7 +259,8 @@ function requireAuthAdmin() {
 function requireUnauthAdmin() {
     return authed({
         authorized: (_req, res, _next) => res.redirect('/admin'), // go back to admin page 
-        unauthorized: (_e, _req, _res, next) => next() // pass through
+        unauthorized: (_e, _req, _res, next) => next(), // pass through
+        allowSkip: false // do not allow any signout/signin pages in skip mode
     })
 }
 
@@ -255,7 +268,8 @@ function requireUnauthAdmin() {
 function requireAuthApi() {
     return authed({
         authorized: (_req, _res, next) => next(),
-        unauthorized: (e, _req, res, _next) => res.status(401).json({ error: e.name, message: e.message })
+        unauthorized: (e, _req, res, _next) => res.status(401).json({ error: e.name, message: e.message }),
+        allowSkip: true // allow authorization in skip mode
     })
 }
 
