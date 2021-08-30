@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- add stylesheets here -->
+    <link rel='stylesheet' href='/stylesheets/admin/admin.css' />
+    <link rel='stylesheet' href='/stylesheets/admin/analytics.css' />
+    <link rel='stylesheet' href="/stylesheets/admin/links.css" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>Admin Panel</title>
+</head>
+
+<body>
+    <div id="response">
+        <div>Welcome to the admin panel...</div>
+        
+        <% if (locals.message) { %>
+            <div><%= message %></div>
+        <% } %>
+        
+        <div>Please sign in...</div>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+        data-client_id="<%- client_id %>"
+        data-login_uri="/admin/login"
+    >
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+</body>
+
+</html>

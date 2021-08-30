@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 
 const { Sheets, Attributes } = require("./../../models").sequelize.models;
 const { CreateError } = require("../utils");
+const { requireAuthApi } = require('../auth');
 
 /**
  * GET STUDY SHEETS
@@ -183,6 +184,8 @@ router.get(
 router.put(
     "/sheets/keywords",
 
+    requireAuthApi(),
+
     async (req, res, next) => {
         if (req.body.id === undefined) {
             next(CreateError(400, "Need an attribute id to process request"));
@@ -227,6 +230,8 @@ router.put(
  */
 router.put(
     "/sheets",
+
+    requireAuthApi(),
 
     async (req, res, next) => {
         try {
@@ -290,6 +295,8 @@ router.put(
 router.post(
     "/sheets/keywords",
 
+    requireAuthApi(),
+
     async (req, res, next) => {
         if (req.body.id === undefined) {
             next(CreateError(400, `Sheet id not found, but is required`));
@@ -318,6 +325,8 @@ router.post(
  */
 router.post(
     "/sheets",
+
+    requireAuthApi(),
 
     async (req, res, next) => {
         if (req.body.url === undefined) {
@@ -354,6 +363,8 @@ router.post(
 router.delete(
     "/sheets/:id",
 
+    requireAuthApi(),
+
     async (req, res, next) => {
         try {
             let wasDeleted = await Sheets.destroy({
@@ -375,6 +386,8 @@ router.delete(
  */
 router.delete(
     "/sheets/keywords/:id",
+    
+    requireAuthApi(),
 
     async (req, res, next) => {
         try {

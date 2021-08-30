@@ -4,13 +4,14 @@ const router = express.Router();
 const { sequelize, Link } = require("./../../models");
 
 const { CreateError } = require("../utils");
+const { requireAuthApi } = require("../auth");
 
 function getIntOr(n, other) {
     let parsed = parseInt(n);
     return parsed.toString() === n ? parsed : other;
 }
 
-router.put("/links/ordering", async (req, res, next) => {
+router.put("/links/ordering", requireAuthApi(), async (req, res, next) => {
 
     if (req.body.id === undefined || req.body.ordering === undefined) {
         next(CreateError(400, "Expected both an id and an order integer"));
@@ -57,7 +58,7 @@ router.get("/links", async (req, res, next) => {
     }
 });
 
-router.post("/links", (req, res, next) => {
+router.post("/links", requireAuthApi(), (req, res, next) => {
     if (req.body.alias === undefined || req.body.url === undefined) {
         next(
             CreateError(
@@ -84,7 +85,7 @@ router.post("/links", (req, res, next) => {
         });
 });
 
-router.put("/links/", async (req, res, next) => {
+router.put("/links/", requireAuthApi(), async (req, res, next) => {
     if (req.body.id === undefined) {
         next(CreateError(400, "Need a link id to process request"));
     }
@@ -138,7 +139,7 @@ router.put("/links/", async (req, res, next) => {
     
 });
 
-router.delete("/links/:id", (req, res, next) => {
+router.delete("/links/:id", requireAuthApi(), (req, res, next) => {
     let n = getIntOr(req.params.id, req.params.id);
     Link.destroy({
         where: {

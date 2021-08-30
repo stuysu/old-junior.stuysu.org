@@ -4,8 +4,7 @@ function init() {
     setupDraggable();
     prepLinks();
 }
-
-addResponse(init);
+init();
 
 // ADMIN PANEL FUNCTIONALITY
 
@@ -77,7 +76,7 @@ async function reorder() {
     for (let link of links) {
         let id = (Number(link.getAttribute('data-link-id')));
 
-        let response = await fetch('/api/links/ordering', {
+        let response = await sfetch('/api/links/ordering', {
             method: "PUT",
             cache: "no-cache",
             credentials: "same-origin",
@@ -91,8 +90,6 @@ async function reorder() {
                 ordering: order,
             }),
         });
-        
-        response = await response.json();
     
         order++;
     }
@@ -103,7 +100,7 @@ async function reorder() {
 async function addLink() {
     const { alias, url } = getLinkInputs("add");
 
-    let response = await fetch("/api/links", {
+    let response = await sfetch("/api/links", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -118,8 +115,6 @@ async function addLink() {
             url: url.value,
         }),
     });
-
-    response = await response.json();
 
     if (response.created) {
         addLinkToPage(response.id, response.alias, response.url);
@@ -194,7 +189,7 @@ async function deleteLink(id) {
     alias.value = '';
     url.value = '';
 
-    let response = await fetch("/api/links/" + id, {
+    let response = await sfetch("/api/links/" + id, {
         method: "DELETE",
         mode: "cors",
         cache: "no-cache",
@@ -205,8 +200,6 @@ async function deleteLink(id) {
         redirect: "follow",
         referrerPolicy: "no-referrer",
     });
-
-    response = await response.json();
 
     // if response.id is undefined, response failed
     if (response.id) {
@@ -231,7 +224,7 @@ async function deleteLink(id) {
 async function saveLink(id) {
     const { alias, url } = getLinkInputs("input");
 
-    let response = await fetch("/api/links", {
+    let response = await sfetch("/api/links", {
         method: "PUT",
         mode: "cors",
         cache: "no-cache",
@@ -247,8 +240,6 @@ async function saveLink(id) {
             url: url.value,
         }),
     });
-
-    response = await response.json();
 
     if (response.error) {
         alertManager.addAlert(
