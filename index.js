@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const express = require("express");
-const app = express();
+let app = express();
 
 // MIDDLEWARE
 
@@ -89,12 +89,38 @@ app.use(error404);
 app.use(errorHandler);
 
 const port = Number(process.env.PORT) || 3001;
-setup(sequelize)
-    .then(() => {
+(async () => {
+    
+    // setup database 
+    try {
+        await setup(sequelize);
+    } 
+    
+    // if fails, reset app
+    catch (err) {
+        console.error(err);
+        
+        app = express();
+        app.get("/*", (_, res) => {
+            res.status(500).type('html').end(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head><title>Database Error</title></head>
+                <body>
+                    <div>Couldn't start application</div>
+                    <div>${err.name}</div>
+                    <div>${err.message}</div>
+                </body>
+                </html>
+            `);
+        });
+    }
+
+    // run app (whether it's reset or not)
+    finally {
         app.listen(port, () => {
             console.log(`Started application on port ${port}`);
         });
-    })
-    .catch((err) => {
-        console.log(`Did not start due to database error: ${err}`);
-    });
+    }
+
+})();
