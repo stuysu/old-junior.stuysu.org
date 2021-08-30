@@ -18,7 +18,8 @@ const {
     // page guards & redirects
     requireAuthAdmin, 
     requireUnauthAdmin, 
-    toSignIn 
+    toSignIn, 
+    getSignInError
 } = require("../auth.js");
 
 // Render the signin page
@@ -28,9 +29,11 @@ route.get(
     requireUnauthAdmin(),
 
     (req, res, _next) => {
+        const message = getSignInError(req, res);
+        
         res.render("admin/signin", {
             client_id: process.env.CLIENT_ID,
-            message: req.query.message
+            message: message
         });
     }
 );
@@ -41,7 +44,7 @@ route.get(
     requireAuthAdmin(),
     (_req, res, _next) => {
         clearTokenCookie(res);
-        res.redirect('/admin/signin');
+        toSignIn(res, '');
     }
 ); 
 

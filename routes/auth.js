@@ -236,15 +236,24 @@ function authed(options) {
 }
 
 // A redirect to the signin page with a default message
+const SIGN_IN_COOKIE = 'signinfail';
+
 const querystring = require('querystring');
 function toSignIn(res, message = undefined) {
     if (message === undefined || process.env.NODE_ENV !== "development") {
         message = `Could not authenticate account, try logging in again!`;
     }
-    res.redirect(`/admin/signin?${querystring.stringify({ message })}`);
+    res.cookie(SIGN_IN_COOKIE, message);
+    res.redirect('/admin/signin');
+    // res.redirect(`/admin/signin?${querystring.stringify({ message })}`);
 }
 
+function getSignInError(req, res) {
+    const error = req.cookies[SIGN_IN_COOKIE];
+    res.clearCookie(SIGN_IN_COOKIE);
 
+    return error;
+}
 
 // middleware for auth-only admin pages
 function requireAuthAdmin() {
@@ -278,3 +287,4 @@ module.exports.requireUnauthAdmin = requireUnauthAdmin;
 module.exports.requireAuthApi = requireAuthApi;
 module.exports.authed = authed;
 module.exports.toSignIn = toSignIn;
+module.exports.getSignInError = getSignInError;

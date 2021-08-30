@@ -46,4 +46,4 @@ It's easiest to make a `.env` file to use these locally.
 * clean api response code
 * not all of the alerts actually respond to what the server is saying
 * add READMEs to each folder
-* fix the way admin panel login fails work (it's a url query) (see /admin/signin?message)
+* reconsider using cookies for sign in error messages (i think its fine)
