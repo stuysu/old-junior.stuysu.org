@@ -247,7 +247,7 @@ function requireAuthAdmin() {
 function requireUnauthAdmin() {
     return authed({
         authorized: (_req, res, _next) => res.redirect('/admin'), // go back to admin page 
-        unauthorized: (_req, _res, next) => next() // pass through
+        unauthorized: (_e, _req, _res, next) => next() // pass through
     })
 }
 
@@ -255,7 +255,7 @@ function requireUnauthAdmin() {
 function requireAuthApi() {
     return authed({
         authorized: (_req, _res, next) => next(),
-        unauthorized: (_req, res, _next) => res.status(401).json({error:"Unauthorized Access"})
+        unauthorized: (e, _req, res, _next) => res.status(401).json({ error: e.name, message: e.message })
     })
 }
 
