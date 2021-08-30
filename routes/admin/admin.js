@@ -56,17 +56,16 @@ route.post(
             await isDoubleCookieValid(req); // throws error if invalid for now
             let verification = await verifySignInToken(req.body.credential);
 
+            // should always be ok, it throws an error
             if (verification.ok) {
                 // uses default options
                 setTokenCookie(res, verification.payload);
                 
                 res.redirect('/admin');
-            } else {
-                toSignIn(res);
             }
         } catch (err) {
             console.error(err);
-            toSignIn(res);
+            toSignIn(res, err.message);
         }
     }
 );

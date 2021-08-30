@@ -51,31 +51,26 @@ const { Subs } = require('../models');
 const client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET);
 
 async function verifySignInToken(token) {
-    try {
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            CLIENT_ID: CLIENT_ID
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        CLIENT_ID: CLIENT_ID
+    });
+
+    const payload = ticket.getPayload();
+
+    if (AuthMode.shouldAuth()) {
+        let usr = await Subs.findOne({
+            where: {
+                sub: payload['sub']
+            }
         });
 
-        const payload = ticket.getPayload();
-
-        if (AuthMode.shouldAuth()) {
-            let usr = await Subs.findOne({
-                where: {
-                    sub: payload['sub']
-                }
-            });
-
-            if (usr === null) {
-                throw new Error(`${payload['sub']} of email ${payload['email']} is not whitelisted`);
-            }
+        if (usr === null) {
+            throw new Error(`${payload['sub']} of email ${payload['email']} is not whitelisted`);
         }
-
-        return { ok: true, payload: payload, err: undefined };
-    } catch (err) {
-        console.error(err);
-        return { ok: false, payload: undefined, err: err };
     }
+
+    return { ok: true, payload: payload };
 }
 
 module.exports.verifySignInToken = verifySignInToken;
@@ -175,8 +170,7 @@ function verifyRequest(req, res) {
 
     try {
         const payload = verifyAccessToken(token);
-        console.log(payload);
-        return { ok: true, payload };
+        return { ok: true, payload, error: undefined };
 
     } catch (err) {
         if (err instanceof jwt.TokenExpiredError) {
@@ -198,7 +192,7 @@ function verifyRequest(req, res) {
         }
         console.error(err);
 
-        return { ok: false, payload: undefined };
+        return { ok: false, payload: undefined, error: err };
     }
 }
 
@@ -217,13 +211,13 @@ function authed(options) {
             return next();
         }
 
-        let { ok, payload } = verifyRequest(req, res);
+        let { ok, payload, error } = verifyRequest(req, res);
 
         if (ok) {
             res.locals.payload = payload;
             options.authorized(req, res, next);
         } else {
-            options.unauthorized(req, res, next);
+            options.unauthorized(error, req, res, next);
         }
     }
 
@@ -245,7 +239,7 @@ function toSignIn(res, message = undefined) {
 function requireAuthAdmin() {
     return authed({
         authorized: (_req, _res, next) => next(), // pass through
-        unauthorized: (_req, res, _next) => toSignIn(res, 'Cannot go there without signing in'), // go back to sign in page
+        unauthorized: (error, _req, res, _next) => toSignIn(res, error.message), // go back to sign in page
     })
 }
 
