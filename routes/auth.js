@@ -227,7 +227,7 @@ function authed(options) {
 // A redirect to the signin page with a default message
 const querystring = require('querystring');
 function toSignIn(res, message = undefined) {
-    if (message === undefined) {
+    if (message === undefined || process.env.NODE_ENV !== "development") {
         message = `Could not authenticate account, try logging in again!`;
     }
     res.redirect(`/admin/signin?${querystring.stringify({ message })}`);
