@@ -247,12 +247,6 @@ function toSignIn(res, message=undefined) {
     res.redirect('/admin/signin');
 }
 
-function getSignInError(req, res) {
-    const message = SIGN_IN_COOKIE.get(req);
-    SIGN_IN_COOKIE.clear(res);
-    return message;
-}
-
 // middleware for auth-only admin pages
 function requireAuthAdmin() {
     return authed({
@@ -285,4 +279,4 @@ module.exports.requireUnauthAdmin = requireUnauthAdmin;
 module.exports.requireAuthApi = requireAuthApi;
 module.exports.authed = authed;
 module.exports.toSignIn = toSignIn;
-module.exports.getSignInError = getSignInError;
+module.exports.SignInCookie = SIGN_IN_COOKIE;

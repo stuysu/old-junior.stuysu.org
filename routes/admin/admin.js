@@ -11,15 +11,17 @@ const {
     verifySignInToken, 
     isDoubleCookieValid, 
 
-    // authorization
-    getAccessToken,
-    TokenCookie,
+    // authorization 
+    getAccessToken, // generate new access token
+    TokenCookie, // where to store access token
 
     // page guards & redirects
     requireAuthAdmin, 
     requireUnauthAdmin, 
     toSignIn, 
-    getSignInError
+
+    // sign in 
+    SignInCookie // sign in errors uses cookies
 } = require("../auth.js");
 
 // Render the signin page
@@ -29,7 +31,7 @@ route.get(
     requireUnauthAdmin(),
 
     (req, res, _next) => {
-        const message = getSignInError(req, res);
+        const message = SignInCookie.getAndClear(req, res);
 
         res.render("admin/signin", {
             client_id: process.env.CLIENT_ID,

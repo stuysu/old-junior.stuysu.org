@@ -27,6 +27,12 @@ class Cookie {
             // domain: ??? 
         });
     }
+
+    getAndClear(req, res) {
+        const message = this.get(req);
+        this.clear(res);
+        return message;
+    }
 };
 
 module.exports = { Cookie };
