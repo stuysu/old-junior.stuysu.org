@@ -110,15 +110,19 @@ const ACCESS_TOKEN_OPTIONS = {
 };
 
 // Web Cookie Options
-const WHERE = 'jid';
-const TOKEN_COOKIE_AGE = 604800000; // 7 days i think
-const TOKEN_COOKIE_OPTIONS = {
-    httpOnly: true,
-    sameSite: true,
-    secure: process.env.NODE_ENV !== "development",
-    path: '/', // shoudl really be /admin and /api but not possible (could change /api to /admin/api)
-    maxAge: TOKEN_COOKIE_AGE
-};
+
+const { Cookie } = require('./cookie');
+
+const TOKEN_COOKIE = new Cookie(
+    'jid',
+    {
+        httpOnly: true,
+        sameSite: true,
+        secure: process.env.NODE_ENV !== "development",
+        path: '/', // shoudl really be /admin and /api but not possible (could change /api to /admin/api)
+        maxAge: 604800000
+    }
+)
 
 // Token Helpers
 
@@ -148,25 +152,8 @@ function verifyAccessToken(token) {
     );
 }
 
-// Cookie Helpers
-function getTokenCookie(req) {
-    return req.cookies[WHERE];
-}
-
-function setTokenCookie(res, payload) {
-    res.cookie(
-        WHERE,
-        getAccessToken(payload),
-        TOKEN_COOKIE_OPTIONS
-    )
-}
-
-function clearTokenCookie(res) {
-    res.clearCookie(WHERE);
-}
-
 function verifyRequest(req, res) {
-    const token = getTokenCookie(req);
+    const token = TOKEN_COOKIE.get(req);
 
     try {
         const payload = verifyAccessToken(token);
@@ -183,11 +170,12 @@ function verifyRequest(req, res) {
             delete rawPayload.iat;
             delete rawPayload.exp;
 
-            // Update cookie (auto generates new payload)
-            setTokenCookie(res, rawPayload);
+            // Update cookie (generates new payload)
+            const newToken = getAccessToken(rawPayload)
+            TOKEN_COOKIE.set(res, newToken);
 
             // Retrieve most up-to-date payload
-            rawPayload = jwt.decode(getTokenCookie(req));
+            rawPayload = jwt.decode(newToken);
             return { ok: true, payload: rawPayload };
         }
         console.error(err);
@@ -196,8 +184,8 @@ function verifyRequest(req, res) {
     }
 }
 
-module.exports.clearTokenCookie = clearTokenCookie;
-module.exports.setTokenCookie = setTokenCookie;
+module.exports.getAccessToken = getAccessToken;
+module.exports.TokenCookie = TOKEN_COOKIE;
 
 /**************************** 
  * AUTHORIZATION MIDDLEWARE *
@@ -236,23 +224,33 @@ function authed(options) {
 }
 
 // A redirect to the signin page with a default message
-const SIGN_IN_COOKIE = 'signinfail';
-
-const querystring = require('querystring');
-function toSignIn(res, message = undefined) {
-    if (message === undefined || process.env.NODE_ENV !== "development") {
-        message = `Could not authenticate account, try logging in again!`;
+const SIGN_IN_COOKIE = new Cookie(
+    'signinfail',
+    {
+        path: '/admin/signin',
+        httpOnly: true,
+        sameSite: true
     }
-    res.cookie(SIGN_IN_COOKIE, message);
+);
+
+function toSignIn(res, message=undefined) {
+    if (message !== undefined && process.env.NODE_ENV !== "development") {
+        message = 'Could not authenticate account. Try again later.';
+    }
+
+    if (message) {
+        SIGN_IN_COOKIE.set(res, message);
+    } else {
+        SIGN_IN_COOKIE.clear(res);
+    }
+
     res.redirect('/admin/signin');
-    // res.redirect(`/admin/signin?${querystring.stringify({ message })}`);
 }
 
 function getSignInError(req, res) {
-    const error = req.cookies[SIGN_IN_COOKIE];
-    res.clearCookie(SIGN_IN_COOKIE);
-
-    return error;
+    const message = SIGN_IN_COOKIE.get(req);
+    SIGN_IN_COOKIE.clear(res);
+    return message;
 }
 
 // middleware for auth-only admin pages

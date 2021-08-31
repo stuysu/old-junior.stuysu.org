@@ -12,8 +12,8 @@ const {
     isDoubleCookieValid, 
 
     // authorization
-    setTokenCookie,
-    clearTokenCookie,
+    getAccessToken,
+    TokenCookie,
 
     // page guards & redirects
     requireAuthAdmin, 
@@ -30,7 +30,7 @@ route.get(
 
     (req, res, _next) => {
         const message = getSignInError(req, res);
-        
+
         res.render("admin/signin", {
             client_id: process.env.CLIENT_ID,
             message: message
@@ -43,8 +43,8 @@ route.get(
     '/signout', 
     requireAuthAdmin(),
     (_req, res, _next) => {
-        clearTokenCookie(res);
-        toSignIn(res, '');
+        TokenCookie.clear(res);
+        toSignIn(res);
     }
 ); 
 
@@ -62,7 +62,7 @@ route.post(
             // should always be ok, it throws an error
             if (verification.ok) {
                 // uses default options
-                setTokenCookie(res, verification.payload);
+                TokenCookie.set(res, getAccessToken(verification.payload));
                 
                 res.redirect('/admin');
             }
