@@ -2,10 +2,7 @@ const path = require("path");
 
 const SQLITE_PATH = path.resolve(__dirname, "../app.db");
 const SQLITE_URL = `sqlite::${SQLITE_PATH}`;
-const SEQUELIZE_URL =
-    process.env.NODE_ENV === "development"
-        ? SQLITE_URL
-        : process.env.DATABASE_URL || SQLITE_URL;
+const SEQUELIZE_URL = process.env.DATABASE_URL || SQLITE_URL
 
 const LOGGING = process.env.LOG || false;
 

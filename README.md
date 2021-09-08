@@ -46,3 +46,4 @@ It's easiest to make a `.env` file to use these locally.
 * Clean api response code (especially study guides)
 * Not all of the alerts actually respond to what the server is saying (add more consistent responses and frontend error handlers)
 * Document code + add READMEs to each folder
+* Figure out best way to handle sequelize errors
