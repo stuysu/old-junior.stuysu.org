@@ -39,11 +39,10 @@ It's easiest to make a `.env` file to use these locally.
 
 ## Todo
 
-* think about better study guide and event interface for admin page
-* add newsletter
-* timezones are messed up between local and remote website (e.g. event interface, consider using Date datatype in the models)
-* redesign error page
-* clean api response code
-* not all of the alerts actually respond to what the server is saying
-* add READMEs to each folder
-* reconsider using cookies for sign in error messages (i think its fine)
+* Better study guide and event interface for admin page
+* Add newsletter on admin panel and frontend
+* Timezones are messed up between local and remote website (e.g. event interface, consider using Date datatype in the models)
+* Redesign error page
+* Clean api response code (especially study guides)
+* Not all of the alerts actually respond to what the server is saying (add more consistent responses and frontend error handlers)
+* Document code + add READMEs to each folder
