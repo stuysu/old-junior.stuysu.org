@@ -14,7 +14,7 @@ const parser = require("express").Router();
 parser.use(express.json());
 parser.use(express.urlencoded({ extended: false }));
 
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 
 const staticServe = express.static(path.join(__dirname, "public"));
 
@@ -41,27 +41,26 @@ function errorHandler(err, req, res, next) {
             }
         );
     } else {
-        res.status(err.status || 500)
-            .render('error', { error: err });
+        res.status(err.status || 500).render("error", { error: err });
     }
 }
 
 function useRoutes(app, baseEndpoint, pathTo) {
-    fs.readdirSync(pathTo).forEach(file => {
+    fs.readdirSync(pathTo).forEach((file) => {
         app.use(baseEndpoint, require(path.join(pathTo, file)));
     });
 }
 
-// SETUP 
+// SETUP
 
 const { sequelize } = require("./models");
 
 function setup(db) {
-    if (process.env.DATABASE_LOAD === 'force') {
+    if (process.env.DATABASE_LOAD === "force") {
         return db.sync({ force: true });
     }
 
-    if (process.env.DATABASE_LOAD === 'alter') {
+    if (process.env.DATABASE_LOAD === "alter") {
         return db.sync({ alter: true });
     }
 
