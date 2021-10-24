@@ -319,6 +319,7 @@ div.menu {
     animation-delay: 400ms;
 }
 #a:nth-child(5n+4) {
+
     animation-delay: 450ms;
   }
 #a:nth-child(5n+5) {
