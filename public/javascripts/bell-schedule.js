@@ -1,12 +1,13 @@
 function getDayType() {
-    return Number(document.getElementById("day-type").getAttribute('data-day-type'));
+  console.log(document.getElementById("day-type").getAttribute('data-day-type'));
+    return document.getElementById("day-type").getAttribute('data-day-type');
 }
 
-function isHomeroomDay() { // isLateDay
-    return getDayType() == 'homeroom'; // returns boolean
+function isHomeroomDay() {
+    return getDayType() == 'Homeroom Day'; // returns boolean
 }
 function isConferenceDay() {
-  return getDayType() == 'conference';
+  return getDayType() == 'Conference Day';
 }
 
 /*
@@ -17,7 +18,7 @@ PERIOD SCHEDULE CODE
 function getPayload(n) {
     if (n === undefined) {
         return {
-            name: 'BRK',
+            name: 'BREAK',
             isBreak: true
         }
     }
@@ -116,6 +117,8 @@ function getPeriods() {
     return PERIODS;
   }
 }
+
+console.log(getPeriods()[0])
 const first = getPeriods()[0].first;
 const last = getPeriods()[getPeriods().length - 1].second;
 

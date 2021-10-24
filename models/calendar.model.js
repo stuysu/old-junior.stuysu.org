@@ -43,12 +43,8 @@ module.exports = (sequelize, DataTypes) => {
             dayLetter: {
                 type: DataTypes.TEXT
             },
-
-            firstPeriod: {
-                type: DataTypes.INTEGER
-            },
-
-            remoteGroup: {
+            
+            dayType: {
                 type: DataTypes.TEXT
             },
 
