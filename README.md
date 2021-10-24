@@ -13,7 +13,7 @@ See [our frontend prototype](https://github.com/pserb/sophsu-web).
 ## Available scripts
 
 * `npm run start`
-* `npm run test`
+* `npm run dev`
 
 ## Environment Variables
 
@@ -34,7 +34,7 @@ It's easiest to make a `.env` file to use these locally.
 
 * Install project
 * Create `.env` file with `AUTHENTICATION_MODE=skip`
-* `npm run test`
+* `npm run dev`
 * Add CLIENT_ID, CLIENT_SECRET, and ACCESS_TOKEN_SECRET to test google authentication and JWT authorization with AUTHENTICATION_MODE=show or full
 
 ## Todo

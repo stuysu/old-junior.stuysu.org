@@ -30,15 +30,25 @@ function getPayload(n) {
 // period table
 const PERIODS = [
 
-    new Period(new Time(09, 10), new Time(10, 05), getPayload(1)),
-    new Period(new Time(10, 05), new Time(10, 15), getPayload()),
-    new Period(new Time(10, 15), new Time(11, 10), getPayload(2)),
-    new Period(new Time(11, 10), new Time(11, 20), getPayload()),
-    new Period(new Time(11, 20), new Time(12, 15), getPayload(3)),
-    new Period(new Time(12, 15), new Time(12, 25), getPayload()),
-    new Period(new Time(12, 25), new Time(13, 20), getPayload(4)),
-    new Period(new Time(13, 20), new Time(13, 30), getPayload()),
-    new Period(new Time(13, 30), new Time(14, 25), getPayload(5)),
+  new Period(new Time(08, 00), new Time(08, 41), getPayload(1)),
+  new Period(new Time(08, 42), new Time(08, 44), getPayload()),
+  new Period(new Time(08, 45), new Time(09, 26), getPayload(2)),
+  new Period(new Time(09, 27), new Time(09, 30), getPayload()),
+  new Period(new Time(09, 31), new Time(10, 15), getPayload(3)),
+  new Period(new Time(10, 16), new Time(10, 19), getPayload()),
+  new Period(new Time(10, 20), new Time(11, 01), getPayload(4)),
+  new Period(new Time(11, 02), new Time(11, 05), getPayload()),
+  new Period(new Time(11, 06), new Time(11, 47), getPayload(5)),
+  new Period(new Time(11, 48), new Time(11, 51), getPayload()),
+  new Period(new Time(11, 52), new Time(12, 33), getPayload(6)),
+  new Period(new Time(12, 34), new Time(12, 37), getPayload()),
+  new Period(new Time(12, 38), new Time(13, 19), getPayload(7)),
+  new Period(new Time(13, 20), new Time(13, 23), getPayload()),
+  new Period(new Time(13, 24), new Time(14, 05), getPayload(8)),
+  new Period(new Time(14, 06), new Time(14, 08), getPayload()),
+  new Period(new Time(14, 09), new Time(14, 50), getPayload(9)),
+  new Period(new Time(14, 51), new Time(14, 53), getPayload()),
+  new Period(new Time(14, 54), new Time(15, 35), getPayload(10))
 
 ];
 

@@ -34,7 +34,9 @@
     color: var(--foreground);
     background: var(--btn-color);
     border-radius: 1.2vw;
-    padding: 1vw;
+    width: 10vw;
+    line-height: 1vw;
+    padding: 10px;
     cursor: pointer;
     letter-spacing: 1.4px;
     font-size: 1vw;
@@ -57,7 +59,6 @@
 div.menu {
     width: fit-content;
     height: fit-content;
-    padding-bottom: 0.7vw;
 }
 .menu ul {
     display: inline-flex;
@@ -74,6 +75,7 @@ div.menu {
     letter-spacing: 3px;
     font-weight: 700px;
     font-style: normal;
+    text-align: center;
 }
 #a {
     text-decoration: none;
@@ -138,18 +140,21 @@ div.menu {
 .event-list {
     vertical-align: top;
     padding: 0.6vw;
+    padding-bottom: 2vw;
     width: 20vw;
     background: var(--important-dates);
 }
 .event-list ul li {
     list-style: none;
-    padding-top: 2vw;
+    padding-top: 1vw;
     padding-left: 1.6vw;
     padding-right: 1.6vw;
 }
 .event-list #date {
     color: #83c2e0;
     font-size: 2vw;
+    padding-top: 1vw;
+    border-top: solid 1px var(--color-light);
 }
 .event-list #title {
     color: white;
@@ -170,6 +175,7 @@ div.menu {
 }
 .content {
     padding-left: 2vw;
+    word-break: break-all;
 }
 .content h1 {
     transition: all 0.4s ease-in;
