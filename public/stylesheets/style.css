@@ -308,23 +308,22 @@ div.menu {
 }
 #a:nth-child(5n+4) {
     animation-delay: 1.1s;
-  }
+}
 #a:nth-child(5n+5) {
     animation-delay: 1.25s;
-  }
-#a:nth-child(5n+6) {
+}
+.menu ul li:nth-child(5n+6) {
     animation-delay: 1.4s;
-  }
-  .menu ul li:nth-child(5n+7) {
+}
+.menu ul li:nth-child(5n+7) {
     animation-delay: 1.55s;
-  }
-
-  .menu ul li:nth-child(5n+8) {
+}
+.menu ul li:nth-child(5n+8) {
     animation-delay: 1.7s;
-  }
-  .menu ul li:nth-child(5n+9) {
+}
+.menu ul li:nth-child(5n+9) {
     animation-delay: 1.85s;
-  }
+}
 
 .bg-image {
     opacity: 0;
