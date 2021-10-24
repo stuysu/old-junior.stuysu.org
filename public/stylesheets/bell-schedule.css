@@ -13,7 +13,7 @@
     --breaks: 4;
     --break-length: 10%;
 
-    --ticker-width: calc(100% / 40);
+    --ticker-width: calc(100% / 250);
     --schedule-height: auto;
 }
 
@@ -30,6 +30,7 @@
 .bell-schedule {
 
     text-align: center;
+    word-break: break-all;
 
     background-color: var(--schedule-background);
 

@@ -6,18 +6,18 @@
         </td>
 
         <% if (locals.dayInfo !== null) { %>
-        <td id="time-day" data-first-period="<%= dayInfo.firstPeriod %>">
+        <td id="day-type" data-day-type="<%= dayInfo.dayType %>">
             <span class="timeline">
             <% if (dayInfo.today) { %>
-                Today is...
+                Today is a...
             <% } else { %>
                 <%= dayInfo.month %>/<%= dayInfo.day %> is...
             <% } %>
             </span><br>
 
-            <span id="time-day-letter"><%= dayInfo.dayLetter %></span> Day <span class="">(<%= dayInfo.firstPeriod %>-<%= dayInfo.firstPeriod + 4 %>)</span>
+            <span id="time-day-letter"><%= dayInfo.dayLetter %></span> Day <!-- <span class="">(<%= dayInfo.firstPeriod %>-<%= dayInfo.firstPeriod + 4 %>)</span> -->
             &#8226;
-            <span><%= dayInfo.remoteGroup %></span>
+            <span><%= dayInfo.dayType %></span>
             
             <br>
 
