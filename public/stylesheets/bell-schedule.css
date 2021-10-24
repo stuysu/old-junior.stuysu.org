@@ -8,10 +8,10 @@
     --ticker-color: #4788B7;
     --tcolor: white; 
 
-    /* --periods: 5;
-    --period-size: 55%;
+    --periods: 5;
+    --period-length: 55%;
     --breaks: 4;
-    --break-length: 10%; */
+    --break-length: 10%;
 
     --ticker-width: calc(100% / 40);
     --schedule-height: auto;
@@ -56,11 +56,11 @@
 
     margin: 0;
     padding: 2.7vh 0;
-    width: calc(55% / ((55 * 5 + 4 * 10)) );
+    width: calc(var(--period-length) / ((var(--periods) * 55 + var(--breaks) * 10)) );
 }
 
 td.break {
-    width: calc(10% / ((55 * 5 + 4 * 10)) );
+  width: calc(var(--break-length) / ((var(--periods) * 55 + var(--breaks) * 10)) );
     border-left: 1px solid rgba(0,0,0,0.2);
     border-right: 1px solid rgba(0,0,0,0.2);
 }
@@ -96,6 +96,6 @@ td.break {
 } */
 
 .timeline {
-    font-size: 0.95vw;
+    font-size: 0.88vw;
     font-weight: normal !important;
 }
