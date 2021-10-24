@@ -34,7 +34,9 @@
     color: var(--foreground);
     background: var(--btn-color);
     border-radius: 1.2vw;
-    padding: 1vw;
+    width: 10vw;
+    line-height: 1vw;
+    padding: 10px;
     cursor: pointer;
     letter-spacing: 1.4px;
     font-size: 1vw;

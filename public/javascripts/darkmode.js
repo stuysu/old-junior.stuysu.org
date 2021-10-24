@@ -8,6 +8,7 @@ const enableDarkMode = () => {
   document.body.classList.add('darkmode');
   // 2. Update darkMode in localStorage
   localStorage.setItem('darkMode', 'enabled');
+  document.getElementById("dark-mode-toggle").innerHTML = 'Toggle Light Mode';
 }
 
 const disableDarkMode = () => {
@@ -15,6 +16,7 @@ const disableDarkMode = () => {
   document.body.classList.remove('darkmode');
   // 2. Update darkMode in localStorage 
   localStorage.setItem('darkMode', null);
+  document.getElementById("dark-mode-toggle").innerHTML = 'Toggle Dark Mode';
 }
  
 // If the user already visited and enabled darkMode
