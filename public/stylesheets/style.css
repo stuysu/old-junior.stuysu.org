@@ -26,7 +26,7 @@
     
 }
 .dark-mode-toggle {
-    transition: color 0.4s ease-in;
+    transition: all 300ms ease;
     -webkit-appearance: none;
     border: none;
     outline: none;
@@ -34,7 +34,9 @@
     color: var(--foreground);
     background: var(--btn-color);
     border-radius: 1.2vw;
-    padding: 1vw;
+    width: 10vw;
+    line-height: 1vw;
+    padding: 10px;
     cursor: pointer;
     letter-spacing: 1.4px;
     font-size: 1vw;
@@ -46,8 +48,11 @@
       margin-left: 1.5vw;
       margin-top: -1vw;
   }
+  .dark-mode-toggle:hover {
+    transform: scale(1.1);
+  }
 .container {
-    transition: all 0.4s ease-in;
+    transition: all 400ms ease-in;
     position: relative;
     width: 100%;
     height: auto;
@@ -57,14 +62,13 @@
 div.menu {
     width: fit-content;
     height: fit-content;
-    padding-bottom: 0.7vw;
 }
 .menu ul {
     display: inline-flex;
     margin-top: 1vw;
 }
 .menu ul li {
-    transition: all 0.4s ease-in;
+    transition: all 400ms ease;
     text-decoration: none;
     list-style: none;
     margin: 0 1.6vw;
@@ -74,6 +78,10 @@ div.menu {
     letter-spacing: 3px;
     font-weight: 700px;
     font-style: normal;
+    text-align: center;
+}
+.menu ul li:hover {
+    transform: scale(1.1);
 }
 #a {
     text-decoration: none;
@@ -105,7 +113,7 @@ div.menu {
 .bg-image {
     background-image: url("../images/stuy-blur.png");
 
-    height: 36vw;
+    height: 46vh;
 
     background-position: center;
     background-repeat: no-repeat;
@@ -125,31 +133,34 @@ div.menu {
     font-weight: bold;
     position: absolute;
     z-index: 2;
-    height: 22vw;
+    height: 27vh;
     width: 100%;
     text-align: center;
-    margin-top: -22vw;
+    margin-top: -27vh;
 }
 .body #main {
     padding-top: 2vw;
-    padding-left: 3vw;
-    padding-right: 3vw;
+    padding-left: 4vw;
+    padding-right: 4vw;
 }
 .event-list {
     vertical-align: top;
     padding: 0.6vw;
+    padding-bottom: 2vw;
     width: 20vw;
     background: var(--important-dates);
 }
 .event-list ul li {
     list-style: none;
-    padding-top: 2vw;
+    padding-top: 1vw;
     padding-left: 1.6vw;
     padding-right: 1.6vw;
 }
 .event-list #date {
     color: #83c2e0;
     font-size: 2vw;
+    padding-top: 1vw;
+    border-top: solid 1px var(--color-light);
 }
 .event-list #title {
     color: white;
@@ -170,6 +181,7 @@ div.menu {
 }
 .content {
     padding-left: 2vw;
+    word-break: break-all;
 }
 .content h1 {
     transition: all 0.4s ease-in;
@@ -298,65 +310,66 @@ div.menu {
     animation-fill-mode: forwards;
 }
 #a:nth-child(5n+1){
-    animation-delay: 0.65s;
+    animation-delay: 300ms;
 }
 #a:nth-child(5n+2){
-    animation-delay: 0.8s;
+    animation-delay: 350ms;
 }
 #a:nth-child(5n+3){
-    animation-delay: 0.95s;
+    animation-delay: 400ms;
 }
 #a:nth-child(5n+4) {
-    animation-delay: 1.1s;
+
+    animation-delay: 450ms;
   }
 #a:nth-child(5n+5) {
-    animation-delay: 1.25s;
+    animation-delay: 500ms;
   }
 #a:nth-child(5n+6) {
-    animation-delay: 1.4s;
+    animation-delay: 550ms;
   }
   .menu ul li:nth-child(5n+7) {
-    animation-delay: 1.55s;
+    animation-delay: 600ms;
   }
 
   .menu ul li:nth-child(5n+8) {
-    animation-delay: 1.7s;
+    animation-delay: 650ms;
   }
   .menu ul li:nth-child(5n+9) {
-    animation-delay: 1.85s;
+    animation-delay: 700ms;
   }
 
 .bg-image {
     opacity: 0;
-    animation: fadeIn 1s 1;
+    animation: fadeIn 900ms 1;
     animation-fill-mode: forwards;
 }
 .bg-image:nth-child(5n+2){
-    animation-delay: 2s;
+    animation-delay: 1200ms;
 }
 .bg-text {
     opacity: 0;
-    animation: fadeIn 1s 1;
+    animation: fadeIn 800ms 1;
     animation-fill-mode: forwards;
 }
 .bg-text:nth-child(5n+3){
-    animation-delay: 2s;
+    animation-delay: 1500ms;
 }
 .event-list {
     opacity: 0;
-    animation: fadeIn 1s 1;
+    animation: fadeIn 1000ms 1;
     animation-fill-mode: forwards;
 }
 .event-list:nth-child(5n+1){
-    animation-delay: 2.2s;
+    animation-delay: 2000ms;
 }
 .content {
     opacity: 0;
-    animation: fadeIn 1s 1;
+    animation: fadeIn 1500ms 1;
     animation-fill-mode: forwards;
 }
 .content:nth-child(5n+1){
-    animation-delay: 2.2s;
+    animation-delay: 2500ms;
 }
 .general-body {
     text-align: center;

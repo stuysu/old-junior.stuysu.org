@@ -35,6 +35,11 @@ body {
     text-align: center;
 }
 
+.centered {
+  align-items: center;
+  justify-content: center
+}
+
 @media only screen and (max-width: 800px) {
     #root {
         width: 100vw;
