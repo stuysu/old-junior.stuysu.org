@@ -1,12 +1,17 @@
 function getDayType() {
+  // checks to see if there is specific info
+  if (document.getElementById("day-type") != null) {
     return document.getElementById("day-type").getAttribute('data-day-type');
+  } else {
+    return
+  }
 }
 
 function isHomeroomDay() {
     return getDayType() == 'Homeroom Day'; // returns boolean
 }
 function isConferenceDay() {
-  return getDayType() == 'Conference Day';
+    return getDayType() == 'Conference Day';
 }
 
 /*
@@ -72,8 +77,8 @@ function getPeriods() {
       new Period(new Time(09, 21), new Time(09, 59), getPayload(3)),
       new Period(new Time(10, 00), new Time(10, 02), getPayload()),
       new Period(new Time(10, 03), new Time(10, 40), getPayload(4)),
-      new Period(new Time(11, 41), new Time(11, 43), getPayload()),
-      new Period(new Time(11, 44), new Time(11, 21), getPayload(5)),
+      new Period(new Time(10, 41), new Time(10, 43), getPayload()),
+      new Period(new Time(10, 44), new Time(11, 21), getPayload(5)),
       new Period(new Time(11, 22), new Time(11, 24), getPayload()),
       new Period(new Time(11, 25), new Time(12, 02), getPayload(6)),
       new Period(new Time(12, 03), new Time(12, 05), getPayload()),
