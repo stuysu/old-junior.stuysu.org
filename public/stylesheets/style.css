@@ -325,7 +325,7 @@ div.menu {
 #a:nth-child(5n+5) {
     animation-delay: 500ms;
   }
-#a:nth-child(5n+6) {
+.menu ul li:nth-child(5n+6) {
     animation-delay: 550ms;
   }
   .menu ul li:nth-child(5n+7) {
