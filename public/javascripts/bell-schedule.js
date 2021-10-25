@@ -1,5 +1,4 @@
 function getDayType() {
-  console.log(document.getElementById("day-type").getAttribute('data-day-type'));
     return document.getElementById("day-type").getAttribute('data-day-type');
 }
 
@@ -118,7 +117,6 @@ function getPeriods() {
   }
 }
 
-console.log(getPeriods()[0])
 const first = getPeriods()[0].first;
 const last = getPeriods()[getPeriods().length - 1].second;
 
