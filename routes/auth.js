@@ -133,7 +133,7 @@ function getAccessTokenPayload(payload) {
         sub: payload.sub,
         name: payload.name,
         picture: payload.picture,
-        email: payload.payload
+        email: payload.email
     };
 }
 
