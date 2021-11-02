@@ -83,3 +83,15 @@ Drag-and-Drop CSS Styles
     animation-duration: 0.2s;
     animation-iteration-count: 1;
 }
+
+.links-container {
+  margin: 10vw;
+  padding: 10px;
+  color: #47556c;
+  text-align: center;
+}
+
+.form-input {
+  margin: 10px 10px;
+  padding: 5px 10px;
+}

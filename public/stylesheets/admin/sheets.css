@@ -1,0 +1,20 @@
+.sheets-container {
+  display: flex;
+  margin: 10vw;
+  padding: 10px;
+  color: #47556c;
+  text-align: center;
+}
+
+.section {
+  margin: 10px;
+}
+
+.form-input {
+  margin: 10px 0;
+  padding: 5px 10px;
+}
+
+.button {
+  padding: 5px 10px;
+}

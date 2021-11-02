@@ -1,0 +1,7 @@
+.events-container {
+  display: flex;
+  margin: 10vw;
+  padding: 10px;
+  color: #47556c;
+  text-align: center;
+}

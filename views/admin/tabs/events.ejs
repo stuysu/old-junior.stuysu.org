@@ -1,4 +1,8 @@
-<br>
+<head>
+  <link rel='stylesheet' href='/stylesheets/admin/events.css' />
+</head>
+
+<!-- <br>
 It is best to use the date feature on chrome because it handles calendar-like input.
 <br><br>
 It's probably best if you don't go crazy with the length of the event titles.
@@ -9,100 +13,99 @@ The events get a "shortened" description, which will display up to 200 character
 If you are using special characters (e.g. **bold**) keep in mind these will not be rendered in the
 shortened display, so use them after 200 characters.  
 
-<br><br>
+<br><br> -->
 
-<table id="events-table" class="table table-striped table-dark">
-    <thead>
-        <tr>
-            <th scope="col">Title / Date</th>
-            <th scope="col">PDF / Poster</th>
-            <th scope="col">Description</th>
-            <th scope="col">Update / Delete</th>
-        </tr>
-    </thead>
+<div class="glass events-container">
+  <table id="events-table">
+    <!-- <thead>
+      <tr>
+        <th scope="col">Title / Date</th>
+        <th scope="col">PDF / Poster</th>
+        <th scope="col">Description</th>
+        <th scope="col">Update / Delete</th>
+      </tr>
+    </thead> -->
     <tbody id='main-events'>
-        <% for (let event of events) { %>
-            <tr id="<%=event.id%>-thread-e"> 
+      <% for (let event of events) { %>
+        <tr id="<%=event.id%>-thread-e"> 
 
-                <% 
-                    function getDate(dateFromSql) {
-                        tmp = new Date(dateFromSql);
-                        tmp.setHours(tmp.getHours() - 4);
-                        tmp = tmp.toISOString();
-                        return tmp.substring(0, tmp.length - 1);
-                    }
-                %>
+          <% 
+            function getDate(dateFromSql) {
+              tmp = new Date(dateFromSql);
+              tmp.setHours(tmp.getHours() - 4);
+              tmp = tmp.toISOString();
+              return tmp.substring(0, tmp.length - 1);
+            }
+          %>
 
-                <td>
-                    <input type="text" placeholder="Title..." class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent('<%= event.id %>')" />
-                    <input type="datetime-local" class="form-control" id="<%=event.id%>-date-e" value="<%= getDate(event.date) %>" />
-                    <label for="<%= event.id %>-important-e">Is important?:</label>
-                    <input type="checkbox" id="<%= event.id %>-important-e"
+                  <td>
+                      <input type="text" placeholder="Title..." class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent('<%= event.id %>')" />
+                      <input type="datetime-local" class="form-control" id="<%=event.id%>-date-e" value="<%= getDate(event.date) %>" />
+                      <label for="<%= event.id %>-important-e">Is important?:</label>
+                      <input type="checkbox" id="<%= event.id %>-important-e"
 
-                    <% if (event.isImportant) { %>
-                        checked
-                    <% } %>
+                      <% if (event.isImportant) { %>
+                          checked
+                      <% } %>
 
-                    />
-                    <br>
-                    <label for="<%= event.id %>-hidden-e">Is hidden?:</label>
-                    <input type="checkbox" id="<%= event.id %>-hidden-e"
+                      />
+                      <br>
+                      <label for="<%= event.id %>-hidden-e">Is hidden?:</label>
+                      <input type="checkbox" id="<%= event.id %>-hidden-e"
 
-                    <% if (event.isHidden) { %>
-                        checked
-                    <% } %>
+                      <% if (event.isHidden) { %>
+                          checked
+                      <% } %>
 
-                    />
+                      />
 
-                </td>
+                  </td>
 
-                <td>
-                    <input type="text" class="form-control" placeholder="Speical redirect..." id="<%=event.id%>-url-e" value="<%= event.url %>" />
+                  <td>
+                    <input type="text" class="form-control" placeholder="Special redirect..." id="<%=event.id%>-url-e" value="<%= event.url %>" />
                     <input type="text" class="form-control" placeholder="Poster image..." id="<%=event.id%>-poster-e" value="<%= event.poster %>" />
-                </td>
+                    <textarea style="height: 300px;" type="text" class="form-control" id="<%=event.id%>-description-e""><%=event.description%></textarea>
+                  </td>
 
-                <td>
-                    <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="<%=event.id%>-description-e""><%=event.description%></textarea>
-                </td>
+                  <td>
+                      <button class="btn btn-primary" onclick="updateEvent('<%= event.id %>')">Update</button>
+                      <button class="btn btn-danger" onclick="removeEvent('<%= event.id %>')">&times;</button>
+                  </td>
 
-                <td>
-                    <button class="btn btn-primary" onclick="updateEvent('<%= event.id %>')">Update</button>
-                    <button class="btn btn-danger" onclick="removeEvent('<%= event.id %>')">&times;</button>
-                </td>
-
-            </tr>
-        <% } %>
-	</tbody>
-	<tbody>
-		<tr>
-            
-            <td>
-                <input class="form-control" id="add-title-e" placeholder="New Event Title" value="" />
-                <input type="datetime-local" class="form-control" id="add-date-e" placeholder="New Event Date" value="" />
-
-                <label for="add-important-e">
-                    Is important?:
-                </label>
-                <input type="checkbox" id="add-important-e" />
-
-                <br>
-                
-                <label for="add-hidden-e">Is hidden?:</label>
-                <input type="checkbox" id="add-hidden-e"/>
-                
-            </td>
-            
-            <td>
-                <input type="text" class="form-control" id="add-url-e" placeholder="New Event URL" value="" />
-                <input type="text" class="form-control" id="add-poster-e" placeholder="New Event Poster" value="" />
-            </td>
-
-            <td>
-                <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="add-description-e" placeholder="New Event Description"></textarea>
-            </td>
-
-            <td id="add-update-e"><button class="btn btn-success" onclick="addEvent()">Add</button></td> 
-
-		</tr>
+              </tr>
+          <% } %>
     </tbody>
-</table>
+    <tbody>
+      <tr>
+              
+              <td>
+                  <input class="form-control" id="add-title-e" placeholder="New Event Title" value="" />
+                  <input type="datetime-local" class="form-control" id="add-date-e" placeholder="New Event Date" value="" />
+
+                  <label for="add-important-e">
+                      Is important?:
+                  </label>
+                  <input type="checkbox" id="add-important-e" />
+
+                  <br>
+                  
+                  <label for="add-hidden-e">Is hidden?:</label>
+                  <input type="checkbox" id="add-hidden-e"/>
+                  
+              </td>
+              
+              <td>
+                  <input type="text" class="form-control" id="add-url-e" placeholder="New Event URL" value="" />
+                  <input type="text" class="form-control" id="add-poster-e" placeholder="New Event Poster" value="" />
+              </td>
+
+              <td>
+                  <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="add-description-e" placeholder="New Event Description"></textarea>
+              </td>
+
+              <td id="add-update-e"><button class="btn btn-success" onclick="addEvent()">Add</button></td> 
+
+      </tr>
+      </tbody>
+  </table>
+</div>
