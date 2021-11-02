@@ -1,18 +1,25 @@
-<div class="nnavbar">
-    <div class="nnavbar-item">
-        <a class="nnavbar-link em" href="/admin">Admin Panel</a>
-    </div>
-    <% for (let link of redirects) { %>
-        <div class="nnavbar-item">
-            <a href="<%= link.url %>" 
-                class="nnavbar-link <%= (link.active ? 'em' : '') %>"
-            >
-                <%= link.name %>
-            </a> 
-        </div>
-    <% } %>
+<head>
+  <link rel='stylesheet' href='/stylesheets/admin/navbar.css' />
+</head>
 
-    <div class="nnavbar-item">
-        <a class="nnavbar-link" style="color:lightblue;" href="/admin/signout">Sign Out</a>
-    </div>
-</div>
+<ul class="navbar">
+  <li>
+    <img class="navbar-image" src="">
+  </li>
+  <li>
+    <p><%= name %></p>
+  </li>
+  <% for (let link of redirects) { %>
+    <a href="<%= link.url %>" class="navbar-link">
+      <li class="navbar-item <%= (link.active ? 'active' : '') %>">
+        <%= link.name %>
+      </li>
+    </a>
+  <% } %>
+
+  <a class="navbar-link" href="/admin/signout">
+    <li class="navbar-item"  style="padding-top: 2vh; padding-bottom: 2vh;">
+      Sign Out
+    </li>
+  </a>
+</ul>
