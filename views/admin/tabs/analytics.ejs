@@ -1,30 +1,47 @@
-There might be more routes with analytics tracking on, but if they have not been visited yet, they will not appear. (This may be changed at some point)
-<br>
-<button onclick="updateInfo()">Update</button>
-<div class = "analytics">
+<head>
+  <link rel='stylesheet' href='/stylesheets/admin/analytics.css' />
+</head>
+
+<div class="welcome glass">
+  <h3>Hi, Ivan. Welcome to the Admin Dashboard.</h3>
+</div>
+
+<div class="analytics-container glass">
 
     <% for (let route of analytics ) { %>
         
         <div 
-            class = "analytic-data"
-            data-url-pk = "<%= route.url %>"
-            id = "<%= route.url %>-analytic-data"
+            class="item glass"
+            data-url-pk="<%= route.url %>"
+            id="<%= route.url %>-analytic-data"
         >
-            <div class="link"><a href="<%= route.url %>"><%= route.url %></a></div>
-            <div id="<%= route.url %>-num-views"><%= route.views %></div>
-            <div><button onclick="resetViews('<%= route.url %>')">Reset</button></div> 
-            <div>
-                <button id="<%= route.url %>-toggle-button" onclick="toggleTracking('<%= route.url %>')">
-                    <% if ( route.tracking ) { %> 
-                        Stop tracking
-                    <% } else { %>
-                        Start tracking
-                    <% } %>
-                </button> 
-            </div>
+            <h4 class="link"><a href="<%= route.url %>"><%= route.url %></a></h4>
+            <h5 id="<%= route.url %>-num-views"><%= route.views %></h5>
+            
+              <button 
+                class="glass" 
+                style="padding: 0 10px;"
+                onclick="resetViews('<%= route.url %>')" 
+              >
+                Reset
+              </button>
+
+              <button
+                id="<%= route.url %>-toggle-button" 
+                class="glass" 
+                style="padding: 0 10px;"
+                onclick="toggleTracking('<%= route.url %>')"
+              >
+                <% if ( route.tracking ) { %> 
+                  Stop Tracking
+                <% } else { %>
+                  Start Tracking
+                <% } %>
+              </button> 
 
         </div>
 
     <% } %>
 
+    <button class="item glass update" style="padding: 0 10px;" onclick="updateInfo()">Update</button>
 </div>
