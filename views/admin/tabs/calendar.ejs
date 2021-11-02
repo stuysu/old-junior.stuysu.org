@@ -1,83 +1,84 @@
-<div style="width: 300px">
-<select class='form-control' onchange="updateCalendarForm()" id="month-select">
+<head>
+  <link rel='stylesheet' href='/stylesheets/admin/calendar.css' />
+</head>
 
-    <option value="1">January</option>
-    <option value="2">February</option>
-    <option value="3">March</option>
-    <option value="4">April</option>
-    <option value="5">May</option>
-    <option value="6">June</option>
-    <option value="7">July</option>
-    <option value="8">August</option>
-    <option value="9">September</option>
-    <option value="10">October</option>
-    <option value="11">November</option>
-    <option value="12">December</option>
+<div class="glass calendar-container">
+  <div class="date-select glass">
 
-</select>
+    <h5>Date Select</h5>
 
-<input type='number' class='form-control' value='2021' min='2021' onchange="updateCalendarForm()" id="year-select">
-
-<input type='number' class='form-control' id="day-select" onchange="updateCalendarForm()" value='1' min='1' max='31' />
-
+    <select class='form-input glass' id="month-select" onchange="updateCalendarForm()">
+  
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+  
+    </select>
+  
+    <input type='number' class='form-input glass' id="day-select" onchange="updateCalendarForm()" value='1' min='1' max='31' />
+    <input type='number' class='form-input glass' id="year-select" value='2021' min='2021' onchange="updateCalendarForm()" />
+  
+  </div>
+  <div class="glass calendar-form">
+    <table id="calendar-form">
+      <thead>
+        <tr><th scope="col"><h5>Data</h5></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+              <select class="form-input glass" id="calendar-day-letter" placeholder="Day Letter">
+                <option value="" disabled selected>Day Letter</option>
+                <option value="A1">A</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="A2">B</option>
+                <option value="B1">B1</option>
+                <option value="B2">B2</option>
+              </select>
+  
+                  Starts 6 period?: 
+                  <input type='checkbox' id="calendar-is-late"><br>
+                  
+                  Remote Group?:
+                  <select class="form-input glass" id="calendar-remote-group">
+                      <option value="Peg Day">Peg Day</option>
+                      <option value="Stuy Day">Stuy Day</option>
+                      <option value="All Remote">All Remote</option>
+                  </select>
+  
+                  Notes? (half day, cancellation?):
+                  <input type="text" class="form-input glass" id="calendar-notes" placeholder="Optional noteline..." />
+                  <button class="glass button" onclick="saveDate()">Save</button> 
+                  <button class="glass button" onclick="clearDate()">Delete</button> 
+                  
+              </td>
+  
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- <table class="table" id="calendar-form">
+      <thead class="thead-dark">
+          <tr>
+              <th scope="col">Sunday</th>
+              <th scope="col">Monday</th>
+              <th scope="col">Tuesday</th>
+              <th scope="col">Wednesday</th>
+              <th scope="col">Thursday</th>
+              <th scope="col">Friday</th>
+              <th scope="col">Saturday</th>
+          </tr>
+      </thead>
+  </table> -->
 </div>
-
-<table class="table table-striped table-dark" id="calendar-form">
-    <thead>
-        <tr>
-            <th scope="col">Day</th>
-            <th scope="col">Data</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td id="calendar-dateline" >
-                1/31/2021 <br>
-                Sunday
-            </td>
-            <td>
-                Day Letter?: 
-                <select class="form-control" id="calendar-day-letter">
-                    <option value="A1">A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
-                </select>
-
-                Starts 6 period?: 
-                <input type='checkbox' id="calendar-is-late"><br>
-                
-                Remote Group?:
-                <select class="form-control" id="calendar-remote-group">
-                    <option value="Peg Day">Peg Day</option>
-                    <option value="Stuy Day">Stuy Day</option>
-                    <option value="All Remote">All Remote</option>
-                </select>
-
-                Notes? (half day, cancellation?):
-                <input type="text" class="form-control" id="calendar-notes" placeholder="Optional noteline..." />
-            
-                Save / Delete<br>
-                <button class="btn btn-primary" onclick="saveDate()">Save</button> 
-                <button class="btn btn-danger" onclick="clearDate()">Delete</button> 
-                
-                
-            </td>
-
-        </tr>
-    </tbody>
-</table>
-
-<!-- <table class="table" id="calendar-form">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Sunday</th>
-            <th scope="col">Monday</th>
-            <th scope="col">Tuesday</th>
-            <th scope="col">Wednesday</th>
-            <th scope="col">Thursday</th>
-            <th scope="col">Friday</th>
-            <th scope="col">Saturday</th>
-        </tr>
-    </thead>
-</table> -->
