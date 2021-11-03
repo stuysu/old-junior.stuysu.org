@@ -1,0 +1,13 @@
+name: Migrations
+on:
+  push: 
+    branches: 
+    - master
+jobs:
+  migrations:  
+    runs-on: ubuntu-latest
+    steps: 
+    - name: 
+      run: |
+        npm install
+        npm run migrate
