@@ -16,18 +16,45 @@ shortened display, so use them after 200 characters.
 <br><br> -->
 
 <div class="glass events-container">
-  <table id="events-table">
-    <!-- <thead>
-      <tr>
-        <th scope="col">Title / Date</th>
-        <th scope="col">PDF / Poster</th>
-        <th scope="col">Description</th>
-        <th scope="col">Update / Delete</th>
-      </tr>
-    </thead> -->
-    <tbody id='main-events'>
+    <div class="glass date-info flex-centered">
+
+      <h3>New Event</h3>
+      <input class="form-input glass" id="add-title-e" placeholder="Title" value="" />
+      <input type="datetime-local" class="form-input glass" id="add-date-e" placeholder="Date" value="" />
+      
+      <div>
+        <label for="add-important-e">
+          Important? :
+        </label>
+        <input type="checkbox" id="add-important-e" />
+        <label for="add-hidden-e">
+          Hidden :
+        </label>
+        <input type="checkbox" id="add-hidden-e"/>
+      </div>
+
+      <input type="text" class="form-input glass" id="add-url-e" placeholder="Redirect URL" value="" />
+      <input type="text" class="form-input glass" id="add-poster-e" placeholder="Poster URL" value="" />
+      <textarea style="height: 300px; width: 100%;" type="text" class="form-input glass" id="add-description-e" placeholder="Event Description"></textarea>
+
+
+      <button class="glass button" onclick="addEvent()">Submit</button>
+
+    </div>
+
+    <!-- <div class="glass event-info flex-centered">
+
+      <h3>Event Info</h3>
+      <input type="text" class="form-input glass" id="add-url-e" placeholder="Redirect URL" value="" />
+      <input type="text" class="form-input glass" id="add-poster-e" placeholder="Poster URL" value="" />
+      <textarea style="height: 300px; width: 100%;" type="text" class="form-input glass" id="add-description-e" placeholder="Event Description"></textarea>
+
+    </div> -->
+
+    <div class="glass events-list main-events">
+
       <% for (let event of events) { %>
-        <tr id="<%=event.id%>-thread-e"> 
+        <div id="<%=event.id%>-thread-e" class="glass event"> 
 
           <% 
             function getDate(dateFromSql) {
@@ -38,74 +65,28 @@ shortened display, so use them after 200 characters.
             }
           %>
 
-                  <td>
-                      <input type="text" placeholder="Title..." class="form-control" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent('<%= event.id %>')" />
-                      <input type="datetime-local" class="form-control" id="<%=event.id%>-date-e" value="<%= getDate(event.date) %>" />
-                      <label for="<%= event.id %>-important-e">Is important?:</label>
-                      <input type="checkbox" id="<%= event.id %>-important-e"
-
-                      <% if (event.isImportant) { %>
-                          checked
-                      <% } %>
-
-                      />
-                      <br>
-                      <label for="<%= event.id %>-hidden-e">Is hidden?:</label>
-                      <input type="checkbox" id="<%= event.id %>-hidden-e"
-
-                      <% if (event.isHidden) { %>
-                          checked
-                      <% } %>
-
-                      />
-
-                  </td>
-
-                  <td>
-                    <input type="text" class="form-control" placeholder="Special redirect..." id="<%=event.id%>-url-e" value="<%= event.url %>" />
-                    <input type="text" class="form-control" placeholder="Poster image..." id="<%=event.id%>-poster-e" value="<%= event.poster %>" />
-                    <textarea style="height: 300px;" type="text" class="form-control" id="<%=event.id%>-description-e""><%=event.description%></textarea>
-                  </td>
-
-                  <td>
-                      <button class="btn btn-primary" onclick="updateEvent('<%= event.id %>')">Update</button>
-                      <button class="btn btn-danger" onclick="removeEvent('<%= event.id %>')">&times;</button>
-                  </td>
-
-              </tr>
-          <% } %>
-    </tbody>
-    <tbody>
-      <tr>
-              
-              <td>
-                  <input class="form-control" id="add-title-e" placeholder="New Event Title" value="" />
-                  <input type="datetime-local" class="form-control" id="add-date-e" placeholder="New Event Date" value="" />
-
-                  <label for="add-important-e">
-                      Is important?:
-                  </label>
-                  <input type="checkbox" id="add-important-e" />
-
-                  <br>
-                  
-                  <label for="add-hidden-e">Is hidden?:</label>
-                  <input type="checkbox" id="add-hidden-e"/>
-                  
-              </td>
-              
-              <td>
-                  <input type="text" class="form-control" id="add-url-e" placeholder="New Event URL" value="" />
-                  <input type="text" class="form-control" id="add-poster-e" placeholder="New Event Poster" value="" />
-              </td>
-
-              <td>
-                  <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="add-description-e" placeholder="New Event Description"></textarea>
-              </td>
-
-              <td id="add-update-e"><button class="btn btn-success" onclick="addEvent()">Add</button></td> 
-
-      </tr>
-      </tbody>
-  </table>
+          <h3 style="margin-top: 10px;"><%= event.title %></h3>
+          <input type="text" placeholder="Title..." class="form-input glass" id="<%=event.id%>-title-e" value="<%= event.title %>" oninput="updatePreviewEvent('<%= event.id %>')" />
+          <input type="datetime-local" class="form-input glass" id="<%=event.id%>-date-e" value="<%= getDate(event.date) %>" />
+          <label for="<%= event.id %>-important-e">Important :</label>
+          <input type="checkbox" id="<%= event.id %>-important-e"
+            <% if (event.isImportant) { %>
+              checked
+            <% } %>
+          />
+          <label for="<%= event.id %>-hidden-e">Hidden :</label>
+          <input type="checkbox" id="<%= event.id %>-hidden-e"
+            <% if (event.isHidden) { %>
+              checked
+            <% } %>
+          />
+          <input type="text" class="form-input glass" placeholder="Special redirect..." id="<%=event.id%>-url-e" value="<%= event.url %>" />
+          <input type="text" class="form-input glass" placeholder="Poster image..." id="<%=event.id%>-poster-e" value="<%= event.poster %>" />
+          <textarea style="height: 150px;" type="text" class="form-input glass" id="<%=event.id%>-description-e""><%=event.description%></textarea>
+          <button class="glass button" onclick="updateEvent('<%= event.id %>')">Update</button>
+          <button class="glass button" onclick="removeEvent('<%= event.id %>')">Delete</button>
+        </div>
+      <% } %>
+      
+    </div>
 </div>

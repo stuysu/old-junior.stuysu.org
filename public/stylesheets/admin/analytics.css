@@ -8,6 +8,7 @@
 }
 
 .welcome {
+  width: 60vw;
   margin: 15px 10vw;
   padding: 10px;
   text-align: center;
@@ -29,6 +30,17 @@
     font-size: 125%;
     text-decoration: none;
     color: #47556c;
+}
+
+.flex-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.update {
+  margin: 20px;
 }
 
 @media screen and (max-width: 760px) {

@@ -14,7 +14,7 @@
 }
 
 .date-select {
-  width: calc(30% - 10px);
+  width: calc(40% - 10px);
   margin: 10px;
   padding: 10px;
 
@@ -25,7 +25,7 @@
 }
 
 .calendar-form {
-  width: calc(70% - 10px);
+  width: calc(60% - 10px);
   margin: 10px;
   padding: 20px;
 }
