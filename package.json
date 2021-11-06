@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
+        "migrate": "npx sequelize db:migrate",
         "dev": "nodemon index.js"
     },
     "repository": {
@@ -30,7 +31,8 @@
         "morgan": "^1.10.0",
         "mysql2": "^2.2.5",
         "node-fetch": "^2.6.1",
-        "sequelize": "^6.6.2"
+        "sequelize": "^6.6.2",
+        "sequelize-cli": "^6.3.0"
     },
     "devDependencies": {
         "nodemon": "^2.0.7",
