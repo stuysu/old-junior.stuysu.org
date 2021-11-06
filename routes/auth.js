@@ -213,7 +213,9 @@ function authed(options) {
         let { ok, payload, error } = verifyRequest(req, res);
 
         if (ok) {
-            res.locals.payload = payload;
+            // combines the payload data (see getAccessTokenPayload) with whatever
+            // is in res.locals currently 
+            res.locals = { ...res.locals, ...payload};
             options.authorized(req, res, next);
         } else {
             options.unauthorized(error, req, res, next);
