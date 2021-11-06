@@ -31,6 +31,7 @@ module.exports = {
         },
         native: true,
         ssl: true,
-        logging: LOGGING
+        logging: LOGGING,
+        host: "host.docker.internal"
     },
 };
