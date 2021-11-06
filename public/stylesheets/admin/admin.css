@@ -1,7 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Roboto";
+  text-decoration: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+.signin-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #alerts {
@@ -50,14 +66,14 @@
 
 #bone {
   top: 15vh;
-  left: 25vw;
+  left: 30vw;
   height: 300px;
   width: 300px;
   background: linear-gradient(to bottom left, #8a95a7, #47556c);
 }
 
 #btwo {
-  top: 70vh;
+  top: 60vh;
   left: 35vw;
   height: 250px;
   width: 250px;
@@ -65,7 +81,7 @@
 }
 
 #bthree {
-  top: 50vh;
+  top: 45vh;
   left: 75vw;
   height: 200px;
   width: 200px;
