@@ -2,8 +2,6 @@
   "schemaVersion": 2,
   "templateId": "node/14.15.1",
   "dockerfileLines": [
-  "ENV DATABASE_URL=$DATABASE_URL",
-  "ENV NODE_ENV production",
   "RUN npm install",
   "CMD [\"npm\", \"run\", \"migrate\"]",
   "CMD [\"npm\", \"start\"]"
