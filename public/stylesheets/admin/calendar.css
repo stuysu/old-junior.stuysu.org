@@ -16,7 +16,7 @@
 .date-select {
   width: calc(40% - 10px);
   margin: 10px;
-  padding: 10px;
+  padding: 20px;
 
   display: flex;
   flex-direction: column;

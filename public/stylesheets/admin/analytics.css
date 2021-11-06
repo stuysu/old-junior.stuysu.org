@@ -1,4 +1,5 @@
 .analytics-container {
+  width: 60vw;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -39,12 +40,15 @@
   align-items: center;
 }
 
-.update {
-  margin: 20px;
+.button {
+  margin-top: 5px;
+  padding: 3px 10px;
+  font-size: 14px;
 }
 
 @media screen and (max-width: 760px) {
   .analytics-container {
+    width: 175px;
     font-size: 10px;
     justify-content: space-around;
   }
@@ -54,5 +58,8 @@
   .item {
     width: 125px;
     height: 125px;
+  }
+  .button {
+    display: none;
   }
 }

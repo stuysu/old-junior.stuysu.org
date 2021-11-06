@@ -15,12 +15,11 @@
               data-url-pk="<%= route.url %>"
               id="<%= route.url %>-analytic-data"
           >
-              <h4 class="link"><a href="<%= route.url %>"><%= route.url %></a></h4>
+              <h3 class="link"><a href="<%= route.url %>"><%= route.url %></a></h3>
               <h3 id="<%= route.url %>-num-views"><%= route.views %></h3>
               
                 <button 
-                  class="glass" 
-                  style="padding: 0 10px;"
+                  class="glass button" 
                   onclick="resetViews('<%= route.url %>')" 
                 >
                   Reset
@@ -28,8 +27,7 @@
 
                 <button
                   id="<%= route.url %>-toggle-button" 
-                  class="glass" 
-                  style="padding: 0 10px;"
+                  class="glass button" 
                   onclick="toggleTracking('<%= route.url %>')"
                 >
                   <% if ( route.tracking ) { %> 
@@ -43,5 +41,5 @@
 
       <% } %>
   </div>
-  <button class="glass update" style="padding: 10px 20px;" onclick="updateInfo()">Update</button>
+  <button class="glass button" style="margin-top: 20px;" onclick="updateInfo()">Update</button>
 </div>

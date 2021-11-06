@@ -219,44 +219,24 @@ function addEventToPage(id, title, date, description, url, poster, isImportant, 
 	var event = {id, title, date, description, url, poster, isImportant, isHidden };
     
     let out = `
-<tr id="${event.id}-thread-e"> 
-
-    <td>
-
-        <input type="text" placeholder="Title..." class="form-control" id="${event.id}-title-e" value="${ event.title }" />
-        <input type="datetime-local" class="form-control" id="${event.id}-date-e" value="${ event.date }" />
-        
-        <label for="${ event.id }-important-e">Is important?:</label>
-        <input 
-            type="checkbox" 
-            id="${ event.id }-important-e" 
-            ${ event.isImportant ? 'checked': ''}
+      <div id="${event.id}-thread-e" class="glass event"> 
+        <h3 style="margin-top: 10px;">${ event.title }</h3>
+        <input type="text" placeholder="Title..." class="form-input glass" id="${event.id}-title-e" value="${ event.title }" />
+        <input type="datetime-local" class="form-input glass" id="${event.id}-date-e" value="${ event.date }" />
+        <label for="${ event.id }-important-e">Important :</label>
+        <input type="checkbox" id="${ event.id }-important-e"
+          ${ event.isImportant ? 'checked': ''}
         />
-        <br>
-        <label for="${ event.id }-hidden-e">Is hidden?:</label>
-        <input 
-            type="checkbox" 
-            id="${ event.id }-hidden-e"
-            ${ event.isImportant ? 'checked': ''}
+        <label for="${ event.id }-hidden-e">Hidden :</label>
+        <input type="checkbox" id="${ event.id }-hidden-e"
+          ${ event.isHidden ? 'checked': ''}
         />
-        
-    </td>
-
-    <td>
-        <input type="text" class="form-control" placeholder="Speical redirect..." id="${event.id}-url-e" value="${ validate(event.url) }" />
-        <input type="text" class="form-control" placeholder="Poster image..." id="${event.id}-poster-e" value="${ validate(event.poster) }" />
-    </td>
-
-    <td>
-        <textarea style="height: 300px; width: 100%;" type="text" class="form-control" id="${event.id}-description-e"">${validate(event.description)}</textarea>
-    </td>
-
-    <td>
-        <button class="btn btn-primary" onclick="updateEvent('${ event.id }')">Update</button>
-        <button class="btn btn-danger" onclick="removeEvent('${ event.id }')">&times;</button>
-    </td>
-
-</tr>
+        <input type="text" class="form-input glass" placeholder="Special redirect..." id="${event.id}-url-e" value="${ validate(event.url) }" />
+        <input type="text" class="form-input glass" placeholder="Poster image..." id="${event.id}-poster-e" value="${ validate(event.poster) }" />
+        <textarea style="height: 150px;" type="text" class="form-input glass" id="${event.id}-description-e"">${validate(event.description)}</textarea>
+        <button class="glass button" onclick="updateEvent('${ event.id }')">Update</button>
+        <button class="glass button" onclick="removeEvent('${ event.id }')">Delete</button>
+      </div>
     `;
 
 	mainLinks.innerHTML += out;

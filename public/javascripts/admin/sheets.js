@@ -135,38 +135,34 @@ async function addSheet() {
 
 function addSheetToPage(id, url, title, subject, teacher, author) {
 
-    const root = document.getElementById("study-guides");
+    const root = document.getElementById("study-sheets");
     const sheet = { id, url, title, subject, teacher, author };
 
     const code = `
-    <table id="${ sheet.id }-study-guide" class="table table-striped table-dark">
-    <thead>
-        <tr><th scope="col">Study Sheet</th> </tr>
-    </thead>
-    <tbody>
-        <tr><td><input placeholder="Title..." type="text" class="form-control" value="${ sheet.title }" id="${ sheet.id }-sheet-title" /></td></tr>
-        <tr><td><input placeholder="Url..." type="text" class="form-control" value="${ sheet.url }" id="${ sheet.id }-sheet-url" /></td> </tr> 
-        <tr><td><input placeholder="Subject..." type="text" class="form-control" value="${ sheet.subject }" id="${ sheet.id }-sheet-subject" /></td> </tr>
-        <tr><td><input placeholder="Teacher..." type="text" class="form-control" value="${ sheet.teacher }" id="${ sheet.id }-sheet-teacher" /></td> </tr>
-        <tr><td><input placeholder="Author..." type="text" class="form-control" value="${ sheet.author }" id="${ sheet.id }-sheet-author" /></td> </tr>
-        <tr><td><button id="${ sheet.id }-sheet-update" class="btn btn-primary" onclick="updateSheet('${ sheet.id }')">Update</button><button id="${ sheet.id }-sheet-remove" class="btn btn-danger" onclick="removeSheet('${ sheet.id }')">Remove</button></td></tr>
-        <tr>
-            <td>
-                <table class="table table-striped table-dark">
-                    <thead>
-                        <th scope="col">Keywords</th><th></th>
-                    </thead>
-                    <tbody id="${ sheet.id }-sheet-keywords">
-                        <tr id="add-keyword">
-                            <td><input type="text" id="${ sheet.id }-add-keyword-text" placeholder="Keyword..." class="form-control" /></td>
-                            <td><button id="${ sheet.id }-add-keyword-add" class="btn btn-primary" onclick="addKeyword('${ sheet.id }')">Add</button> </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </tbody>
-    </table>
+      <div id="${ sheet.id }-study-guide" class="glass sheet">
+        <input placeholder="Title..." type="text" class="form-input glass" value="${ sheet.title }"
+          id="${ sheet.id }-sheet-title" />
+        <input placeholder="Url..." type="text" class="form-input glass" value="${ sheet.url }"
+          id="${ sheet.id }-sheet-url" />
+        <input placeholder="Subject..." type="text" class="form-input glass" value="${ sheet.subject }"
+          id="${ sheet.id }-sheet-subject" />
+        <input placeholder="Teacher..." type="text" class="form-input glass" value="${ sheet.teacher }"
+          id="${ sheet.id }-sheet-teacher" />
+        <input placeholder="Author..." type="text" class="form-input glass" value="${ sheet.author }"
+          id="${ sheet.id }-sheet-author" />
+
+        <button id="${ sheet.id }-sheet-update" class="glass button"
+          onclick="updateSheet('${ sheet.id }')">Update</button>
+        <button id="${ sheet.id }-sheet-remove" class="glass button"
+          onclick="removeSheet('${ sheet.id }')">Remove</button>
+
+        <div id="${ sheet.id }-sheet-keywords">
+          <div id="add-keyword">
+            <input type="text" id="${ sheet.id }-add-keyword-text" placeholder="Keyword..." class="form-input glass" />
+            <button id="${ sheet.id }-add-keyword-add" class="glass button" onclick="addKeyword('${ sheet.id }')">Add</button>
+          </div>
+        </div>
+      </div>
     `;
 
     root.innerHTML += code;
@@ -244,6 +240,6 @@ async function addKeyword(sheetId) {
 
 function addKeywordToPage(sheetId, keyword, id) {
     const root = document.getElementById(`${sheetId}-sheet-keywords`);
-    const code = `<tr id='${id}-keyword'><td><span id='${id}-keyword-text'>${keyword}</span></td><td><button id='${id}-keyword-remove' class='btn btn-danger' onclick="removeKeyword('${id}')">Remove</button></td></tr>`;
+    const code = `<div id='${id}-keyword'><div><span id='${id}-keyword-text'>${keyword}</span></div><div><button id='${id}-keyword-remove' class='glass button' onclick="removeKeyword('${id}')">Remove</button></div></div>`;
     root.innerHTML += code;
 }

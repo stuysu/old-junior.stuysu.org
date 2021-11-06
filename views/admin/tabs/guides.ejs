@@ -18,7 +18,7 @@
 
     <!-- study sheets -->
 
-    <div class="glass study-sheets">
+    <div id="study-sheets" class="glass study-sheets">
       <% for (let sheet of sheets) { %>
         <div id="<%= sheet.id %>-study-guide" class="glass sheet">
           <input placeholder="Title..." type="text" class="form-input glass" value="<%= sheet.title %>"
@@ -38,11 +38,12 @@
             onclick="removeSheet('<%= sheet.id %>')">Remove</button>
 
           <% for (let keyword of sheet.keywords) { %>
-            <td id="<%= keyword.id %>-keyword">
-              <span id="<%= keyword.id %>-keyword-text"><%= keyword.keyword %></span>
-              <button id="<%= keyword.id %>-keyword-remove" class="glass button"
-                onclick="removeKeyword('<%= keyword.id %>')">Remove</button>
-            </td>
+            <div id="<%= keyword.id %>-sheet-keywords">
+              <div id="add-keyword">
+                <input type="text" id="<%= keyword.id %>-add-keyword-text" placeholder="Keyword..." class="form-input glass" />
+                <button id="<%= keyword.id %>-add-keyword-add" class="glass button" onclick="addKeyword('<%= keyword.id %>')">Add</button>
+              </div>
+            </div>
           <% } %>
         </div>
       <% } %>
