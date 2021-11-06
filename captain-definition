@@ -2,6 +2,9 @@
   "schemaVersion": 2,
   "dockerfileLines": [
   "FROM node:14.15.1",
+  "RUN mkdir /app",
+  "WORKDIR /app",
+  "COPY ./ /app"
   "RUN npm install && npm run migrate",
   "CMD [\"npm\", \"start\"]"
   ]
