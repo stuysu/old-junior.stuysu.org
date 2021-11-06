@@ -3,8 +3,7 @@
   "templateId": "node/14.15.1",
   "dockerfileLines": [
   "FROM node:14.15.1",
-  "RUN npm install",
-  "RUN npm run migrate",
+  "RUN npm install && npm run migrate",
   "CMD [\"npm\", \"start\"]"
   ]
 }
