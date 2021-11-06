@@ -16,7 +16,6 @@ async function updateSheet(id) {
 
     let response = await sfetch("/api/sheets", {
         method: "PUT",
-        mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
@@ -57,7 +56,6 @@ async function removeSheet(id) {
 
     let response = await sfetch('/api/sheets/' + id, {
         method: 'DELETE', 
-        mode: 'cors', 
         cache: 'no-cache', 
         credentials: 'same-origin',
         headers: {
@@ -90,7 +88,6 @@ async function addSheet() {
     const { url, title, subject, teacher, author } = getSheetInfo('add');
     let response = await sfetch("/api/sheets", {
         method: "POST",
-        mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
@@ -181,7 +178,6 @@ async function removeKeyword(keywordId) {
 
     let response = await sfetch('/api/sheets/keywords/' + keywordId, {
         method: 'DELETE', 
-        mode: 'cors', 
         cache: 'no-cache', 
         credentials: 'same-origin',
         headers: {
@@ -212,7 +208,6 @@ async function addKeyword(sheetId) {
 
     let response = await sfetch("/api/sheets/keywords", {
         method: "POST",
-        mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {

@@ -68,7 +68,6 @@ async function removeEvent(id) {
 
     let response = await sfetch('/api/events/' + id, {
         method: 'DELETE', 
-        mode: 'cors', 
         cache: 'no-cache', 
         credentials: 'same-origin',
         headers: {
@@ -96,7 +95,6 @@ async function updateEvent(id) {
     const { title, date, description, url, poster, important, hidden } = getInputsEvent(id);
     let response = await sfetch("/api/events", {
         method: "PUT",
-        mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
@@ -157,7 +155,6 @@ async function addEvent() {
 
     let response = await sfetch("/api/events", {
         method: "POST",
-        mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
