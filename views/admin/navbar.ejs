@@ -4,10 +4,10 @@
 
 <ul class="navbar">
   <li>
-    <img class="navbar-image" src="<%= data.picture %>">
+    <img class="navbar-image" src="<%= picture %>">
   </li>
   <li>
-    <p style="margin-bottom: 20px;"><%= data.name %></p>
+    <p style="margin-bottom: 20px;"><%= name %></p>
   </li>
   <% for (let link of redirects) { %>
     <a href="<%= link.url %>" class="navbar-link">

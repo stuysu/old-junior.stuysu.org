@@ -6,58 +6,58 @@
 const express = require('express');
 const route = express.Router();
 
-const {requireAuthAdmin} = require('../auth.js');
+const { requireAuthAdmin } = require('../auth.js');
 
 const { Analytics, Events, Link, Sheets, Attributes, sequelize } = require('../../models');
 
 const TabTypes = {
 
-  'dashboard': {
-    page: './tabs/analytics',
-    scripts: [{src: '/javascripts/admin/analytics.js'}],
+    'dashboard': {
+        page: './tabs/analytics',
+        scripts: [{ src: '/javascripts/admin/analytics.js' }],
 
-    getData: async () => {
-        return { analytics: await Analytics.findAll({ order: [ ['views', 'DESC'] ] }) };
-    }
-  },
+        getData: async () => {
+            return { analytics: await Analytics.findAll({ order: [['views', 'DESC']] }) };
+        }
+    },
 
-  'calendar': {
-    page: './tabs/calendar',
-    scripts: [{src: '/javascripts/admin/calendar.js'}],
+    'calendar': {
+        page: './tabs/calendar',
+        scripts: [{ src: '/javascripts/admin/calendar.js' }],
 
-    getData: () => null
-  },
+        getData: () => null
+    },
 
-  'events': {
-    page: './tabs/events',
-    scripts: [{src: '/javascripts/admin/events.js'}],
+    'events': {
+        page: './tabs/events',
+        scripts: [{ src: '/javascripts/admin/events.js' }],
 
-    getData: async () => {
-        return { events: await Events.findAll() };
-    }
-  },
+        getData: async () => {
+            return { events: await Events.findAll() };
+        }
+    },
 
-  'study-guides': {
-    page: './tabs/guides',
-    scripts: [{src: '/javascripts/admin/sheets.js'}],
+    'study-guides': {
+        page: './tabs/guides',
+        scripts: [{ src: '/javascripts/admin/sheets.js' }],
 
-    getData: async () => {
-        let sheets = await Sheets.findAll();
-        for (let sheet of sheets) 
-            sheet['keywords'] = await Attributes.findAll({ where: { SheetId: sheet.id }});
-        
-        return { sheets: sheets };
-    }
-  },
+        getData: async () => {
+            let sheets = await Sheets.findAll();
+            for (let sheet of sheets)
+                sheet['keywords'] = await Attributes.findAll({ where: { SheetId: sheet.id } });
 
-  'links': {
-    page: './tabs/links',
-    scripts: [{src: '/javascripts/admin/links.js'}],
+            return { sheets: sheets };
+        }
+    },
 
-    getData: async () => {
-        return { links: await Link.findAll({ order: sequelize.col('ordering') }) };
-    }
-  },
+    'links': {
+        page: './tabs/links',
+        scripts: [{ src: '/javascripts/admin/links.js' }],
+
+        getData: async () => {
+            return { links: await Link.findAll({ order: sequelize.col('ordering') }) };
+        }
+    },
 
 };
 
@@ -83,6 +83,13 @@ function fixed(text) {
 
 // get the redirects from the tab types
 function* getRedirects(activeTab) {
+    // TODO: uncomment this if you want a home tab
+    // yield {
+    //     url: "/admin/",
+    //     name: 'Home',
+    //     active: activeTab===''
+    // };
+
     for (let tab in TabTypes) {
         yield {
             url: `/admin/${tab}`,
@@ -100,25 +107,23 @@ route.get(
     requireAuthAdmin(),
 
     async (_req, res, _next) => {
-        const { payload } = res.locals;
-
-        res.render('admin/', {
-            data: { 
-                name: payload.name,
-                picture: payload.picture
-            },
-            redirects: getRedirects(''),
-            scripts: [],
-            page: './welcome'
-        });
+        res.redirect('/admin/dashboard');
+        
+        // TODO: uncomment this if you want a home tab 
+        // res.render('admin/', {
+        //     redirects: getRedirects(''),
+        //     scripts: [],
+        //     page: './welcome',
+        //     data: {}
+        // });
     }
 );
 
 route.get(
-    '/:tab', 
+    '/:tab',
 
-    requireAuthAdmin(), 
-    
+    requireAuthAdmin(),
+
     async (req, res, _next) => {
         const tab = req.params.tab;
         const typeData = TabTypes[tab];
