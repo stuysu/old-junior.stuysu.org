@@ -5,6 +5,7 @@
   "ENV DATABASE_URL=$DATABASE_URL",
   "ENV NODE_ENV=production",
   "RUN npm install",
-  "RUN npm run migrate"
+  "CMD [\"npm\", \"run\", \"migrate\"]",
+  "CMD [\"npm\", \"start\"]"
   ]
- }
+}
