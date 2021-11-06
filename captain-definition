@@ -5,6 +5,8 @@
   "RUN mkdir /app",
   "WORKDIR /app",
   "COPY ./ /app",
+  "ARG DATABASE_URL",
+  "ENV DATABASE_URL=$DATABASE_URL",
   "ENV NODE_ENV production",
   "RUN npm install && npm run migrate",
   "CMD [\"npm\", \"start\"]"
