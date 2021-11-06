@@ -9,6 +9,8 @@
   "ENV DATABASE_URL=$DATABASE_URL",
   "ENV NODE_ENV production",
   "RUN npm install && npm run migrate",
+  "ENV PORT 80",
+  "EXPOSE 80",
   "CMD [\"npm\", \"start\"]"
   ]
 }
