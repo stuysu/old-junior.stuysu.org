@@ -48,9 +48,8 @@
 
 @media screen and (max-width: 760px) {
   .analytics-container {
-    width: 175px;
+    margin: 5vw;
     font-size: 10px;
-    justify-content: space-around;
   }
   .welcome {
     display: none;
@@ -58,6 +57,7 @@
   .item {
     width: 125px;
     height: 125px;
+    margin: 10px;
   }
   .button {
     display: none;
