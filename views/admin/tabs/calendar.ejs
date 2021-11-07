@@ -46,7 +46,7 @@
                 <option value="B2">B2</option>
               </select>
   
-                  Starts 6 period?: 
+                  <!-- Starts 6 period?: 
                   <input type='checkbox' id="calendar-is-late"><br>
                   
                   Remote Group?:
@@ -54,10 +54,16 @@
                       <option value="Peg Day">Peg Day</option>
                       <option value="Stuy Day">Stuy Day</option>
                       <option value="All Remote">All Remote</option>
+                  </select> -->
+
+                  <select class="form-input glass" id="calendar-day-type">
+                    <option value="" disabled selected>Day Type | Blank If Normal</option>
+                    <option value=""></option>
+                    <option value="Homeroom Day">Homeroom Day</option>
+                    <option value="Conference Day">Conference Day</option>
                   </select>
   
-                  Notes? (half day, cancellation?):
-                  <input type="text" class="form-input glass" id="calendar-notes" placeholder="Optional noteline..." />
+                  <input type="text" class="form-input glass" id="calendar-notes" placeholder="Optional Notes" maxlength="56" />
                   <button class="glass button" onclick="saveDate()">Save</button> 
                   <button class="glass button" onclick="clearDate()">Delete</button> 
                   

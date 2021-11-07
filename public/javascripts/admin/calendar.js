@@ -1,17 +1,16 @@
 let monthSelect = null;
 let yearSelect = null;
 let daySelect = null;
-
 let calendarForm = null;
-
 let calendarInputs = null;
 
 function getCalendarInputs() {
     return {
         dateline: document.getElementById(`calendar-dateline`),
         dayLetter: document.getElementById(`calendar-day-letter`),
-        isLate: document.getElementById(`calendar-is-late`),
-        remoteGroup: document.getElementById(`calendar-remote-group`),
+        // isLate: document.getElementById(`calendar-is-late`),
+        // remoteGroup: document.getElementById(`calendar-remote-group`),
+        dayType: document.getElementById(`calendar-day-type`),
         notes: document.getElementById("calendar-notes")
     }
 }
@@ -66,8 +65,9 @@ function getSelectIndex(select, value) {
 }
 
 function clearInputs() {
-    calendarInputs.isLate.checked = false;
-    calendarInputs.remoteGroup.selectedIndex = -1;
+    // calendarInputs.isLate.checked = false;
+    // calendarInputs.remoteGroup.selectedIndex = -1;
+    calendarInputs.dayType.selectedIndex = -1;
     calendarInputs.dayLetter.selectedIndex = -1; 
     calendarInputs.notes.value = '';
 }
@@ -92,8 +92,9 @@ async function updateCalendarForm() {
     if (existingDate != null) {
         console.log("updating ");
         calendarInputs.dayLetter.selectedIndex = getSelectIndex(calendarInputs.dayLetter, existingDate.dayLetter);
-        calendarInputs.isLate.checked = existingDate.firstPeriod == 6;
-        calendarInputs.remoteGroup.selectedIndex = getSelectIndex(calendarInputs.remoteGroup, existingDate.remoteGroup);
+        // calendarInputs.isLate.checked = existingDate.firstPeriod == 6;
+        // calendarInputs.remoteGroup.selectedIndex = getSelectIndex(calendarInputs.remoteGroup, existingDate.remoteGroup);
+        calendarInputs.dayType.selectedIndex = getSelectIndex(calendarInputs.dayType, existingDate.dayType);
         calendarInputs.notes.value = existingDate.note;
     } else {
         console.log("clearing");
@@ -104,7 +105,8 @@ async function updateCalendarForm() {
 function isCalendarInputValid() {
 
     return !(
-        calendarInputs.remoteGroup.selectedIndex < 0 || 
+        // calendarInputs.remoteGroup.selectedIndex < 0 || 
+        calendarInputs.dayType.selectedIndex < 0 ||
         calendarInputs.dayLetter.selectedIndex < 0
     ) 
 }
@@ -116,8 +118,9 @@ function getCalendarBodyData() {
         month: date.month,
         year: date.year,
         dayLetter: calendarInputs.dayLetter.value,
-        firstPeriod: calendarInputs.isLate.checked ? 6 : 1,
-        remoteGroup: calendarInputs.remoteGroup.value,
+        firstPeriod: 1, // calendarInputs.isLate.checked ? 6 : 1,
+        // remoteGroup: calendarInputs.remoteGroup.value,
+        dayType: calendarInputs.dayType.value,
         note: document.getElementById('calendar-notes').value
     };
     // console.log(a);

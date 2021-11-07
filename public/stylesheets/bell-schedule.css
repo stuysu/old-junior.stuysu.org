@@ -30,6 +30,7 @@
 .bell-schedule {
 
     text-align: center;
+    word-break: break-all;
 
     background-color: var(--schedule-background);
 
