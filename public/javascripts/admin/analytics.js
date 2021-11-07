@@ -2,7 +2,6 @@ async function resetViews(url) {
 
     let response = await sfetch("/api/analytics/reset", {
         method: "PUT",
-        mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
@@ -32,7 +31,6 @@ async function toggleTracking(url) {
 
     let response = await sfetch("/api/analytics/toggle", {
         method: "PUT",
-        mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {

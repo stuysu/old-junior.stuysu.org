@@ -102,7 +102,6 @@ async function addLink() {
 
     let response = await sfetch("/api/links", {
         method: "POST",
-        mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
         headers: {
@@ -190,7 +189,6 @@ async function deleteLink(id) {
 
     let response = await sfetch("/api/links/" + id, {
         method: "DELETE",
-        mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
         headers: {
@@ -225,7 +223,6 @@ async function saveLink(id) {
 
     let response = await sfetch("/api/links", {
         method: "PUT",
-        mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
         headers: {
