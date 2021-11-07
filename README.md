@@ -13,6 +13,7 @@ See [our frontend prototype](https://github.com/pserb/sophsu-web).
 ## Available scripts
 
 * `npm run start`
+* `npm run migrate`
 * `npm run dev`
 
 ## Environment Variables
@@ -36,6 +37,18 @@ It's easiest to make a `.env` file to use these locally.
 * Create `.env` file with `AUTHENTICATION_MODE=skip`
 * `npm run dev`
 * Add CLIENT_ID, CLIENT_SECRET, and ACCESS_TOKEN_SECRET to test google authentication and JWT authorization with AUTHENTICATION_MODE=show or full
+
+## Setup a Migration
+
+[Documentation for Sequelize Migrations](https://sequelize.org/master/manual/migrations.html)
+
+[Documentation for queryInterface](https://sequelize.org/master/class/lib/dialects/abstract/query-interface.js~QueryInterface.html)
+
+* Run `npx sequelize migration:create --name=[name]`
+* Edit the new file created in `/migrations`
+* Add a list of commands to the up function which will update the database
+* Add a list of commands to the down function which will revert the database back to its original state
+* Commit and push
 
 ## Todo
 
