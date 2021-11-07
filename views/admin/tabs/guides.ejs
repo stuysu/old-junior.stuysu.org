@@ -37,15 +37,21 @@
           <button id="<%= sheet.id %>-sheet-remove" class="glass button"
             onclick="removeSheet('<%= sheet.id %>')">Remove</button>
 
-          <% for (let keyword of sheet.keywords) { %>
-            <div id="<%= keyword.id %>-sheet-keywords">
-              <div id="add-keyword">
-                <input type="text" id="<%= keyword.id %>-add-keyword-text" placeholder="Keyword..." class="form-input glass" />
-                <button id="<%= keyword.id %>-add-keyword-add" class="glass button" onclick="addKeyword('<%= keyword.id %>')">Add</button>
-              </div>
+          <div id="<%= sheet.id %>-sheet-keywords">
+            <div id="add-keyword">
+              <input type="text" id="<%= sheet.id %>-add-keyword-text" placeholder="Keyword..."
+                class="glass form-input" />
+              <button id="<%= sheet.id %>-add-keyword-add" class="glass button"
+                onclick="addKeyword('<%= sheet.id %>')">Add</button>
             </div>
-          <% } %>
-        </div>
+            <% for (let keyword of sheet.keywords) { %>
+            <div id="<%= keyword.id %>-keyword">
+              <span id="<%= keyword.id %>-keyword-text"><%= keyword.keyword %></span>
+              <button id="<%= keyword.id %>-keyword-remove" class="glass button"
+                onclick="removeKeyword('<%= keyword.id %>')" style="padding: 2px 4px;">Remove</button>
+            </div>
+            <% } %>
+          </div>
       <% } %>
     </div>
 </div>
