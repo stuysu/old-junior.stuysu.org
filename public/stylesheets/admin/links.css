@@ -1,35 +1,79 @@
 
+.links-container {
+  height: 75vh;
+  width: 60vw;
+  margin: 10vw;
+  padding: 20px;
+  color: #47556c;
+  text-align: center;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.link-form {
+  height: 100%;
+  width: calc(50% - 10px);
+  margin: 10px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.links-list {
+  height: 100%;
+  width: calc(50% - 10px);
+  margin: 10px;
+
+  word-wrap: break-word;
+  overflow-x: scroll;
+}
+
+.form-input {
+  width: 100%;
+  height: 50px;
+  margin: 10px 10px;
+  padding: 5px 10px;
+}
+
+.button {
+  margin: 10px;
+  padding: 10px 25px;
+}
+
 /*
 page styles
 */
 
-ul#link-manager {
-    list-style-type: none;
-    margin: 30px;
-    padding: 0;
+#link-manager {
+  list-style-type: none;
+  padding: 0;
 }
 
-ul#link-manager li.link {
-    margin: 0 0;
-    border: 1px solid gray;
-    padding: 15px;
-    background-color: white;
+#link-manager div.link {
+  transition: all 300ms ease;
+  margin: 0 0;
+  padding: 15px;
 }
 
-ul#link-manager li.modifying {
-    background: lightgray;
-    transform: scale(1.01);
+#link-manager div.modifying {
+  transform: scale(1.05);
 }
 
-li.link:hover {
-    box-shadow: 0 0 5px 5px lightgray;
+div.link:hover {
+  box-shadow: 0 0 1px 1px lightgray;
 }
 
 /*
 Drag-and-Drop CSS Styles
 */
 
-[draggable] {
+/* [draggable] {
     cursor: grab;
 }
 
@@ -57,12 +101,10 @@ Drag-and-Drop CSS Styles
 }
 
 .over {
-    /* animation */
     animation-name: over-drop;
     animation-duration: 0.175s;
     animation-iteration-count: infinite;
 
-    /* transform: scale(1.025); */
     box-shadow: 0 0 8px 8px lightgray;
 }
 
@@ -82,4 +124,4 @@ Drag-and-Drop CSS Styles
     animation-name: dropped-animation;
     animation-duration: 0.2s;
     animation-iteration-count: 1;
-}
+} */

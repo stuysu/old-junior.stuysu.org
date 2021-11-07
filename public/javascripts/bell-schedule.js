@@ -8,12 +8,11 @@ function getDayType() {
 }
 
 function isHomeroomDay() {
-    return getDayType() == 'Homeroom Day'; // returns boolean
+  return getDayType() == 'Homeroom Day'; // returns boolean
 }
 function isConferenceDay() {
-    return getDayType() == 'Conference Day';
+  return getDayType() == 'Conference Day';
 }
-
 /*
 PERIOD SCHEDULE CODE
 */
@@ -62,12 +61,12 @@ function getPeriods() {
       new Period(new Time(14, 10), new Time(14, 50), getPayload(9)),
       new Period(new Time(14, 51), new Time(14, 54), getPayload()),
       new Period(new Time(14, 55), new Time(15, 35), getPayload(10))
-    
+
     ];
     return PERIODS;
 
   } else if (isConferenceDay() == true) {
-    
+
     const PERIODS = [
 
       new Period(new Time(08, 00), new Time(08, 37), getPayload(1)),
@@ -89,12 +88,12 @@ function getPeriods() {
       new Period(new Time(13, 28), new Time(14, 05), getPayload(9)),
       new Period(new Time(14, 06), new Time(14, 08), getPayload()),
       new Period(new Time(14, 09), new Time(14, 46), getPayload(10))
-    
+
     ];
     return PERIODS;
 
   } else {
-    
+
     const PERIODS = [
 
       new Period(new Time(08, 00), new Time(08, 41), getPayload(1)),
@@ -116,7 +115,7 @@ function getPeriods() {
       new Period(new Time(14, 09), new Time(14, 50), getPayload(9)),
       new Period(new Time(14, 51), new Time(14, 53), getPayload()),
       new Period(new Time(14, 54), new Time(15, 35), getPayload(10))
-    
+
     ];
     return PERIODS;
   }

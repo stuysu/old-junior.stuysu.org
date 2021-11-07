@@ -134,19 +134,18 @@ async function addLinkToPage(id, alias, url) {
     const linkManager = document.getElementById("link-manager");
 
     let html = `
-        <li 
-            data-link-id="${ id }" 
-            id="link-${ id }" 
-            draggable="true" 
-            class="link draggable"
+      <div 
+        data-link-id="${ id }" 
+        id="link-${ id }" 
+        class="link glass"
 
-            data-alias="${ alias }"
-            data-url="${ url }"
-        >
+        data-alias="${ alias }"
+        data-url="${ url }"
 
-            ${ alias } (<span>${ url }</span>)
-
-        </li>
+        style="margin: 20px;"
+      >
+        ${ alias } (<span>${ url }</span>)
+      </div>
     `;
 
     linkManager.innerHTML = html + linkManager.innerHTML;

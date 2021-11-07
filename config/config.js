@@ -31,6 +31,6 @@ module.exports = {
         },
         native: true,
         ssl: true,
-        logging: LOGGING,
+        logging: LOGGING
     },
 };

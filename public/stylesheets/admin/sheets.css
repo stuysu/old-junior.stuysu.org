@@ -1,0 +1,44 @@
+.sheets-container {
+  display: flex;
+  height: 55vh;
+  width: 60vw;
+  margin: 0 10vw;
+  padding: 10px;
+  color: #47556c;
+  text-align: center;
+}
+
+.sheet-input {
+  width: calc(50% - 10px);
+  margin: 10px;
+  padding: 25px 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.study-sheets {
+  width: calc(50% - 10px);
+  margin: 10px;
+  padding: 10px;
+  overflow-x: scroll;
+}
+
+.sheet {
+  margin: 10px;
+  padding: 10px;
+}
+
+.form-input {
+  height: 50px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 5px 10px;
+}
+
+.button {
+  margin: 10px;
+  padding: 10px 25px;
+}

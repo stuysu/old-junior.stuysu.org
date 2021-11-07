@@ -1,53 +1,47 @@
-<br>
+<head>
+  <link rel='stylesheet' href="/stylesheets/admin/links.css" />
+</head>
+
+<!-- <br>
 
 Click a link to modify or delete it. Drag any link over the link you want it to swap places with. (Drag and drop reordering is a WIP)
 
 <br>
-<br>
+<br> -->
+<div class="glass links-container">
+  <div id="links-table" class="glass link-form">
+    <h3>Update Link</h3>
+    <input type="text" class="form-input glass" id="link-alias-input" placeholder="Modify Alias" disabled=true />
+    <input type="text" class="form-input glass" id="link-url-input" placeholder="Modify URL" disabled=true /> 
+    <div>
+    <button class="glass button" onclick="updateLink()">Update</button>
+    <button class="glass button" onclick="removeLink()">Delete</button>
+    </div>
 
-<table id="links-table" class="table table-striped table-dark">
-    <thead>
-        <tr>
-            <th scope="col">Alias</th>
-            <th scope="col">Url</th>
-            <th scope="col">Confirm</th>
-            <th scope="col">Delete</th>
-        </tr>
-    </thead>
-    
-    <tbody>
-        <td><input type="text" class="form-control" id="link-alias-input" placeholder="Click a link to modify..." disabled=true /></td>
-        <td><input type="text" class="form-control" id="link-url-input" placeholder="Click a link to modify..." disabled=true /></td> 
-        <td><button class="btn btn-primary" onclick="updateLink()">Update</button></td> 
-        <td><button class="btn btn-danger" onclick="removeLink()">&times;</button></td>
-    </tbody>
+    <h3 style="margin-top: 20px;">New Link</h3>
+    <input type="text" class="form-input glass" id="link-alias-add" placeholder="New Link Alias" />
+    <input type="text" class="form-input glass" id="link-url-add" placeholder="New Link URL" />
+    <div>
+      <button class="glass button" onclick="addLink()">Add</button>
+      <button class="glass button" onclick="clearLink()">Clear</button>
+    </div>
+  </div>
 
-    <tbody>
-        <td><input type="text" class="form-control" id="link-alias-add" placeholder="New link alias..." /></td>
-        <td><input type="text" class="form-control" id="link-url-add" placeholder="New link url..." /></td> 
-        <td><button class="btn btn-success" onclick="addLink()">Add</button></td> 
-        <td><button class="btn btn-warning" onclick="clearLink()">Clear</button></td>
-    </tbody>
-</table>
-
-<ul id="link-manager">
-
+  <div id="link-manager" class=" glass links-list">
     <% for (let link of links) { %>
-        
-        <li 
-            data-link-id="<%= link.id %>" 
-            id="link-<%= link.id %>" 
-            draggable="true" 
-            class="link draggable"
+      <div 
+        data-link-id="<%= link.id %>" 
+        id="link-<%= link.id %>" 
+        class="link glass"
 
-            data-alias="<%= link.alias %>"
-            data-url="<%= link.url %>"
-        >
-        
-            <%= link.alias %> (<span><%= link.url %></span>)
-        
-        </li>
+        data-alias="<%= link.alias %>"
+        data-url="<%= link.url %>"
+
+        style="margin: 20px;"
+      >
+        <%= link.alias %> (<span><%= link.url %></span>)
+      </div>
 
     <% } %>
-
-</ul>
+  </div>
+</div>
