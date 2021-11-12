@@ -22,9 +22,11 @@
             
             <br>
             
-            <span><%= dayInfo.dayType %></span>
+            <% if (dayInfo.dayType !== '') { %>
+                <span><%= dayInfo.dayType %></span>
+                <br>
+            <% } %>
             
-            <br>
 
             <span id="time-day-time" class="timeline">
                 ..
