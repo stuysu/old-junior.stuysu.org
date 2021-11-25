@@ -186,7 +186,7 @@ body {
   background: var(--background);
 }
 .bg-image {
-  background-image: url("../images/stuy.jpg");
+  background-image: url("../images/stuy-blur.png");
   padding-top: 36vw;
   height: 36vw;
   width: 100%;
