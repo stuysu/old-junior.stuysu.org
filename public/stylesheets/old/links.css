@@ -1,64 +1,61 @@
 :root {
-    --primary: #5166da;
-    --secondary: white;
+  --primary: #5166da;
+  --secondary: white;
 
-    --link-width: 80%;
-    
-    --border-radius: 32px;
+  --link-width: 80%;
+
+  --border-radius: 32px;
 }
 
 #links {
-    margin: 0 auto;
-    list-style-type: none;
-    text-align: center;
-    /* border: 3px solid black; */
-    width: 100%;
+  margin: 0 auto;
+  list-style-type: none;
+  text-align: center;
+  /* border: 3px solid black; */
+  width: 100%;
 }
 
 .link-anchor {
-    transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-    text-decoration: none;
+  text-decoration: none;
 
-    background-color: var(--secondary);
-    color: var(--primary);
-    border-color: var(--primary);
+  background-color: var(--secondary);
+  color: var(--primary);
+  border-color: var(--primary);
 
-    border: 3px solid;
-    border-radius: var(--border-radius);
+  border: 3px solid;
+  border-radius: var(--border-radius);
 
-    font-size: 125%;
-    font-weight: 600;
+  font-size: 125%;
+  font-weight: 600;
 
-    display: block;
-    margin: 15px auto;
-    padding: 15px 0;
+  display: block;
+  margin: 15px auto;
+  padding: 15px 0;
 
-    width: var(--link-width);
+  width: var(--link-width);
 }
 
 .link-anchor:hover {
-    background-color: var(--primary);
-    color: var(--secondary);
-    border-color: var(--secondary);
+  background-color: var(--primary);
+  color: var(--secondary);
+  border-color: var(--secondary);
 }
 
 #condensed {
-    display: flex;
-    
-    /* this deosnt work for some reason */
-    justify-content: space-between;
+  display: flex;
 
-    width: var(--link-width);
-    margin: 0 auto;
+  /* this deosnt work for some reason */
+  justify-content: space-between;
 
-    /* border: 3px solid gray; */
+  width: var(--link-width);
+  margin: 0 auto;
 
+  /* border: 3px solid gray; */
 }
 
 #condensed .link-anchor {
-
-    margin: 0 !important;
-    width: calc(calc(100% - 5%) / 3);
-    
+  margin: 0 !important;
+  width: calc(calc(100% - 5%) / 3);
 }

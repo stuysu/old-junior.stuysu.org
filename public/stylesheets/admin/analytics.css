@@ -17,20 +17,21 @@
 }
 
 .item {
-    width: 175px;
-    height: 175px;
-    margin: 25px;
-    padding: 10px;
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: space-around;
-    align-items: center;
+  width: 175px;
+  height: 175px;
+  margin: 25px;
+  padding: 10px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.item .link, .item .link a  {
-    font-size: 125%;
-    text-decoration: none;
-    color: #47556c;
+.item .link,
+.item .link a {
+  font-size: 125%;
+  text-decoration: none;
+  color: #47556c;
 }
 
 .flex-centered {

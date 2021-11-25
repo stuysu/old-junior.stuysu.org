@@ -1,14 +1,14 @@
 .special {
-    background: var(--gradient);
-    color: var(--hover-color);
+  background: var(--gradient);
+  color: var(--hover-color);
 }
 
 .special .link-item img {
-    height: 20px;
+  height: 20px;
 }
 
 @media only screen and (max-width: 600px) {
-    .special .link-item img {
-        height: 20px;
-    }
+  .special .link-item img {
+    height: 20px;
+  }
 }
