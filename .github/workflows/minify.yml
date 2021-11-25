@@ -1,0 +1,20 @@
+name: Minify Workflow
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - name: Minify Action
+        uses: anthonyftwang/minify-action@v1.0.1
+
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Minified Source Code
+          branch: deploy
