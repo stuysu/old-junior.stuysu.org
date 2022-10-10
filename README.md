@@ -1,4 +1,4 @@
-# sophomore.stuysu.org
+# junior.stuysu.org
 
 The Sophomore Caucus Website developed in Node with EJS, Express, and Sequelize. Features a publicly available frontend, REST API, and CMS.
 
@@ -7,8 +7,8 @@ See [our frontend prototype](https://github.com/pserb/sophsu-web).
 ## Installation
 
 * Download zip
-* `git clone https://github.com/stuysu/sophomore.stuysu.org.git`
-* `git clone git@github.com:stuysu/sophomore.stuysu.org.git`
+* `git clone https://github.com/stuysu/junior.stuysu.org.git`
+* `git clone git@github.com:stuysu/junior.stuysu.org.git`
 
 ## Available scripts
 

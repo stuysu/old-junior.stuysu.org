@@ -1,5 +1,5 @@
 {
-    "name": "sophomore.stuysu.org",
+    "name": "junior.stuysu.org",
     "version": "1.0.0",
     "description": "The Sophomore Caucus Website developed in Node with EJS, Express, and Sequelize. Features a publicly available frontend, REST API, and CMS.",
     "main": "index.js",
@@ -10,14 +10,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/stuysu/sophomore.stuysu.org.git"
+        "url": "git+https://github.com/stuysu/junior.stuysu.org.git"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/stuysu/sophomore.stuysu.org/issues"
+        "url": "https://github.com/stuysu/junior.stuysu.org/issues"
     },
-    "homepage": "https://github.com/stuysu/sophomore.stuysu.org#readme",
+    "homepage": "https://github.com/stuysu/junior.stuysu.org#readme",
     "dependencies": {
         "cookie-parser": "^1.4.5",
         "ejs": "^3.1.6",
